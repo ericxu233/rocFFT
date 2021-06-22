@@ -1177,7 +1177,7 @@ namespace StockhamGenerator
             if(NeedsLargeTwiddles())
             {
                 str += "const " + r2Type
-                       + " * __restrict__ twiddles_large, "; // blockCompute introduce
+                       + " * __restrict__ twiddles_large_GB, "; // blockCompute introduce
                 // one more twiddle parameter
             }
             str += "const size_t dim, const size_t *";
@@ -1187,13 +1187,13 @@ namespace StockhamGenerator
             str += "const size_t *";
             if(StrideParamUnderscore())
                 str += "_";
-            str += "stride_in, ";
+            str += "stride_in_GB, ";
             if(placeness == rocfft_placement_notinplace)
             {
                 str += "const size_t *";
                 if(StrideParamUnderscore())
                     str += "_";
-                str += "stride_out, ";
+                str += "stride_out_GB, ";
             }
             str += "const size_t batch_count, ";
 
@@ -1209,7 +1209,7 @@ namespace StockhamGenerator
                     str += " * __restrict__ ";
                     if(IOParamUnderscore())
                         str += "_";
-                    str += "gb";
+                    str += "gb_GB";
                     str += ")\n";
                 }
                 else
@@ -1218,12 +1218,12 @@ namespace StockhamGenerator
                     str += " * __restrict__ ";
                     if(IOParamUnderscore())
                         str += "_";
-                    str += "gbRe, ";
+                    str += "gbRe_GB, ";
                     str += rType;
                     str += " * __restrict__ ";
                     if(IOParamUnderscore())
                         str += "_";
-                    str += "gbIm";
+                    str += "gbIm_GB";
 
                     str += ")\n";
                 }
@@ -1237,7 +1237,7 @@ namespace StockhamGenerator
                     str += " * __restrict__ ";
                     if(IOParamUnderscore())
                         str += "_";
-                    str += "gbIn, "; // has to remove const qualifier
+                    str += "gbIn_GB, "; // has to remove const qualifier
                         // due to HIP on ROCM 1.4
                 }
                 else
@@ -1246,13 +1246,13 @@ namespace StockhamGenerator
                     str += " * __restrict__ ";
                     if(IOParamUnderscore())
                         str += "_";
-                    str += "gbInRe, ";
+                    str += "gbInRe_GB, ";
                     // str += "const ";
                     str += rType;
                     str += " * __restrict__ ";
                     if(IOParamUnderscore())
                         str += "_";
-                    str += "gbInIm, ";
+                    str += "gbInIm_GB, ";
                 }
 
                 if(outInterleaved)
@@ -1261,7 +1261,7 @@ namespace StockhamGenerator
                     str += " * __restrict__ ";
                     if(IOParamUnderscore())
                         str += "_";
-                    str += "gbOut";
+                    str += "gbOut_GB";
                 }
                 else
                 {
@@ -1269,15 +1269,23 @@ namespace StockhamGenerator
                     str += " * __restrict__ ";
                     if(IOParamUnderscore())
                         str += "_";
-                    str += "gbOutRe, ";
+                    str += "gbOutRe_GB, ";
                     str += rType;
                     str += " * __restrict__ ";
                     if(IOParamUnderscore())
                         str += "_";
-                    str += "gbOutIm";
+                    str += "gbOutIm_GB";
                 }
 
                 str += ")\n";
+                str += "\/\/ Create accessors to SyCL buffers here...";
+                str += "\/\/\tSyCL buffers are named with \"_GB\" suffix to minimize changes in kernel";
+                str += "\/\/\tAccessors should not have the \"_GB\" suffix";
+                str += "\/\/\tAccessors should have the following terminology";
+                str += "\/\/\t\tRWGAcc: accessor to global buffer with read/write access";
+                str += "\/\/\t\tROGAcc: accessor to global buffer with read-only access";
+                str += "\/\/\t\tRWLAcc: accessor to local buffer with read/write access";
+                str += "\/\/\t\tROLAcc: accessor to local buffer with read-only access";
             }
         }
 
