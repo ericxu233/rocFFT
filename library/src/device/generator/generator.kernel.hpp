@@ -1174,24 +1174,24 @@ namespace StockhamGenerator
                 */
             str += "( ";
             str += "sycl::range<3> blocks, sycl::range<3> threads, sycl::queue rocQueue,";
-            str += "const " + r2Type + " * __restrict__ twiddles, ";
+            str += "sycl::buffer<" + r2Type + ", 1> twiddlesGB, ";
             if(NeedsLargeTwiddles())
             {
-                str += "const " + r2Type
-                       + " * __restrict__ twiddles_large_GB, "; // blockCompute introduce
+                str += "sycl::buffer<" + r2Type
+                       + ", 1> twiddles_large_GB, "; // blockCompute introduce
                 // one more twiddle parameter
             }
-            str += "const size_t dim, const size_t *";
+            str += "const size_t dim, sycl::buffer<size_t, 1> *";
             if(LengthParamUnderscore())
                 str += "_";
             str += "lengths, ";
-            str += "const size_t *";
+            str += "sycl::buffer<size_t, 1> *";
             if(StrideParamUnderscore())
                 str += "_";
             str += "stride_in_GB, ";
             if(placeness == rocfft_placement_notinplace)
             {
-                str += "const size_t *";
+                str += "sycl::buffer<size_t, 1> *";
                 if(StrideParamUnderscore())
                     str += "_";
                 str += "stride_out_GB, ";
@@ -1206,8 +1206,7 @@ namespace StockhamGenerator
 
                 if(inInterleaved)
                 {
-                    str += r2Type;
-                    str += " * __restrict__ ";
+                    str += "sycl::buffer<" + r2Type + ", 1> ";
                     if(IOParamUnderscore())
                         str += "_";
                     str += "gb_GB";
@@ -1220,8 +1219,7 @@ namespace StockhamGenerator
                     if(IOParamUnderscore())
                         str += "_";
                     str += "gbRe_GB, ";
-                    str += rType;
-                    str += " * __restrict__ ";
+                    str += "sycl::buffer<" + rType + ", 1> ";
                     if(IOParamUnderscore())
                         str += "_";
                     str += "gbIm_GB";
@@ -1234,8 +1232,7 @@ namespace StockhamGenerator
                 if(inInterleaved)
                 {
                     // str += "const ";
-                    str += r2Type;
-                    str += " * __restrict__ ";
+                    str += "sycl::buffer<" + r2Type + ", 1> ";
                     if(IOParamUnderscore())
                         str += "_";
                     str += "gbIn_GB, "; // has to remove const qualifier
@@ -1243,13 +1240,12 @@ namespace StockhamGenerator
                 }
                 else
                 {
-                    str += rType;
-                    str += " * __restrict__ ";
+                    str += "sycl::buffer<" + rType + ", 1> ";
                     if(IOParamUnderscore())
                         str += "_";
                     str += "gbInRe_GB, ";
                     // str += "const ";
-                    str += rType;
+                    str += "sycl::buffer<" + rType + ", 1> ";
                     str += " * __restrict__ ";
                     if(IOParamUnderscore())
                         str += "_";
@@ -1258,21 +1254,18 @@ namespace StockhamGenerator
 
                 if(outInterleaved)
                 {
-                    str += r2Type;
-                    str += " * __restrict__ ";
+                    str += "sycl::buffer<" + r2Type + ", 1> ";
                     if(IOParamUnderscore())
                         str += "_";
                     str += "gbOut_GB";
                 }
                 else
                 {
-                    str += rType;
-                    str += " * __restrict__ ";
+                    str += "sycl::buffer<" + rType + ", 1> ";
                     if(IOParamUnderscore())
                         str += "_";
                     str += "gbOutRe_GB, ";
-                    str += rType;
-                    str += " * __restrict__ ";
+                    str += "sycl::buffer<" + rType + ", 1> ";
                     if(IOParamUnderscore())
                         str += "_";
                     str += "gbOutIm_GB";
