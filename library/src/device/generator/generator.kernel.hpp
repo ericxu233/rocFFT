@@ -1173,6 +1173,7 @@ namespace StockhamGenerator
                     lengths, strides may be high dimension arrays
                 */
             str += "( ";
+            str += "sycl::range<3> blocks, sycl::range<3> threads, sycl::queue rocQueue,";
             str += "const " + r2Type + " * __restrict__ twiddles, ";
             if(NeedsLargeTwiddles())
             {
