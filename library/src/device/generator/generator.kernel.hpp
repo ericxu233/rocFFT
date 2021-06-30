@@ -2140,7 +2140,12 @@ namespace StockhamGenerator
 
                 /////////////////////////////////////
                 size_t ldsSize = SharedMemSize(ldsInterleaved);
-                str += "\tcl::sycl::accessor<real_type_t<T>,1,sycl::access::mode::read_write,sycl::access::target::local> lds(cl::sycl::range<1>(" + std::to_string(ldsSize) + "), cgh);\n";
+                str += "\tcl::sycl::accessor<";
+                if(blockCompute)
+                    str += r2Type;
+                else
+                    str += ldsInterleaved ? r2Type : rType;
+                str += ",1,sycl::access::mode::read_write,sycl::access::target::local> lds(cl::sycl::range<1>(" + std::to_string(ldsSize) + "), cgh);\n";
                 str += "\tcgh.parallel_for<class ";
                 // kernel name
                 if(fwd)
@@ -2158,7 +2163,7 @@ namespace StockhamGenerator
                 str += "{\n";
                 str += "//// Print kernel code here (after function prototype)\n";
                 // Allocate LDS
-                GenerateSingleGlobalKernelSharedMem(str, ldsInterleaved, placeness, rType, r2Type);
+                //GenerateSingleGlobalKernelSharedMem(str, ldsInterleaved, placeness, rType, r2Type);
 
                 GenerateSingleGlobalKernelBody(
                     str, fwd, placeness, inInterleaved, outInterleaved, rType, r2Type);
