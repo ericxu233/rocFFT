@@ -1174,7 +1174,7 @@ namespace StockhamGenerator
                 */
             str += "( ";
             str += "sycl::range<3> blocks, sycl::range<3> threads, sycl::queue rocQueue,";
-            str += "sycl::buffer<" + r2Type + ", 1> twiddlesGB, ";
+            str += "sycl::buffer<" + r2Type + ", 1> twiddles_GB, ";
             if(NeedsLargeTwiddles())
             {
                 str += "sycl::buffer<" + r2Type
@@ -1277,6 +1277,10 @@ namespace StockhamGenerator
             str += "//\tSyCL buffers are named with \"_GB\" suffix to minimize changes in kernel\n";
             str += "//\tAccessors should not have the \"_GB\" suffix\n";
             str += "//\tAccessors should have the following terminology\n";
+            str += "{\n";
+            str += "rocfftQueue.submit([&](sycl::handler &cgh)\n{\n";
+            str += "\tauto twiddles = twiddles_GB.get_access<sycl::access::mode::read>(cgh);\n";
+            str += "});\n";
             str += "//\t\tRWGAcc: accessor to global buffer with read/write access\n";
             str += "//\t\tROGAcc: accessor to global buffer with read-only access\n";
             str += "//\t\tRWLAcc: accessor to local buffer with read/write access\n";
