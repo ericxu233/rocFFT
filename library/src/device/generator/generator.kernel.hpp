@@ -1184,7 +1184,7 @@ namespace StockhamGenerator
             str += "const size_t dim, sycl::buffer<size_t, 1> *";
             if(LengthParamUnderscore())
                 str += "_";
-            str += "lengths, ";
+            str += "lengths_GB, ";
             str += "sycl::buffer<size_t, 1> *";
             if(StrideParamUnderscore())
                 str += "_";
@@ -1272,15 +1272,15 @@ namespace StockhamGenerator
                 }
 
                 str += ")\n";
-                str += "\/\/ Create accessors to SyCL buffers here...";
-                str += "\/\/\tSyCL buffers are named with \"_GB\" suffix to minimize changes in kernel";
-                str += "\/\/\tAccessors should not have the \"_GB\" suffix";
-                str += "\/\/\tAccessors should have the following terminology";
-                str += "\/\/\t\tRWGAcc: accessor to global buffer with read/write access";
-                str += "\/\/\t\tROGAcc: accessor to global buffer with read-only access";
-                str += "\/\/\t\tRWLAcc: accessor to local buffer with read/write access";
-                str += "\/\/\t\tROLAcc: accessor to local buffer with read-only access";
             }
+            str += "// Create accessors to SyCL buffers here...\n";
+            str += "//\tSyCL buffers are named with \"_GB\" suffix to minimize changes in kernel\n";
+            str += "//\tAccessors should not have the \"_GB\" suffix\n";
+            str += "//\tAccessors should have the following terminology\n";
+            str += "//\t\tRWGAcc: accessor to global buffer with read/write access\n";
+            str += "//\t\tROGAcc: accessor to global buffer with read-only access\n";
+            str += "//\t\tRWLAcc: accessor to local buffer with read/write access\n";
+            str += "//\t\tROLAcc: accessor to local buffer with read-only access\n";
         }
 
         virtual void GenerateSingleGlobalKernelRWFlag(std::string& str)
