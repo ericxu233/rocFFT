@@ -1173,25 +1173,25 @@ namespace StockhamGenerator
                     lengths, strides may be high dimension arrays
                 */
             str += "( ";
-            str += "sycl::range<3> blocks, sycl::range<3> threads, sycl::queue rocfftQueue, ";
-            str += "sycl::buffer<" + r2Type + ", 1> twiddles_GB, ";
+            str += "cl::sycl::range<3> blocks, cl::sycl::range<3> threads, cl::sycl::queue rocfftQueue, ";
+            str += "cl::sycl::buffer<" + r2Type + ", 1> twiddles_GB, ";
             if(NeedsLargeTwiddles())
             {
-                str += "sycl::buffer<" + r2Type
+                str += "cl::sycl::buffer<" + r2Type
                        + ", 1> twiddles_large_GB, "; // blockCompute introduce
                 // one more twiddle parameter
             }
-            str += "const size_t dim, sycl::buffer<size_t, 1> *";
+            str += "const size_t dim, cl::sycl::buffer<size_t, 1> *";
             if(LengthParamUnderscore())
                 str += "_";
             str += "lengths_GB, ";
-            str += "sycl::buffer<size_t, 1> *";
+            str += "cl::sycl::buffer<size_t, 1> *";
             if(StrideParamUnderscore())
                 str += "_";
             str += "stride_in_GB, ";
             if(placeness == rocfft_placement_notinplace)
             {
-                str += "sycl::buffer<size_t, 1> *";
+                str += "cl::sycl::buffer<size_t, 1> *";
                 if(StrideParamUnderscore())
                     str += "_";
                 str += "stride_out_GB, ";
@@ -1206,7 +1206,7 @@ namespace StockhamGenerator
 
                 if(inInterleaved)
                 {
-                    str += "sycl::buffer<" + r2Type + ", 1> ";
+                    str += "cl::sycl::buffer<" + r2Type + ", 1> ";
                     if(IOParamUnderscore())
                         str += "_";
                     str += "gb_GB";
@@ -1219,7 +1219,7 @@ namespace StockhamGenerator
                     if(IOParamUnderscore())
                         str += "_";
                     str += "gbRe_GB, ";
-                    str += "sycl::buffer<" + rType + ", 1> ";
+                    str += "cl::sycl::buffer<" + rType + ", 1> ";
                     if(IOParamUnderscore())
                         str += "_";
                     str += "gbIm_GB";
@@ -1232,7 +1232,7 @@ namespace StockhamGenerator
                 if(inInterleaved)
                 {
                     // str += "const ";
-                    str += "sycl::buffer<" + r2Type + ", 1> ";
+                    str += "cl::sycl::buffer<" + r2Type + ", 1> ";
                     if(IOParamUnderscore())
                         str += "_";
                     str += "gbIn_GB, "; // has to remove const qualifier
@@ -1240,12 +1240,12 @@ namespace StockhamGenerator
                 }
                 else
                 {
-                    str += "sycl::buffer<" + rType + ", 1> ";
+                    str += "cl::sycl::buffer<" + rType + ", 1> ";
                     if(IOParamUnderscore())
                         str += "_";
                     str += "gbInRe_GB, ";
                     // str += "const ";
-                    str += "sycl::buffer<" + rType + ", 1> ";
+                    str += "cl::sycl::buffer<" + rType + ", 1> ";
                     str += " * __restrict__ ";
                     if(IOParamUnderscore())
                         str += "_";
@@ -1254,18 +1254,18 @@ namespace StockhamGenerator
 
                 if(outInterleaved)
                 {
-                    str += "sycl::buffer<" + r2Type + ", 1> ";
+                    str += "cl::sycl::buffer<" + r2Type + ", 1> ";
                     if(IOParamUnderscore())
                         str += "_";
                     str += "gbOut_GB";
                 }
                 else
                 {
-                    str += "sycl::buffer<" + rType + ", 1> ";
+                    str += "cl::sycl::buffer<" + rType + ", 1> ";
                     if(IOParamUnderscore())
                         str += "_";
                     str += "gbOutRe_GB, ";
-                    str += "sycl::buffer<" + rType + ", 1> ";
+                    str += "cl::sycl::buffer<" + rType + ", 1> ";
                     if(IOParamUnderscore())
                         str += "_";
                     str += "gbOutIm_GB";
@@ -1273,18 +1273,132 @@ namespace StockhamGenerator
 
                 str += ")\n";
             }
-            str += "// Create accessors to SyCL buffers here...\n";
-            str += "//\tSyCL buffers are named with \"_GB\" suffix to minimize changes in kernel\n";
-            str += "//\tAccessors should not have the \"_GB\" suffix\n";
-            str += "//\tAccessors should have the following terminology\n";
             str += "{\n";
-            str += "rocfftQueue.submit([&](sycl::handler &cgh)\n{\n";
-            str += "\tauto twiddles = twiddles_GB.get_access<sycl::access::mode::read>(cgh);\n";
-            str += "});\n";
-            str += "//\t\tRWGAcc: accessor to global buffer with read/write access\n";
-            str += "//\t\tROGAcc: accessor to global buffer with read-only access\n";
-            str += "//\t\tRWLAcc: accessor to local buffer with read/write access\n";
-            str += "//\t\tROLAcc: accessor to local buffer with read-only access\n";
+            str += "rocfftQueue.submit([&](cl::sycl::handler &cgh)\n{\n";
+            str += "\tauto twiddles = twiddles_GB.get_access<cl::sycl::access::mode::read>(cgh);\n";
+            if(NeedsLargeTwiddles())
+            {
+                str += "auto twiddles_large = twiddles_large_GB.get_access<cl::sycl::access::mode::read>(cgh);\n"; // blockCompute introduce
+                // one more twiddle parameter
+            }
+            str += "\tauto ";
+            if(LengthParamUnderscore())
+                str += "_";
+            str += "lengths = ";
+            if(LengthParamUnderscore())
+                str += "_";
+            str += "lengths_GB.get_access<cl::sycl::access::mode::read>(cgh);\n";
+            str += "\tauto ";
+            if(StrideParamUnderscore())
+                str += "_";
+            str += "stride_in = ";
+            if(StrideParamUnderscore())
+                str += "_";
+            str += "stride_in_GB.get_access<cl::sycl::access::mode::read>(cgh);\n";
+            if(placeness == rocfft_placement_notinplace)
+            {
+                str += "\tauto ";
+                if(StrideParamUnderscore())
+                    str += "_";
+                str += "stride_out = ";
+                if(StrideParamUnderscore())
+                    str += "_";
+                str += "stride_out_GB.get_access<cl::sycl::access::mode::read>(cgh);\n";
+            }
+            //////////////////////////////////////////////////////////////
+            // Function attributes
+            if(placeness == rocfft_placement_inplace)
+            {
+
+                assert(inInterleaved == outInterleaved);
+
+                str += "\tauto ";
+                if(inInterleaved)
+                {
+                    if(IOParamUnderscore())
+                        str += "_";
+                    str += "gb = ";
+                    if(IOParamUnderscore())
+                        str += "_";
+                    str += "gb_GB.get_access<cl::sycl::access::mode::read_write>(cgh);\n";
+                }
+                else
+                {
+                    if(IOParamUnderscore())
+                        str += "_";
+                    str += "gbRe = ";
+                    if(IOParamUnderscore())
+                        str += "_";
+                    str += "gbRe_GB.get_access<cl::sycl::access::mode::read_write>(cgh);\n";
+                    str += "\tauto ";
+                    if(IOParamUnderscore())
+                        str += "_";
+                    str += "gbIm = ";
+                    if(IOParamUnderscore())
+                        str += "_";
+                    str += "gbIm_GB.get_access<cl::sycl::access::mode::read_write>(cgh);\n";
+                }
+            }
+            else
+            {
+                if(inInterleaved)
+                {
+                    str += "\tauto ";
+                    if(IOParamUnderscore())
+                        str += "_";
+                    str += "gbIn = ";
+                    if(IOParamUnderscore())
+                        str += "_";
+                    str += "gbIn_GB.get_access<cl::sycl::access::mode::read_write>(cgh);\n"; // has to remove const qualifier
+                        // due to HIP on ROCM 1.4
+                }
+                else
+                {
+                    str += "\tauto ";
+                    if(IOParamUnderscore())
+                        str += "_";
+                    str += "gbInRe = ";
+                    if(IOParamUnderscore())
+                        str += "_";
+                    str += "gbInRe_GB.get_access<cl::sycl::access::mode::read_write>(cgh);\n";
+                    // str += "const ";
+                    str += "\tauto ";
+                    if(IOParamUnderscore())
+                        str += "_";
+                    str += "gbInIm = ";
+                    if(IOParamUnderscore())
+                        str += "_";
+                    str += "gbInIm_GB.get_access<cl::sycl::access::mode::read_write>(cgh);\n";
+                }
+
+                if(outInterleaved)
+                {
+                    str += "\tauto ";
+                    if(IOParamUnderscore())
+                        str += "_";
+                    str += "gbOut = ";
+                    if(IOParamUnderscore())
+                        str += "_";
+                    str += "gbOut_GB.get_access<cl::sycl::access::mode::read_write>(cgh);\n";
+                }
+                else
+                {
+                    str += "\tauto ";
+                    if(IOParamUnderscore())
+                        str += "_";
+                    str += "gbOutRe = ";
+                    if(IOParamUnderscore())
+                        str += "_";
+                    str += "gbOutRe_GB.get_access<cl::sycl::access::mode::read_write>(cgh);\n";
+                    str += "\tauto ";
+                    if(IOParamUnderscore())
+                        str += "_";
+                    str += "gbOutIm = ";
+                    if(IOParamUnderscore())
+                        str += "_";
+                    str += "gbOutIm_GB.get_access<cl::sycl::access::mode::read_write>(cgh);\n";
+                }
+            }
         }
 
         virtual void GenerateSingleGlobalKernelRWFlag(std::string& str)
@@ -2023,14 +2137,33 @@ namespace StockhamGenerator
                                                     ldsInterleaved,
                                                     rType,
                                                     r2Type);
+
+                /////////////////////////////////////
+                size_t ldsSize = SharedMemSize(ldsInterleaved);
+                str += "\tcl::sycl::accessor<real_type_t<T>,1,sycl::access::mode::read_write,sycl::access::target::local> lds(cl::sycl::range<1>(" + std::to_string(ldsSize) + "), cgh);\n";
+                str += "\tcgh.parallel_for<class ";
+                // kernel name
+                if(fwd)
+                    str += "kern_fft_fwd_";
+                else
+                    str += "kern_fft_back_";
+                if(placeness == rocfft_placement_notinplace)
+                    str += "op"; // outof place
+                else
+                    str += "ip"; // inplace
+                str += GlobalKernelFunctionSuffix();
+                str += ">(\n";
+                str += "\t                   cl::sycl::nd_range<3>(blocks, threads),\n";
+                str += "\t                   [=](cl::sycl::nd_item<3> item)\n";
                 str += "{\n";
+                str += "//// Print kernel code here (after function prototype)\n";
                 // Allocate LDS
                 GenerateSingleGlobalKernelSharedMem(str, ldsInterleaved, placeness, rType, r2Type);
 
                 GenerateSingleGlobalKernelBody(
                     str, fwd, placeness, inInterleaved, outInterleaved, rType, r2Type);
 
-                str += "}\n\n"; // end the kernel
+                str += "});\n});\n}\n\n"; // end the kernel
 
             } // end fwd, backward
         }
