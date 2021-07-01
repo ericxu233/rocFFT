@@ -1479,8 +1479,8 @@ namespace StockhamGenerator
         {
             // Initialize
             str += "\t";
-            str += "unsigned int me = (unsigned int)hipThreadIdx_x;\n\t";
-            str += "unsigned int batch = (unsigned int)hipBlockIdx_x;";
+            str += "unsigned int me = (unsigned int)wItem.get_local_id(0);\n\t";
+            str += "unsigned int batch = (unsigned int)wItem.get_group(0);";
             str += "\n";
 
             // Declare memory pointers
@@ -2159,7 +2159,7 @@ namespace StockhamGenerator
                 str += GlobalKernelFunctionSuffix();
                 str += ">(\n";
                 str += "\t                   cl::sycl::nd_range<3>(blocks, threads),\n";
-                str += "\t                   [=](cl::sycl::nd_item<3> item)\n";
+                str += "\t                   [=](cl::sycl::nd_item<3> wItem)\n";
                 str += "{\n";
                 str += "//// Print kernel code here (after function prototype)\n";
                 // Allocate LDS
