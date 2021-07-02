@@ -1214,8 +1214,7 @@ namespace StockhamGenerator
                 }
                 else
                 {
-                    str += rType;
-                    str += " * __restrict__ ";
+                    str += "cl::sycl::buffer<" + rType + ", 1> ";
                     if(IOParamUnderscore())
                         str += "_";
                     str += "gbRe_GB, ";
@@ -1246,7 +1245,6 @@ namespace StockhamGenerator
                     str += "gbInRe_GB, ";
                     // str += "const ";
                     str += "cl::sycl::buffer<" + rType + ", 1> ";
-                    str += " * __restrict__ ";
                     if(IOParamUnderscore())
                         str += "_";
                     str += "gbInIm_GB, ";
@@ -1278,7 +1276,7 @@ namespace StockhamGenerator
             str += "\tauto twiddles = twiddles_GB.get_access<cl::sycl::access::mode::read>(cgh);\n";
             if(NeedsLargeTwiddles())
             {
-                str += "auto twiddles_large = twiddles_large_GB.get_access<cl::sycl::access::mode::read>(cgh);\n"; // blockCompute introduce
+                str += "\tauto twiddles_large = twiddles_large_GB.get_access<cl::sycl::access::mode::read>(cgh);\n"; // blockCompute introduce
                 // one more twiddle parameter
             }
             str += "\tauto ";
