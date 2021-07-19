@@ -25,4 +25,12 @@
 
 #include <hip/hip_runtime.h>
 
+#define ROCFFT_KERNEL_NAME(...) __VA_ARGS__
+#define rocfftLaunchKernelGGLInternal(kernelName, numBlocks, numThreads, memPerBlock, devQueue, ...)  \
+    do {                                                                                           \
+        kernelName((numBlocks), (numThreads), (memPerBlock), (devQueue), __VA_ARGS__);         \
+    } while (0)
+
+#define rocfftLaunchKernelGGL(kernelName, ...)  rocfftLaunchKernelGGLInternal((kernelName), __VA_ARGS__)
+
 #endif // __ROCFFT_HIP_H__
