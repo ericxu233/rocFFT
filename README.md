@@ -70,7 +70,7 @@ Please refer to the [library documentation][4] for current documentation.
 
 ## Examples
 
-Examples may be found in the [clients/samples][5] subdirectory.
+Examples may be found in the [clients/samples][5] subdirectory. ....
 
 
 [1]: https://github.com/RadeonOpenCompute
