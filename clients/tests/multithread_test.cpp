@@ -146,7 +146,7 @@ struct Test_Transform
         ASSERT_EQ(rocfft_execution_info_destroy(info), rocfft_status_success);
 
         // Apply normalization so the values really are comparable
-        hipLaunchKernelGGL(normalize_inverse_results,
+        rocFFTLaunchKernelGGL(normalize_inverse_results,
                            host_mem_out.size(),
                            1,
                            0, // sharedMemBytes

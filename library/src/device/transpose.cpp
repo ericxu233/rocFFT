@@ -162,7 +162,7 @@ rocfft_status rocfft_transpose_outofplace_template(size_t       m,
         GET_TRANSPOSE_KERNEL2_FUNC();
 
         if(kernel_func)
-            hipLaunchKernelGGL(kernel_func,
+            rocFFTLaunchKernelGGL(kernel_func,
                                dim3(grid),
                                dim3(threads),
                                0,
@@ -209,7 +209,7 @@ rocfft_status rocfft_transpose_outofplace_template(size_t       m,
 
         if(kernel_func)
         {
-            hipLaunchKernelGGL(kernel_func,
+            rocFFTLaunchKernelGGL(kernel_func,
                                dim3(grid),
                                dim3(threads),
                                0,

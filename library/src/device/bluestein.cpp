@@ -32,7 +32,7 @@ rocfft_status chirp_launch(
     dim3 grid((M - N) / LAUNCH_BOUNDS_BLUESTEIN_KERNEL + 1);
     dim3 threads(LAUNCH_BOUNDS_BLUESTEIN_KERNEL);
 
-    hipLaunchKernelGGL(HIP_KERNEL_NAME(chirp_device<T>),
+    rocFFTLaunchKernelGGL(HIP_KERNEL_NAME(chirp_device<T>),
                        dim3(grid),
                        dim3(threads),
                        0,
@@ -169,7 +169,7 @@ void rocfft_internal_mul(const void* data_p, void* back_p)
     {
         if(data->node->precision == rocfft_precision_single)
         {
-            hipLaunchKernelGGL(
+            rocFFTLaunchKernelGGL(
                 cbtype == CallbackType::USER_LOAD_STORE
                     ? HIP_KERNEL_NAME(mul_device_I_I<float2, CallbackType::USER_LOAD_STORE>)
                     : HIP_KERNEL_NAME(mul_device_I_I<float2, CallbackType::NONE>),
@@ -197,7 +197,7 @@ void rocfft_internal_mul(const void* data_p, void* back_p)
         }
         else
         {
-            hipLaunchKernelGGL(
+            rocFFTLaunchKernelGGL(
                 cbtype == CallbackType::USER_LOAD_STORE
                     ? HIP_KERNEL_NAME(mul_device_I_I<double2, CallbackType::USER_LOAD_STORE>)
                     : HIP_KERNEL_NAME(mul_device_I_I<double2, CallbackType::NONE>),
@@ -234,7 +234,7 @@ void rocfft_internal_mul(const void* data_p, void* back_p)
 
         if(data->node->precision == rocfft_precision_single)
         {
-            hipLaunchKernelGGL(HIP_KERNEL_NAME(mul_device_P_I<float2>),
+            rocFFTLaunchKernelGGL(HIP_KERNEL_NAME(mul_device_P_I<float2>),
                                dim3(grid),
                                dim3(threads),
                                0,
@@ -255,7 +255,7 @@ void rocfft_internal_mul(const void* data_p, void* back_p)
         }
         else
         {
-            hipLaunchKernelGGL(HIP_KERNEL_NAME(mul_device_P_I<double2>),
+            rocFFTLaunchKernelGGL(HIP_KERNEL_NAME(mul_device_P_I<double2>),
                                dim3(grid),
                                dim3(threads),
                                0,
@@ -285,7 +285,7 @@ void rocfft_internal_mul(const void* data_p, void* back_p)
 
         if(data->node->precision == rocfft_precision_single)
         {
-            hipLaunchKernelGGL(HIP_KERNEL_NAME(mul_device_I_P<float2>),
+            rocFFTLaunchKernelGGL(HIP_KERNEL_NAME(mul_device_I_P<float2>),
                                dim3(grid),
                                dim3(threads),
                                0,
@@ -306,7 +306,7 @@ void rocfft_internal_mul(const void* data_p, void* back_p)
         }
         else
         {
-            hipLaunchKernelGGL(HIP_KERNEL_NAME(mul_device_I_P<double2>),
+            rocFFTLaunchKernelGGL(HIP_KERNEL_NAME(mul_device_I_P<double2>),
                                dim3(grid),
                                dim3(threads),
                                0,
@@ -337,7 +337,7 @@ void rocfft_internal_mul(const void* data_p, void* back_p)
 
         if(data->node->precision == rocfft_precision_single)
         {
-            hipLaunchKernelGGL(HIP_KERNEL_NAME(mul_device_P_P<float2>),
+            rocFFTLaunchKernelGGL(HIP_KERNEL_NAME(mul_device_P_P<float2>),
                                dim3(grid),
                                dim3(threads),
                                0,
@@ -359,7 +359,7 @@ void rocfft_internal_mul(const void* data_p, void* back_p)
         }
         else
         {
-            hipLaunchKernelGGL(HIP_KERNEL_NAME(mul_device_P_P<double2>),
+            rocFFTLaunchKernelGGL(HIP_KERNEL_NAME(mul_device_P_P<double2>),
                                dim3(grid),
                                dim3(threads),
                                0,

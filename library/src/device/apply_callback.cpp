@@ -61,7 +61,7 @@ void apply_real_callback(const void* data_p, void* back)
     switch(precision)
     {
     case rocfft_precision_single:
-        hipLaunchKernelGGL(HIP_KERNEL_NAME(apply_real_callback_kernel<float>),
+        rocFFTLaunchKernelGGL(HIP_KERNEL_NAME(apply_real_callback_kernel<float>),
                            grid,
                            threads,
                            0,
@@ -77,7 +77,7 @@ void apply_real_callback(const void* data_p, void* back)
                            data->callbacks.store_cb_data);
         break;
     case rocfft_precision_double:
-        hipLaunchKernelGGL(HIP_KERNEL_NAME(apply_real_callback_kernel<double>),
+        rocFFTLaunchKernelGGL(HIP_KERNEL_NAME(apply_real_callback_kernel<double>),
                            grid,
                            threads,
                            0,

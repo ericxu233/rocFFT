@@ -356,7 +356,7 @@ void r2c_1d_post(const void* data_p, void*)
         {
             if(data->node->outArrayType == rocfft_array_type_hermitian_interleaved)
             {
-                hipLaunchKernelGGL(kernelmap_interleaved_1D.at(params_cb),
+                rocFFTLaunchKernelGGL(kernelmap_interleaved_1D.at(params_cb),
                                    grid,
                                    threads,
                                    0,
@@ -375,7 +375,7 @@ void r2c_1d_post(const void* data_p, void*)
             }
             else
             {
-                hipLaunchKernelGGL(kernelmap_planar_1D.at(params),
+                rocFFTLaunchKernelGGL(kernelmap_planar_1D.at(params),
                                    grid,
                                    threads,
                                    0,
@@ -395,7 +395,7 @@ void r2c_1d_post(const void* data_p, void*)
             const size_t odist1D = data->node->outStride[1];
             if(data->node->outArrayType == rocfft_array_type_hermitian_interleaved)
             {
-                hipLaunchKernelGGL(kernelmap_interleaved.at(params),
+                rocFFTLaunchKernelGGL(kernelmap_interleaved.at(params),
                                    grid,
                                    threads,
                                    0,
@@ -411,7 +411,7 @@ void r2c_1d_post(const void* data_p, void*)
             }
             else
             {
-                hipLaunchKernelGGL(kernelmap_planar.at(params),
+                rocFFTLaunchKernelGGL(kernelmap_planar.at(params),
                                    grid,
                                    threads,
                                    0,
@@ -672,7 +672,7 @@ void c2r_1d_pre(const void* data_p, void*)
     {
         if(data->node->inArrayType == rocfft_array_type_hermitian_interleaved)
         {
-            hipLaunchKernelGGL(kernelmap_interleaved.at(params_interleaved),
+            rocFFTLaunchKernelGGL(kernelmap_interleaved.at(params_interleaved),
                                grid,
                                threads,
                                0,
@@ -693,7 +693,7 @@ void c2r_1d_pre(const void* data_p, void*)
         }
         else
         {
-            hipLaunchKernelGGL(kernelmap_planar.at(params_planar),
+            rocFFTLaunchKernelGGL(kernelmap_planar.at(params_planar),
                                grid,
                                threads,
                                0,

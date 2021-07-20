@@ -252,7 +252,7 @@ void r2c_1d_post_transpose(const void* data_p, void*)
         if(is_complex_planar(data->node->outArrayType))
         {
             cmplx_planar_device_buffer<float2> out_planar(bufOut0, bufOut1);
-            hipLaunchKernelGGL(
+            rocFFTLaunchKernelGGL(
                 HIP_KERNEL_NAME(real_post_process_kernel_transpose<cmplx_float,
                                                                    cmplx_float,
                                                                    cmplx_float_planar,
@@ -280,7 +280,7 @@ void r2c_1d_post_transpose(const void* data_p, void*)
         }
         else
         {
-            hipLaunchKernelGGL(
+            rocFFTLaunchKernelGGL(
                 cbtype == CallbackType::USER_LOAD_STORE
                     ? HIP_KERNEL_NAME(
                         real_post_process_kernel_transpose<cmplx_float,
@@ -320,7 +320,7 @@ void r2c_1d_post_transpose(const void* data_p, void*)
         if(is_complex_planar(data->node->outArrayType))
         {
             cmplx_planar_device_buffer<double2> out_planar(bufOut0, bufOut1);
-            hipLaunchKernelGGL(
+            rocFFTLaunchKernelGGL(
                 HIP_KERNEL_NAME(real_post_process_kernel_transpose<cmplx_double,
                                                                    cmplx_double,
                                                                    cmplx_double_planar,
@@ -348,7 +348,7 @@ void r2c_1d_post_transpose(const void* data_p, void*)
         }
         else
         {
-            hipLaunchKernelGGL(
+            rocFFTLaunchKernelGGL(
                 cbtype == CallbackType::USER_LOAD_STORE
                     ? HIP_KERNEL_NAME(
                         real_post_process_kernel_transpose<cmplx_double,
@@ -615,7 +615,7 @@ void transpose_c2r_1d_pre(const void* data_p, void*)
         if(is_complex_planar(data->node->inArrayType))
         {
             cmplx_planar_device_buffer<float2> in_planar(bufIn0, bufIn1);
-            hipLaunchKernelGGL(
+            rocFFTLaunchKernelGGL(
                 HIP_KERNEL_NAME(transpose_real_pre_process_kernel<cmplx_float,
                                                                   cmplx_float_planar,
                                                                   cmplx_float,
@@ -643,7 +643,7 @@ void transpose_c2r_1d_pre(const void* data_p, void*)
         }
         else
         {
-            hipLaunchKernelGGL(
+            rocFFTLaunchKernelGGL(
                 cbtype == CallbackType::USER_LOAD_STORE
                     ? HIP_KERNEL_NAME(
                         transpose_real_pre_process_kernel<cmplx_float,
@@ -683,7 +683,7 @@ void transpose_c2r_1d_pre(const void* data_p, void*)
         if(is_complex_planar(data->node->inArrayType))
         {
             cmplx_planar_device_buffer<double2> in_planar(bufIn0, bufIn1);
-            hipLaunchKernelGGL(
+            rocFFTLaunchKernelGGL(
                 HIP_KERNEL_NAME(transpose_real_pre_process_kernel<cmplx_double,
                                                                   cmplx_double_planar,
                                                                   cmplx_double,
@@ -712,7 +712,7 @@ void transpose_c2r_1d_pre(const void* data_p, void*)
         else
 
         {
-            hipLaunchKernelGGL(
+            rocFFTLaunchKernelGGL(
                 cbtype == CallbackType::USER_LOAD_STORE
                     ? HIP_KERNEL_NAME(
                         transpose_real_pre_process_kernel<cmplx_double,

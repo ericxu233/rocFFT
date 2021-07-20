@@ -308,7 +308,7 @@ void rocfft_internal_transpose_var2(const void* data_p, void* back_p);
                                    PRECISION,                                                 \
                                    KERNEL_BASE_ARGS_IP,                                       \
                                    PRECISION* __restrict__);                                  \
-                hipLaunchKernelGGL(kernel_func,                                               \
+                rocFFTLaunchKernelGGL(kernel_func,                                               \
                                    dim3(data->gridParam.b_x),                                 \
                                    dim3(data->gridParam.tpb_x),                               \
                                    data->gridParam.lds_bytes,                                 \
@@ -335,7 +335,7 @@ void rocfft_internal_transpose_var2(const void* data_p, void* back_p);
                                 KERNEL_BASE_ARGS_IP,                                          \
                                 real_type_t<PRECISION>* __restrict__,                         \
                                 real_type_t<PRECISION>* __restrict__);                        \
-                hipLaunchKernelGGL(kernel_func,                                               \
+                rocFFTLaunchKernelGGL(kernel_func,                                               \
                                    dim3(data->gridParam.b_x),                                 \
                                    dim3(data->gridParam.tpb_x),                               \
                                    data->gridParam.lds_bytes,                                 \
@@ -366,7 +366,7 @@ void rocfft_internal_transpose_var2(const void* data_p, void* back_p);
                                    KERNEL_BASE_ARGS_OP,                                       \
                                    PRECISION* __restrict__,                                   \
                                    PRECISION* __restrict__);                                  \
-                hipLaunchKernelGGL(kernel_func,                                               \
+                rocFFTLaunchKernelGGL(kernel_func,                                               \
                                    dim3(data->gridParam.b_x),                                 \
                                    dim3(data->gridParam.tpb_x),                               \
                                    data->gridParam.lds_bytes,                                 \
@@ -396,7 +396,7 @@ void rocfft_internal_transpose_var2(const void* data_p, void* back_p);
                                 PRECISION* __restrict__,                                      \
                                 real_type_t<PRECISION>* __restrict__,                         \
                                 real_type_t<PRECISION>* __restrict__);                        \
-                hipLaunchKernelGGL(kernel_func,                                               \
+                rocFFTLaunchKernelGGL(kernel_func,                                               \
                                    dim3(data->gridParam.b_x),                                 \
                                    dim3(data->gridParam.tpb_x),                               \
                                    data->gridParam.lds_bytes,                                 \
@@ -427,7 +427,7 @@ void rocfft_internal_transpose_var2(const void* data_p, void* back_p);
                                 real_type_t<PRECISION>* __restrict__,                         \
                                 real_type_t<PRECISION>* __restrict__,                         \
                                 PRECISION* __restrict__);                                     \
-                hipLaunchKernelGGL(kernel_func,                                               \
+                rocFFTLaunchKernelGGL(kernel_func,                                               \
                                    dim3(data->gridParam.b_x),                                 \
                                    dim3(data->gridParam.tpb_x),                               \
                                    data->gridParam.lds_bytes,                                 \
@@ -459,7 +459,7 @@ void rocfft_internal_transpose_var2(const void* data_p, void* back_p);
                                 real_type_t<PRECISION>* __restrict__,                         \
                                 real_type_t<PRECISION>* __restrict__,                         \
                                 real_type_t<PRECISION>* __restrict__);                        \
-                hipLaunchKernelGGL(kernel_func,                                               \
+                rocFFTLaunchKernelGGL(kernel_func,                                               \
                                    dim3(data->gridParam.b_x),                                 \
                                    dim3(data->gridParam.tpb_x),                               \
                                    data->gridParam.lds_bytes,                                 \
@@ -507,7 +507,7 @@ void rocfft_internal_transpose_var2(const void* data_p, void* back_p);
                                         PRECISION,                                            \
                                         KERNEL_BASE_ARGS_IP_SBCC,                             \
                                         PRECISION* __restrict__);                             \
-                hipLaunchKernelGGL(kernel_func,                                               \
+                rocFFTLaunchKernelGGL(kernel_func,                                               \
                                    dim3(data->gridParam.b_x),                                 \
                                    dim3(data->gridParam.tpb_x),                               \
                                    data->gridParam.lds_bytes,                                 \
@@ -535,7 +535,7 @@ void rocfft_internal_transpose_var2(const void* data_p, void* back_p);
                                      KERNEL_BASE_ARGS_IP_SBCC,                                \
                                      real_type_t<PRECISION>* __restrict__,                    \
                                      real_type_t<PRECISION>* __restrict__);                   \
-                hipLaunchKernelGGL(kernel_func,                                               \
+                rocFFTLaunchKernelGGL(kernel_func,                                               \
                                    dim3(data->gridParam.b_x),                                 \
                                    dim3(data->gridParam.tpb_x),                               \
                                    data->gridParam.lds_bytes,                                 \
@@ -567,7 +567,7 @@ void rocfft_internal_transpose_var2(const void* data_p, void* back_p);
                                         KERNEL_BASE_ARGS_OP_SBCC,                             \
                                         PRECISION* __restrict__,                              \
                                         PRECISION* __restrict__);                             \
-                hipLaunchKernelGGL(kernel_func,                                               \
+                rocFFTLaunchKernelGGL(kernel_func,                                               \
                                    dim3(data->gridParam.b_x),                                 \
                                    dim3(data->gridParam.tpb_x),                               \
                                    data->gridParam.lds_bytes,                                 \
@@ -598,7 +598,7 @@ void rocfft_internal_transpose_var2(const void* data_p, void* back_p);
                                      PRECISION* __restrict__,                                 \
                                      real_type_t<PRECISION>* __restrict__,                    \
                                      real_type_t<PRECISION>* __restrict__);                   \
-                hipLaunchKernelGGL(kernel_func,                                               \
+                rocFFTLaunchKernelGGL(kernel_func,                                               \
                                    dim3(data->gridParam.b_x),                                 \
                                    dim3(data->gridParam.tpb_x),                               \
                                    data->gridParam.lds_bytes,                                 \
@@ -630,7 +630,7 @@ void rocfft_internal_transpose_var2(const void* data_p, void* back_p);
                                      real_type_t<PRECISION>* __restrict__,                    \
                                      real_type_t<PRECISION>* __restrict__,                    \
                                      PRECISION* __restrict__);                                \
-                hipLaunchKernelGGL(kernel_func,                                               \
+                rocFFTLaunchKernelGGL(kernel_func,                                               \
                                    dim3(data->gridParam.b_x),                                 \
                                    dim3(data->gridParam.tpb_x),                               \
                                    data->gridParam.lds_bytes,                                 \
@@ -663,7 +663,7 @@ void rocfft_internal_transpose_var2(const void* data_p, void* back_p);
                                      real_type_t<PRECISION>* __restrict__,                    \
                                      real_type_t<PRECISION>* __restrict__,                    \
                                      real_type_t<PRECISION>* __restrict__);                   \
-                hipLaunchKernelGGL(kernel_func,                                               \
+                rocFFTLaunchKernelGGL(kernel_func,                                               \
                                    dim3(data->gridParam.b_x),                                 \
                                    dim3(data->gridParam.tpb_x),                               \
                                    data->gridParam.lds_bytes,                                 \
@@ -709,7 +709,7 @@ void rocfft_internal_transpose_var2(const void* data_p, void* back_p);
                                     KERNEL_BASE_ARGS_OP,                                  \
                                     PRECISION* __restrict__,                              \
                                     PRECISION* __restrict__);                             \
-            hipLaunchKernelGGL(kernel_func,                                               \
+            rocFFTLaunchKernelGGL(kernel_func,                                               \
                                dim3(data->gridParam.b_x),                                 \
                                dim3(data->gridParam.tpb_x),                               \
                                data->gridParam.lds_bytes,                                 \
@@ -741,7 +741,7 @@ void rocfft_internal_transpose_var2(const void* data_p, void* back_p);
                                  PRECISION* __restrict__,                                 \
                                  real_type_t<PRECISION>* __restrict__,                    \
                                  real_type_t<PRECISION>* __restrict__);                   \
-            hipLaunchKernelGGL(kernel_func,                                               \
+            rocFFTLaunchKernelGGL(kernel_func,                                               \
                                dim3(data->gridParam.b_x),                                 \
                                dim3(data->gridParam.tpb_x),                               \
                                data->gridParam.lds_bytes,                                 \
@@ -774,7 +774,7 @@ void rocfft_internal_transpose_var2(const void* data_p, void* back_p);
                                  real_type_t<PRECISION>* __restrict__,                    \
                                  real_type_t<PRECISION>* __restrict__,                    \
                                  PRECISION* __restrict__);                                \
-            hipLaunchKernelGGL(kernel_func,                                               \
+            rocFFTLaunchKernelGGL(kernel_func,                                               \
                                dim3(data->gridParam.b_x),                                 \
                                dim3(data->gridParam.tpb_x),                               \
                                data->gridParam.lds_bytes,                                 \
@@ -808,7 +808,7 @@ void rocfft_internal_transpose_var2(const void* data_p, void* back_p);
                                  real_type_t<PRECISION>* __restrict__,                    \
                                  real_type_t<PRECISION>* __restrict__,                    \
                                  real_type_t<PRECISION>* __restrict__);                   \
-            hipLaunchKernelGGL(kernel_func,                                               \
+            rocFFTLaunchKernelGGL(kernel_func,                                               \
                                dim3(data->gridParam.b_x),                                 \
                                dim3(data->gridParam.tpb_x),                               \
                                data->gridParam.lds_bytes,                                 \

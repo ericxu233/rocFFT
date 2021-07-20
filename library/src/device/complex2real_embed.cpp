@@ -123,7 +123,7 @@ void complex2real(const void* data_p, void* back_p)
     // free(tmp);
 
     if(precision == rocfft_precision_single)
-        hipLaunchKernelGGL(
+        rocFFTLaunchKernelGGL(
             data->get_callback_type() == CallbackType::USER_LOAD_STORE
                 ? HIP_KERNEL_NAME(complex2real_kernel<float2, CallbackType::USER_LOAD_STORE>)
                 : HIP_KERNEL_NAME(complex2real_kernel<float2, CallbackType::NONE>),
@@ -144,7 +144,7 @@ void complex2real(const void* data_p, void* back_p)
             data->callbacks.store_cb_fn,
             data->callbacks.store_cb_data);
     else
-        hipLaunchKernelGGL(
+        rocFFTLaunchKernelGGL(
             data->get_callback_type() == CallbackType::USER_LOAD_STORE
                 ? HIP_KERNEL_NAME(complex2real_kernel<double2, CallbackType::USER_LOAD_STORE>)
                 : HIP_KERNEL_NAME(complex2real_kernel<double2, CallbackType::NONE>),
@@ -371,7 +371,7 @@ void hermitian2complex(const void* data_p, void* back_p)
     if(data->node->inArrayType == rocfft_array_type_hermitian_interleaved)
     {
         if(precision == rocfft_precision_single)
-            hipLaunchKernelGGL(
+            rocFFTLaunchKernelGGL(
                 data->get_callback_type() == CallbackType::USER_LOAD_STORE
                     ? HIP_KERNEL_NAME(
                         hermitian2complex_kernel<float2, CallbackType::USER_LOAD_STORE>)
@@ -396,7 +396,7 @@ void hermitian2complex(const void* data_p, void* back_p)
                 data->callbacks.store_cb_fn,
                 data->callbacks.store_cb_data);
         else
-            hipLaunchKernelGGL(
+            rocFFTLaunchKernelGGL(
                 data->get_callback_type() == CallbackType::USER_LOAD_STORE
                     ? HIP_KERNEL_NAME(
                         hermitian2complex_kernel<double2, CallbackType::USER_LOAD_STORE>)
@@ -424,7 +424,7 @@ void hermitian2complex(const void* data_p, void* back_p)
     else if(data->node->inArrayType == rocfft_array_type_hermitian_planar)
     {
         if(precision == rocfft_precision_single)
-            hipLaunchKernelGGL(hermitian2complex_kernel<float2>,
+            rocFFTLaunchKernelGGL(hermitian2complex_kernel<float2>,
                                grid,
                                threads,
                                0,
@@ -441,7 +441,7 @@ void hermitian2complex(const void* data_p, void* back_p)
                                (float2*)output_buffer,
                                output_distance);
         else
-            hipLaunchKernelGGL(hermitian2complex_kernel<double2>,
+            rocFFTLaunchKernelGGL(hermitian2complex_kernel<double2>,
                                grid,
                                threads,
                                0,
