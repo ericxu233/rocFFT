@@ -1,0 +1,109 @@
+Performing C++ SOURCE FILE Test CMAKE_HAVE_LIBC_PTHREAD failed with the following output:
+Change Dir: /home/ugrad/ugrad003/roctosycl/rocFFT/builddir/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_ece44/fast && /usr/bin/make  -f CMakeFiles/cmTC_ece44.dir/build.make CMakeFiles/cmTC_ece44.dir/build
+make[1]: Entering directory '/home/ugrad/ugrad003/roctosycl/rocFFT/builddir/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_ece44.dir/src.cxx.o
+/opt/rocm/bin/hipcc    -DCMAKE_HAVE_LIBC_PTHREAD   -o CMakeFiles/cmTC_ece44.dir/src.cxx.o -c /home/ugrad/ugrad003/roctosycl/rocFFT/builddir/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_ece44
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_ece44.dir/link.txt --verbose=1
+/opt/rocm/bin/hipcc   -DCMAKE_HAVE_LIBC_PTHREAD    CMakeFiles/cmTC_ece44.dir/src.cxx.o  -o cmTC_ece44 
+CMakeFiles/cmTC_ece44.dir/src.cxx.o: In function `main':
+src.cxx:(.text+0x46): undefined reference to `pthread_atfork'
+clang-12: error: linker command failed with exit code 1 (use -v to see invocation)
+CMakeFiles/cmTC_ece44.dir/build.make:106: recipe for target 'cmTC_ece44' failed
+make[1]: *** [cmTC_ece44] Error 1
+make[1]: Leaving directory '/home/ugrad/ugrad003/roctosycl/rocFFT/builddir/CMakeFiles/CMakeTmp'
+Makefile:141: recipe for target 'cmTC_ece44/fast' failed
+make: *** [cmTC_ece44/fast] Error 2
+
+
+Source file was:
+#include <pthread.h>
+
+void* test_func(void* data)
+{
+  return data;
+}
+
+int main(void)
+{
+  pthread_t thread;
+  pthread_create(&thread, NULL, test_func, NULL);
+  pthread_detach(thread);
+  pthread_cancel(thread);
+  pthread_join(thread, NULL);
+  pthread_atfork(NULL, NULL, NULL);
+  pthread_exit(NULL);
+
+  return 0;
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/ugrad/ugrad003/roctosycl/rocFFT/builddir/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_7cb33/fast && /usr/bin/make  -f CMakeFiles/cmTC_7cb33.dir/build.make CMakeFiles/cmTC_7cb33.dir/build
+make[1]: Entering directory '/home/ugrad/ugrad003/roctosycl/rocFFT/builddir/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_7cb33.dir/CheckFunctionExists.cxx.o
+/opt/rocm/bin/hipcc    -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_7cb33.dir/CheckFunctionExists.cxx.o -c /home/ugrad/ugrad003/roctosycl/rocFFT/builddir/CMakeFiles/CheckLibraryExists/CheckFunctionExists.cxx
+/home/ugrad/ugrad003/roctosycl/rocFFT/builddir/CMakeFiles/CheckLibraryExists/CheckFunctionExists.cxx:7:3: error: functions that differ only in their return type cannot be overloaded
+  CHECK_FUNCTION_EXISTS(void);
+  ^
+<command line>:3:31: note: expanded from here
+#define CHECK_FUNCTION_EXISTS pthread_create
+                              ^
+/usr/include/pthread.h:234:12: note: previous declaration is here
+extern int pthread_create (pthread_t *__restrict __newthread,
+       ~~~ ^
+/home/ugrad/ugrad003/roctosycl/rocFFT/builddir/CMakeFiles/CheckLibraryExists/CheckFunctionExists.cxx:17:3: error: no matching function for call to 'pthread_create'
+  CHECK_FUNCTION_EXISTS();
+  ^~~~~~~~~~~~~~~~~~~~~
+<command line>:3:31: note: expanded from here
+#define CHECK_FUNCTION_EXISTS pthread_create
+                              ^~~~~~~~~~~~~~
+/usr/include/pthread.h:234:12: note: candidate function not viable: requires 4 arguments, but 0 were provided
+extern int pthread_create (pthread_t *__restrict __newthread,
+           ^
+2 errors generated when compiling for gfx803.
+CMakeFiles/cmTC_7cb33.dir/build.make:85: recipe for target 'CMakeFiles/cmTC_7cb33.dir/CheckFunctionExists.cxx.o' failed
+make[1]: *** [CMakeFiles/cmTC_7cb33.dir/CheckFunctionExists.cxx.o] Error 1
+make[1]: Leaving directory '/home/ugrad/ugrad003/roctosycl/rocFFT/builddir/CMakeFiles/CMakeTmp'
+Makefile:141: recipe for target 'cmTC_7cb33/fast' failed
+make: *** [cmTC_7cb33/fast] Error 2
+
+
+
+Determining if the function pthread_create exists in the pthread failed with the following output:
+Change Dir: /home/ugrad/ugrad003/roctosycl/rocFFT/builddir/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_bd1bf/fast && /usr/bin/make  -f CMakeFiles/cmTC_bd1bf.dir/build.make CMakeFiles/cmTC_bd1bf.dir/build
+make[1]: Entering directory '/home/ugrad/ugrad003/roctosycl/rocFFT/builddir/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_bd1bf.dir/CheckFunctionExists.cxx.o
+/opt/rocm/bin/hipcc    -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_bd1bf.dir/CheckFunctionExists.cxx.o -c /home/ugrad/ugrad003/roctosycl/rocFFT/builddir/CMakeFiles/CheckLibraryExists/CheckFunctionExists.cxx
+/home/ugrad/ugrad003/roctosycl/rocFFT/builddir/CMakeFiles/CheckLibraryExists/CheckFunctionExists.cxx:7:3: error: functions that differ only in their return type cannot be overloaded
+  CHECK_FUNCTION_EXISTS(void);
+  ^
+<command line>:3:31: note: expanded from here
+#define CHECK_FUNCTION_EXISTS pthread_create
+                              ^
+/usr/include/pthread.h:234:12: note: previous declaration is here
+extern int pthread_create (pthread_t *__restrict __newthread,
+       ~~~ ^
+/home/ugrad/ugrad003/roctosycl/rocFFT/builddir/CMakeFiles/CheckLibraryExists/CheckFunctionExists.cxx:17:3: error: no matching function for call to 'pthread_create'
+  CHECK_FUNCTION_EXISTS();
+  ^~~~~~~~~~~~~~~~~~~~~
+<command line>:3:31: note: expanded from here
+#define CHECK_FUNCTION_EXISTS pthread_create
+                              ^~~~~~~~~~~~~~
+/usr/include/pthread.h:234:12: note: candidate function not viable: requires 4 arguments, but 0 were provided
+extern int pthread_create (pthread_t *__restrict __newthread,
+           ^
+2 errors generated when compiling for gfx803.
+CMakeFiles/cmTC_bd1bf.dir/build.make:85: recipe for target 'CMakeFiles/cmTC_bd1bf.dir/CheckFunctionExists.cxx.o' failed
+make[1]: *** [CMakeFiles/cmTC_bd1bf.dir/CheckFunctionExists.cxx.o] Error 1
+make[1]: Leaving directory '/home/ugrad/ugrad003/roctosycl/rocFFT/builddir/CMakeFiles/CMakeTmp'
+Makefile:141: recipe for target 'cmTC_bd1bf/fast' failed
+make: *** [cmTC_bd1bf/fast] Error 2
+
+
+
