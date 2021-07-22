@@ -21,7 +21,10 @@
 #include "transpose.h"
 #include "kernel_launch.h"
 #include "rocfft_hip.h"
+#include <CL/sycl.hpp>
 #include <iostream>
+
+namespace sycl = cl::sycl;
 
 // chain of macros to iterate over transpose kernel template parameters, to
 // set a function pointer 'kernel_func'
@@ -138,9 +141,11 @@ rocfft_status rocfft_transpose_outofplace_template(size_t       m,
                                                    void* __restrict__ store_cb_fn,
                                                    void* __restrict__ store_cb_data)
 {
-
-    dim3 grid((n - 1) / TRANSPOSE_DIM_X + 1, ((m - 1) / TRANSPOSE_DIM_X + 1), count);
-    dim3 threads(TRANSPOSE_DIM_X, TRANSPOSE_DIM_Y, 1);
+    /*
+        @@ Changes start here, by Eric Xu
+    */
+    sycl::range<3> grid((n - 1) / TRANSPOSE_DIM_X + 1, ((m - 1) / TRANSPOSE_DIM_X + 1), count);
+    sycl::range<3> threads(TRANSPOSE_DIM_X, TRANSPOSE_DIM_Y, 1);
 
     // working threads match problem sizes, no partial cases
     const bool all = (n % TRANSPOSE_DIM_X == 0) && (m % TRANSPOSE_DIM_X == 0);
@@ -163,8 +168,8 @@ rocfft_status rocfft_transpose_outofplace_template(size_t       m,
 
         if(kernel_func)
             rocFFTLaunchKernelGGL(kernel_func,
-                               dim3(grid),
-                               dim3(threads),
+                               sycl::range<3>(grid),
+                               sycl::range<3>(threads),
                                0,
                                rocfft_stream,
                                A,
@@ -210,8 +215,8 @@ rocfft_status rocfft_transpose_outofplace_template(size_t       m,
         if(kernel_func)
         {
             rocFFTLaunchKernelGGL(kernel_func,
-                               dim3(grid),
-                               dim3(threads),
+                               sycl::range<3>(grid),
+                               sycl::range<3>(threads),
                                0,
                                rocfft_stream,
                                A,
