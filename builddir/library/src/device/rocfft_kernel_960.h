@@ -1,0 +1,6078 @@
+#pragma once
+#include "rocfft_butterfly_template.h"
+
+////////////////////////////////////////Passes kernels
+template <typename T, StrideBin sb>
+__device__ void
+FwdPass0_len960(const T *twiddles, const size_t stride_in, const size_t stride_out, unsigned int rw, unsigned int b, unsigned int me, unsigned int inOffset, unsigned int outOffset, T *bufIn, real_type_t<T> *bufOutRe, real_type_t<T> *bufOutIm, T *R0, T *R1, T *R2, T *R3, T *R4, T *R5, T *R6, T *R7, T *R8, T *R9, T *R10, T *R11, T *R12, T *R13, T *R14, T *R15, T *R16, T *R17, T *R18, T *R19, T *R20, T *R21, T *R22, T *R23, T *R24, T *R25, T *R26, T *R27, T *R28, T *R29)
+{
+
+
+	if(rw)
+	{
+	(*R0) = bufIn[inOffset + ( 0 + me*3 + 0 + 0 )*stride_in];
+	(*R10) = bufIn[inOffset + ( 0 + me*3 + 1 + 0 )*stride_in];
+	(*R20) = bufIn[inOffset + ( 0 + me*3 + 2 + 0 )*stride_in];
+	(*R1) = bufIn[inOffset + ( 0 + me*3 + 0 + 96 )*stride_in];
+	(*R11) = bufIn[inOffset + ( 0 + me*3 + 1 + 96 )*stride_in];
+	(*R21) = bufIn[inOffset + ( 0 + me*3 + 2 + 96 )*stride_in];
+	(*R2) = bufIn[inOffset + ( 0 + me*3 + 0 + 192 )*stride_in];
+	(*R12) = bufIn[inOffset + ( 0 + me*3 + 1 + 192 )*stride_in];
+	(*R22) = bufIn[inOffset + ( 0 + me*3 + 2 + 192 )*stride_in];
+	(*R3) = bufIn[inOffset + ( 0 + me*3 + 0 + 288 )*stride_in];
+	(*R13) = bufIn[inOffset + ( 0 + me*3 + 1 + 288 )*stride_in];
+	(*R23) = bufIn[inOffset + ( 0 + me*3 + 2 + 288 )*stride_in];
+	(*R4) = bufIn[inOffset + ( 0 + me*3 + 0 + 384 )*stride_in];
+	(*R14) = bufIn[inOffset + ( 0 + me*3 + 1 + 384 )*stride_in];
+	(*R24) = bufIn[inOffset + ( 0 + me*3 + 2 + 384 )*stride_in];
+	(*R5) = bufIn[inOffset + ( 0 + me*3 + 0 + 480 )*stride_in];
+	(*R15) = bufIn[inOffset + ( 0 + me*3 + 1 + 480 )*stride_in];
+	(*R25) = bufIn[inOffset + ( 0 + me*3 + 2 + 480 )*stride_in];
+	(*R6) = bufIn[inOffset + ( 0 + me*3 + 0 + 576 )*stride_in];
+	(*R16) = bufIn[inOffset + ( 0 + me*3 + 1 + 576 )*stride_in];
+	(*R26) = bufIn[inOffset + ( 0 + me*3 + 2 + 576 )*stride_in];
+	(*R7) = bufIn[inOffset + ( 0 + me*3 + 0 + 672 )*stride_in];
+	(*R17) = bufIn[inOffset + ( 0 + me*3 + 1 + 672 )*stride_in];
+	(*R27) = bufIn[inOffset + ( 0 + me*3 + 2 + 672 )*stride_in];
+	(*R8) = bufIn[inOffset + ( 0 + me*3 + 0 + 768 )*stride_in];
+	(*R18) = bufIn[inOffset + ( 0 + me*3 + 1 + 768 )*stride_in];
+	(*R28) = bufIn[inOffset + ( 0 + me*3 + 2 + 768 )*stride_in];
+	(*R9) = bufIn[inOffset + ( 0 + me*3 + 0 + 864 )*stride_in];
+	(*R19) = bufIn[inOffset + ( 0 + me*3 + 1 + 864 )*stride_in];
+	(*R29) = bufIn[inOffset + ( 0 + me*3 + 2 + 864 )*stride_in];
+	}
+
+
+
+	FwdRad10B1(R0, R1, R2, R3, R4, R5, R6, R7, R8, R9);
+	FwdRad10B1(R10, R11, R12, R13, R14, R15, R16, R17, R18, R19);
+	FwdRad10B1(R20, R21, R22, R23, R24, R25, R26, R27, R28, R29);
+
+
+	if(rw)
+	{
+	bufOutRe[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 0 ) ] = (*R0).x;
+	bufOutRe[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 1 ) ] = (*R1).x;
+	bufOutRe[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 2 ) ] = (*R2).x;
+	bufOutRe[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 3 ) ] = (*R3).x;
+	bufOutRe[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 4 ) ] = (*R4).x;
+	bufOutRe[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 5 ) ] = (*R5).x;
+	bufOutRe[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 6 ) ] = (*R6).x;
+	bufOutRe[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 7 ) ] = (*R7).x;
+	bufOutRe[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 8 ) ] = (*R8).x;
+	bufOutRe[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 9 ) ] = (*R9).x;
+	bufOutRe[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 0 ) ] = (*R10).x;
+	bufOutRe[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 1 ) ] = (*R11).x;
+	bufOutRe[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 2 ) ] = (*R12).x;
+	bufOutRe[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 3 ) ] = (*R13).x;
+	bufOutRe[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 4 ) ] = (*R14).x;
+	bufOutRe[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 5 ) ] = (*R15).x;
+	bufOutRe[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 6 ) ] = (*R16).x;
+	bufOutRe[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 7 ) ] = (*R17).x;
+	bufOutRe[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 8 ) ] = (*R18).x;
+	bufOutRe[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 9 ) ] = (*R19).x;
+	bufOutRe[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 0 ) ] = (*R20).x;
+	bufOutRe[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 1 ) ] = (*R21).x;
+	bufOutRe[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 2 ) ] = (*R22).x;
+	bufOutRe[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 3 ) ] = (*R23).x;
+	bufOutRe[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 4 ) ] = (*R24).x;
+	bufOutRe[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 5 ) ] = (*R25).x;
+	bufOutRe[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 6 ) ] = (*R26).x;
+	bufOutRe[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 7 ) ] = (*R27).x;
+	bufOutRe[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 8 ) ] = (*R28).x;
+	bufOutRe[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 9 ) ] = (*R29).x;
+	}
+
+
+	__syncthreads();
+
+	if(rw)
+	{
+	(*R0).x = bufOutRe[outOffset + ( 0 + me*5 + 0 + 0 ) ];
+	(*R6).x = bufOutRe[outOffset + ( 0 + me*5 + 1 + 0 ) ];
+	(*R12).x = bufOutRe[outOffset + ( 0 + me*5 + 2 + 0 ) ];
+	(*R18).x = bufOutRe[outOffset + ( 0 + me*5 + 3 + 0 ) ];
+	(*R24).x = bufOutRe[outOffset + ( 0 + me*5 + 4 + 0 ) ];
+	(*R1).x = bufOutRe[outOffset + ( 0 + me*5 + 0 + 160 ) ];
+	(*R7).x = bufOutRe[outOffset + ( 0 + me*5 + 1 + 160 ) ];
+	(*R13).x = bufOutRe[outOffset + ( 0 + me*5 + 2 + 160 ) ];
+	(*R19).x = bufOutRe[outOffset + ( 0 + me*5 + 3 + 160 ) ];
+	(*R25).x = bufOutRe[outOffset + ( 0 + me*5 + 4 + 160 ) ];
+	(*R2).x = bufOutRe[outOffset + ( 0 + me*5 + 0 + 320 ) ];
+	(*R8).x = bufOutRe[outOffset + ( 0 + me*5 + 1 + 320 ) ];
+	(*R14).x = bufOutRe[outOffset + ( 0 + me*5 + 2 + 320 ) ];
+	(*R20).x = bufOutRe[outOffset + ( 0 + me*5 + 3 + 320 ) ];
+	(*R26).x = bufOutRe[outOffset + ( 0 + me*5 + 4 + 320 ) ];
+	(*R3).x = bufOutRe[outOffset + ( 0 + me*5 + 0 + 480 ) ];
+	(*R9).x = bufOutRe[outOffset + ( 0 + me*5 + 1 + 480 ) ];
+	(*R15).x = bufOutRe[outOffset + ( 0 + me*5 + 2 + 480 ) ];
+	(*R21).x = bufOutRe[outOffset + ( 0 + me*5 + 3 + 480 ) ];
+	(*R27).x = bufOutRe[outOffset + ( 0 + me*5 + 4 + 480 ) ];
+	(*R4).x = bufOutRe[outOffset + ( 0 + me*5 + 0 + 640 ) ];
+	(*R10).x = bufOutRe[outOffset + ( 0 + me*5 + 1 + 640 ) ];
+	(*R16).x = bufOutRe[outOffset + ( 0 + me*5 + 2 + 640 ) ];
+	(*R22).x = bufOutRe[outOffset + ( 0 + me*5 + 3 + 640 ) ];
+	(*R28).x = bufOutRe[outOffset + ( 0 + me*5 + 4 + 640 ) ];
+	(*R5).x = bufOutRe[outOffset + ( 0 + me*5 + 0 + 800 ) ];
+	(*R11).x = bufOutRe[outOffset + ( 0 + me*5 + 1 + 800 ) ];
+	(*R17).x = bufOutRe[outOffset + ( 0 + me*5 + 2 + 800 ) ];
+	(*R23).x = bufOutRe[outOffset + ( 0 + me*5 + 3 + 800 ) ];
+	(*R29).x = bufOutRe[outOffset + ( 0 + me*5 + 4 + 800 ) ];
+	}
+
+
+	__syncthreads();
+
+	if(rw)
+	{
+	bufOutIm[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 0 ) ] = (*R0).y;
+	bufOutIm[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 1 ) ] = (*R1).y;
+	bufOutIm[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 2 ) ] = (*R2).y;
+	bufOutIm[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 3 ) ] = (*R3).y;
+	bufOutIm[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 4 ) ] = (*R4).y;
+	bufOutIm[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 5 ) ] = (*R5).y;
+	bufOutIm[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 6 ) ] = (*R6).y;
+	bufOutIm[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 7 ) ] = (*R7).y;
+	bufOutIm[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 8 ) ] = (*R8).y;
+	bufOutIm[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 9 ) ] = (*R9).y;
+	bufOutIm[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 0 ) ] = (*R10).y;
+	bufOutIm[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 1 ) ] = (*R11).y;
+	bufOutIm[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 2 ) ] = (*R12).y;
+	bufOutIm[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 3 ) ] = (*R13).y;
+	bufOutIm[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 4 ) ] = (*R14).y;
+	bufOutIm[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 5 ) ] = (*R15).y;
+	bufOutIm[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 6 ) ] = (*R16).y;
+	bufOutIm[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 7 ) ] = (*R17).y;
+	bufOutIm[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 8 ) ] = (*R18).y;
+	bufOutIm[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 9 ) ] = (*R19).y;
+	bufOutIm[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 0 ) ] = (*R20).y;
+	bufOutIm[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 1 ) ] = (*R21).y;
+	bufOutIm[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 2 ) ] = (*R22).y;
+	bufOutIm[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 3 ) ] = (*R23).y;
+	bufOutIm[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 4 ) ] = (*R24).y;
+	bufOutIm[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 5 ) ] = (*R25).y;
+	bufOutIm[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 6 ) ] = (*R26).y;
+	bufOutIm[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 7 ) ] = (*R27).y;
+	bufOutIm[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 8 ) ] = (*R28).y;
+	bufOutIm[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 9 ) ] = (*R29).y;
+	}
+
+
+	__syncthreads();
+
+	if(rw)
+	{
+	(*R0).y = bufOutIm[outOffset + ( 0 + me*5 + 0 + 0 ) ];
+	(*R6).y = bufOutIm[outOffset + ( 0 + me*5 + 1 + 0 ) ];
+	(*R12).y = bufOutIm[outOffset + ( 0 + me*5 + 2 + 0 ) ];
+	(*R18).y = bufOutIm[outOffset + ( 0 + me*5 + 3 + 0 ) ];
+	(*R24).y = bufOutIm[outOffset + ( 0 + me*5 + 4 + 0 ) ];
+	(*R1).y = bufOutIm[outOffset + ( 0 + me*5 + 0 + 160 ) ];
+	(*R7).y = bufOutIm[outOffset + ( 0 + me*5 + 1 + 160 ) ];
+	(*R13).y = bufOutIm[outOffset + ( 0 + me*5 + 2 + 160 ) ];
+	(*R19).y = bufOutIm[outOffset + ( 0 + me*5 + 3 + 160 ) ];
+	(*R25).y = bufOutIm[outOffset + ( 0 + me*5 + 4 + 160 ) ];
+	(*R2).y = bufOutIm[outOffset + ( 0 + me*5 + 0 + 320 ) ];
+	(*R8).y = bufOutIm[outOffset + ( 0 + me*5 + 1 + 320 ) ];
+	(*R14).y = bufOutIm[outOffset + ( 0 + me*5 + 2 + 320 ) ];
+	(*R20).y = bufOutIm[outOffset + ( 0 + me*5 + 3 + 320 ) ];
+	(*R26).y = bufOutIm[outOffset + ( 0 + me*5 + 4 + 320 ) ];
+	(*R3).y = bufOutIm[outOffset + ( 0 + me*5 + 0 + 480 ) ];
+	(*R9).y = bufOutIm[outOffset + ( 0 + me*5 + 1 + 480 ) ];
+	(*R15).y = bufOutIm[outOffset + ( 0 + me*5 + 2 + 480 ) ];
+	(*R21).y = bufOutIm[outOffset + ( 0 + me*5 + 3 + 480 ) ];
+	(*R27).y = bufOutIm[outOffset + ( 0 + me*5 + 4 + 480 ) ];
+	(*R4).y = bufOutIm[outOffset + ( 0 + me*5 + 0 + 640 ) ];
+	(*R10).y = bufOutIm[outOffset + ( 0 + me*5 + 1 + 640 ) ];
+	(*R16).y = bufOutIm[outOffset + ( 0 + me*5 + 2 + 640 ) ];
+	(*R22).y = bufOutIm[outOffset + ( 0 + me*5 + 3 + 640 ) ];
+	(*R28).y = bufOutIm[outOffset + ( 0 + me*5 + 4 + 640 ) ];
+	(*R5).y = bufOutIm[outOffset + ( 0 + me*5 + 0 + 800 ) ];
+	(*R11).y = bufOutIm[outOffset + ( 0 + me*5 + 1 + 800 ) ];
+	(*R17).y = bufOutIm[outOffset + ( 0 + me*5 + 2 + 800 ) ];
+	(*R23).y = bufOutIm[outOffset + ( 0 + me*5 + 3 + 800 ) ];
+	(*R29).y = bufOutIm[outOffset + ( 0 + me*5 + 4 + 800 ) ];
+	}
+
+
+	__syncthreads();
+
+}
+
+template <typename T, StrideBin sb>
+__device__ void
+FwdPass0_len960(const T *twiddles, const size_t stride_in, const size_t stride_out, unsigned int rw, unsigned int b, unsigned int me, unsigned int inOffset, unsigned int outOffset, real_type_t<T> *bufInRe, real_type_t<T> *bufInIm, real_type_t<T> *bufOutRe, real_type_t<T> *bufOutIm, T *R0, T *R1, T *R2, T *R3, T *R4, T *R5, T *R6, T *R7, T *R8, T *R9, T *R10, T *R11, T *R12, T *R13, T *R14, T *R15, T *R16, T *R17, T *R18, T *R19, T *R20, T *R21, T *R22, T *R23, T *R24, T *R25, T *R26, T *R27, T *R28, T *R29)
+{
+
+
+	if(rw)
+	{
+	(*R0).x = bufInRe[inOffset + ( 0 + me*3 + 0 + 0 )*stride_in];
+	(*R0).y = bufInIm[inOffset + ( 0 + me*3 + 0 + 0 )*stride_in];
+	(*R10).x = bufInRe[inOffset + ( 0 + me*3 + 1 + 0 )*stride_in];
+	(*R10).y = bufInIm[inOffset + ( 0 + me*3 + 1 + 0 )*stride_in];
+	(*R20).x = bufInRe[inOffset + ( 0 + me*3 + 2 + 0 )*stride_in];
+	(*R20).y = bufInIm[inOffset + ( 0 + me*3 + 2 + 0 )*stride_in];
+	(*R1).x = bufInRe[inOffset + ( 0 + me*3 + 0 + 96 )*stride_in];
+	(*R1).y = bufInIm[inOffset + ( 0 + me*3 + 0 + 96 )*stride_in];
+	(*R11).x = bufInRe[inOffset + ( 0 + me*3 + 1 + 96 )*stride_in];
+	(*R11).y = bufInIm[inOffset + ( 0 + me*3 + 1 + 96 )*stride_in];
+	(*R21).x = bufInRe[inOffset + ( 0 + me*3 + 2 + 96 )*stride_in];
+	(*R21).y = bufInIm[inOffset + ( 0 + me*3 + 2 + 96 )*stride_in];
+	(*R2).x = bufInRe[inOffset + ( 0 + me*3 + 0 + 192 )*stride_in];
+	(*R2).y = bufInIm[inOffset + ( 0 + me*3 + 0 + 192 )*stride_in];
+	(*R12).x = bufInRe[inOffset + ( 0 + me*3 + 1 + 192 )*stride_in];
+	(*R12).y = bufInIm[inOffset + ( 0 + me*3 + 1 + 192 )*stride_in];
+	(*R22).x = bufInRe[inOffset + ( 0 + me*3 + 2 + 192 )*stride_in];
+	(*R22).y = bufInIm[inOffset + ( 0 + me*3 + 2 + 192 )*stride_in];
+	(*R3).x = bufInRe[inOffset + ( 0 + me*3 + 0 + 288 )*stride_in];
+	(*R3).y = bufInIm[inOffset + ( 0 + me*3 + 0 + 288 )*stride_in];
+	(*R13).x = bufInRe[inOffset + ( 0 + me*3 + 1 + 288 )*stride_in];
+	(*R13).y = bufInIm[inOffset + ( 0 + me*3 + 1 + 288 )*stride_in];
+	(*R23).x = bufInRe[inOffset + ( 0 + me*3 + 2 + 288 )*stride_in];
+	(*R23).y = bufInIm[inOffset + ( 0 + me*3 + 2 + 288 )*stride_in];
+	(*R4).x = bufInRe[inOffset + ( 0 + me*3 + 0 + 384 )*stride_in];
+	(*R4).y = bufInIm[inOffset + ( 0 + me*3 + 0 + 384 )*stride_in];
+	(*R14).x = bufInRe[inOffset + ( 0 + me*3 + 1 + 384 )*stride_in];
+	(*R14).y = bufInIm[inOffset + ( 0 + me*3 + 1 + 384 )*stride_in];
+	(*R24).x = bufInRe[inOffset + ( 0 + me*3 + 2 + 384 )*stride_in];
+	(*R24).y = bufInIm[inOffset + ( 0 + me*3 + 2 + 384 )*stride_in];
+	(*R5).x = bufInRe[inOffset + ( 0 + me*3 + 0 + 480 )*stride_in];
+	(*R5).y = bufInIm[inOffset + ( 0 + me*3 + 0 + 480 )*stride_in];
+	(*R15).x = bufInRe[inOffset + ( 0 + me*3 + 1 + 480 )*stride_in];
+	(*R15).y = bufInIm[inOffset + ( 0 + me*3 + 1 + 480 )*stride_in];
+	(*R25).x = bufInRe[inOffset + ( 0 + me*3 + 2 + 480 )*stride_in];
+	(*R25).y = bufInIm[inOffset + ( 0 + me*3 + 2 + 480 )*stride_in];
+	(*R6).x = bufInRe[inOffset + ( 0 + me*3 + 0 + 576 )*stride_in];
+	(*R6).y = bufInIm[inOffset + ( 0 + me*3 + 0 + 576 )*stride_in];
+	(*R16).x = bufInRe[inOffset + ( 0 + me*3 + 1 + 576 )*stride_in];
+	(*R16).y = bufInIm[inOffset + ( 0 + me*3 + 1 + 576 )*stride_in];
+	(*R26).x = bufInRe[inOffset + ( 0 + me*3 + 2 + 576 )*stride_in];
+	(*R26).y = bufInIm[inOffset + ( 0 + me*3 + 2 + 576 )*stride_in];
+	(*R7).x = bufInRe[inOffset + ( 0 + me*3 + 0 + 672 )*stride_in];
+	(*R7).y = bufInIm[inOffset + ( 0 + me*3 + 0 + 672 )*stride_in];
+	(*R17).x = bufInRe[inOffset + ( 0 + me*3 + 1 + 672 )*stride_in];
+	(*R17).y = bufInIm[inOffset + ( 0 + me*3 + 1 + 672 )*stride_in];
+	(*R27).x = bufInRe[inOffset + ( 0 + me*3 + 2 + 672 )*stride_in];
+	(*R27).y = bufInIm[inOffset + ( 0 + me*3 + 2 + 672 )*stride_in];
+	(*R8).x = bufInRe[inOffset + ( 0 + me*3 + 0 + 768 )*stride_in];
+	(*R8).y = bufInIm[inOffset + ( 0 + me*3 + 0 + 768 )*stride_in];
+	(*R18).x = bufInRe[inOffset + ( 0 + me*3 + 1 + 768 )*stride_in];
+	(*R18).y = bufInIm[inOffset + ( 0 + me*3 + 1 + 768 )*stride_in];
+	(*R28).x = bufInRe[inOffset + ( 0 + me*3 + 2 + 768 )*stride_in];
+	(*R28).y = bufInIm[inOffset + ( 0 + me*3 + 2 + 768 )*stride_in];
+	(*R9).x = bufInRe[inOffset + ( 0 + me*3 + 0 + 864 )*stride_in];
+	(*R9).y = bufInIm[inOffset + ( 0 + me*3 + 0 + 864 )*stride_in];
+	(*R19).x = bufInRe[inOffset + ( 0 + me*3 + 1 + 864 )*stride_in];
+	(*R19).y = bufInIm[inOffset + ( 0 + me*3 + 1 + 864 )*stride_in];
+	(*R29).x = bufInRe[inOffset + ( 0 + me*3 + 2 + 864 )*stride_in];
+	(*R29).y = bufInIm[inOffset + ( 0 + me*3 + 2 + 864 )*stride_in];
+	}
+
+
+
+	FwdRad10B1(R0, R1, R2, R3, R4, R5, R6, R7, R8, R9);
+	FwdRad10B1(R10, R11, R12, R13, R14, R15, R16, R17, R18, R19);
+	FwdRad10B1(R20, R21, R22, R23, R24, R25, R26, R27, R28, R29);
+
+
+	if(rw)
+	{
+	bufOutRe[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 0 ) ] = (*R0).x;
+	bufOutRe[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 1 ) ] = (*R1).x;
+	bufOutRe[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 2 ) ] = (*R2).x;
+	bufOutRe[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 3 ) ] = (*R3).x;
+	bufOutRe[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 4 ) ] = (*R4).x;
+	bufOutRe[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 5 ) ] = (*R5).x;
+	bufOutRe[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 6 ) ] = (*R6).x;
+	bufOutRe[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 7 ) ] = (*R7).x;
+	bufOutRe[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 8 ) ] = (*R8).x;
+	bufOutRe[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 9 ) ] = (*R9).x;
+	bufOutRe[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 0 ) ] = (*R10).x;
+	bufOutRe[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 1 ) ] = (*R11).x;
+	bufOutRe[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 2 ) ] = (*R12).x;
+	bufOutRe[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 3 ) ] = (*R13).x;
+	bufOutRe[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 4 ) ] = (*R14).x;
+	bufOutRe[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 5 ) ] = (*R15).x;
+	bufOutRe[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 6 ) ] = (*R16).x;
+	bufOutRe[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 7 ) ] = (*R17).x;
+	bufOutRe[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 8 ) ] = (*R18).x;
+	bufOutRe[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 9 ) ] = (*R19).x;
+	bufOutRe[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 0 ) ] = (*R20).x;
+	bufOutRe[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 1 ) ] = (*R21).x;
+	bufOutRe[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 2 ) ] = (*R22).x;
+	bufOutRe[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 3 ) ] = (*R23).x;
+	bufOutRe[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 4 ) ] = (*R24).x;
+	bufOutRe[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 5 ) ] = (*R25).x;
+	bufOutRe[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 6 ) ] = (*R26).x;
+	bufOutRe[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 7 ) ] = (*R27).x;
+	bufOutRe[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 8 ) ] = (*R28).x;
+	bufOutRe[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 9 ) ] = (*R29).x;
+	}
+
+
+	__syncthreads();
+
+	if(rw)
+	{
+	(*R0).x = bufOutRe[outOffset + ( 0 + me*5 + 0 + 0 ) ];
+	(*R6).x = bufOutRe[outOffset + ( 0 + me*5 + 1 + 0 ) ];
+	(*R12).x = bufOutRe[outOffset + ( 0 + me*5 + 2 + 0 ) ];
+	(*R18).x = bufOutRe[outOffset + ( 0 + me*5 + 3 + 0 ) ];
+	(*R24).x = bufOutRe[outOffset + ( 0 + me*5 + 4 + 0 ) ];
+	(*R1).x = bufOutRe[outOffset + ( 0 + me*5 + 0 + 160 ) ];
+	(*R7).x = bufOutRe[outOffset + ( 0 + me*5 + 1 + 160 ) ];
+	(*R13).x = bufOutRe[outOffset + ( 0 + me*5 + 2 + 160 ) ];
+	(*R19).x = bufOutRe[outOffset + ( 0 + me*5 + 3 + 160 ) ];
+	(*R25).x = bufOutRe[outOffset + ( 0 + me*5 + 4 + 160 ) ];
+	(*R2).x = bufOutRe[outOffset + ( 0 + me*5 + 0 + 320 ) ];
+	(*R8).x = bufOutRe[outOffset + ( 0 + me*5 + 1 + 320 ) ];
+	(*R14).x = bufOutRe[outOffset + ( 0 + me*5 + 2 + 320 ) ];
+	(*R20).x = bufOutRe[outOffset + ( 0 + me*5 + 3 + 320 ) ];
+	(*R26).x = bufOutRe[outOffset + ( 0 + me*5 + 4 + 320 ) ];
+	(*R3).x = bufOutRe[outOffset + ( 0 + me*5 + 0 + 480 ) ];
+	(*R9).x = bufOutRe[outOffset + ( 0 + me*5 + 1 + 480 ) ];
+	(*R15).x = bufOutRe[outOffset + ( 0 + me*5 + 2 + 480 ) ];
+	(*R21).x = bufOutRe[outOffset + ( 0 + me*5 + 3 + 480 ) ];
+	(*R27).x = bufOutRe[outOffset + ( 0 + me*5 + 4 + 480 ) ];
+	(*R4).x = bufOutRe[outOffset + ( 0 + me*5 + 0 + 640 ) ];
+	(*R10).x = bufOutRe[outOffset + ( 0 + me*5 + 1 + 640 ) ];
+	(*R16).x = bufOutRe[outOffset + ( 0 + me*5 + 2 + 640 ) ];
+	(*R22).x = bufOutRe[outOffset + ( 0 + me*5 + 3 + 640 ) ];
+	(*R28).x = bufOutRe[outOffset + ( 0 + me*5 + 4 + 640 ) ];
+	(*R5).x = bufOutRe[outOffset + ( 0 + me*5 + 0 + 800 ) ];
+	(*R11).x = bufOutRe[outOffset + ( 0 + me*5 + 1 + 800 ) ];
+	(*R17).x = bufOutRe[outOffset + ( 0 + me*5 + 2 + 800 ) ];
+	(*R23).x = bufOutRe[outOffset + ( 0 + me*5 + 3 + 800 ) ];
+	(*R29).x = bufOutRe[outOffset + ( 0 + me*5 + 4 + 800 ) ];
+	}
+
+
+	__syncthreads();
+
+	if(rw)
+	{
+	bufOutIm[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 0 ) ] = (*R0).y;
+	bufOutIm[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 1 ) ] = (*R1).y;
+	bufOutIm[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 2 ) ] = (*R2).y;
+	bufOutIm[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 3 ) ] = (*R3).y;
+	bufOutIm[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 4 ) ] = (*R4).y;
+	bufOutIm[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 5 ) ] = (*R5).y;
+	bufOutIm[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 6 ) ] = (*R6).y;
+	bufOutIm[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 7 ) ] = (*R7).y;
+	bufOutIm[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 8 ) ] = (*R8).y;
+	bufOutIm[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 9 ) ] = (*R9).y;
+	bufOutIm[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 0 ) ] = (*R10).y;
+	bufOutIm[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 1 ) ] = (*R11).y;
+	bufOutIm[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 2 ) ] = (*R12).y;
+	bufOutIm[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 3 ) ] = (*R13).y;
+	bufOutIm[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 4 ) ] = (*R14).y;
+	bufOutIm[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 5 ) ] = (*R15).y;
+	bufOutIm[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 6 ) ] = (*R16).y;
+	bufOutIm[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 7 ) ] = (*R17).y;
+	bufOutIm[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 8 ) ] = (*R18).y;
+	bufOutIm[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 9 ) ] = (*R19).y;
+	bufOutIm[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 0 ) ] = (*R20).y;
+	bufOutIm[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 1 ) ] = (*R21).y;
+	bufOutIm[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 2 ) ] = (*R22).y;
+	bufOutIm[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 3 ) ] = (*R23).y;
+	bufOutIm[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 4 ) ] = (*R24).y;
+	bufOutIm[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 5 ) ] = (*R25).y;
+	bufOutIm[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 6 ) ] = (*R26).y;
+	bufOutIm[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 7 ) ] = (*R27).y;
+	bufOutIm[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 8 ) ] = (*R28).y;
+	bufOutIm[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 9 ) ] = (*R29).y;
+	}
+
+
+	__syncthreads();
+
+	if(rw)
+	{
+	(*R0).y = bufOutIm[outOffset + ( 0 + me*5 + 0 + 0 ) ];
+	(*R6).y = bufOutIm[outOffset + ( 0 + me*5 + 1 + 0 ) ];
+	(*R12).y = bufOutIm[outOffset + ( 0 + me*5 + 2 + 0 ) ];
+	(*R18).y = bufOutIm[outOffset + ( 0 + me*5 + 3 + 0 ) ];
+	(*R24).y = bufOutIm[outOffset + ( 0 + me*5 + 4 + 0 ) ];
+	(*R1).y = bufOutIm[outOffset + ( 0 + me*5 + 0 + 160 ) ];
+	(*R7).y = bufOutIm[outOffset + ( 0 + me*5 + 1 + 160 ) ];
+	(*R13).y = bufOutIm[outOffset + ( 0 + me*5 + 2 + 160 ) ];
+	(*R19).y = bufOutIm[outOffset + ( 0 + me*5 + 3 + 160 ) ];
+	(*R25).y = bufOutIm[outOffset + ( 0 + me*5 + 4 + 160 ) ];
+	(*R2).y = bufOutIm[outOffset + ( 0 + me*5 + 0 + 320 ) ];
+	(*R8).y = bufOutIm[outOffset + ( 0 + me*5 + 1 + 320 ) ];
+	(*R14).y = bufOutIm[outOffset + ( 0 + me*5 + 2 + 320 ) ];
+	(*R20).y = bufOutIm[outOffset + ( 0 + me*5 + 3 + 320 ) ];
+	(*R26).y = bufOutIm[outOffset + ( 0 + me*5 + 4 + 320 ) ];
+	(*R3).y = bufOutIm[outOffset + ( 0 + me*5 + 0 + 480 ) ];
+	(*R9).y = bufOutIm[outOffset + ( 0 + me*5 + 1 + 480 ) ];
+	(*R15).y = bufOutIm[outOffset + ( 0 + me*5 + 2 + 480 ) ];
+	(*R21).y = bufOutIm[outOffset + ( 0 + me*5 + 3 + 480 ) ];
+	(*R27).y = bufOutIm[outOffset + ( 0 + me*5 + 4 + 480 ) ];
+	(*R4).y = bufOutIm[outOffset + ( 0 + me*5 + 0 + 640 ) ];
+	(*R10).y = bufOutIm[outOffset + ( 0 + me*5 + 1 + 640 ) ];
+	(*R16).y = bufOutIm[outOffset + ( 0 + me*5 + 2 + 640 ) ];
+	(*R22).y = bufOutIm[outOffset + ( 0 + me*5 + 3 + 640 ) ];
+	(*R28).y = bufOutIm[outOffset + ( 0 + me*5 + 4 + 640 ) ];
+	(*R5).y = bufOutIm[outOffset + ( 0 + me*5 + 0 + 800 ) ];
+	(*R11).y = bufOutIm[outOffset + ( 0 + me*5 + 1 + 800 ) ];
+	(*R17).y = bufOutIm[outOffset + ( 0 + me*5 + 2 + 800 ) ];
+	(*R23).y = bufOutIm[outOffset + ( 0 + me*5 + 3 + 800 ) ];
+	(*R29).y = bufOutIm[outOffset + ( 0 + me*5 + 4 + 800 ) ];
+	}
+
+
+	__syncthreads();
+
+}
+
+template <typename T, StrideBin sb>
+__device__ void
+FwdPass1_len960(const T *twiddles, const size_t stride_in, const size_t stride_out, unsigned int rw, unsigned int b, unsigned int me, unsigned int inOffset, unsigned int outOffset, real_type_t<T> *bufInRe, real_type_t<T> *bufInIm, real_type_t<T> *bufOutRe, real_type_t<T> *bufOutIm, T *R0, T *R1, T *R2, T *R3, T *R4, T *R5, T *R6, T *R7, T *R8, T *R9, T *R10, T *R11, T *R12, T *R13, T *R14, T *R15, T *R16, T *R17, T *R18, T *R19, T *R20, T *R21, T *R22, T *R23, T *R24, T *R25, T *R26, T *R27, T *R28, T *R29)
+{
+
+
+
+
+	{
+		T W = twiddles[9 + 5*((5*me + 0)%10) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R1).x; ry = (*R1).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R1).x = TR;
+		(*R1).y = TI;
+	}
+
+	{
+		T W = twiddles[9 + 5*((5*me + 0)%10) + 1];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R2).x; ry = (*R2).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R2).x = TR;
+		(*R2).y = TI;
+	}
+
+	{
+		T W = twiddles[9 + 5*((5*me + 0)%10) + 2];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R3).x; ry = (*R3).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R3).x = TR;
+		(*R3).y = TI;
+	}
+
+	{
+		T W = twiddles[9 + 5*((5*me + 0)%10) + 3];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R4).x; ry = (*R4).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R4).x = TR;
+		(*R4).y = TI;
+	}
+
+	{
+		T W = twiddles[9 + 5*((5*me + 0)%10) + 4];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R5).x; ry = (*R5).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R5).x = TR;
+		(*R5).y = TI;
+	}
+
+	{
+		T W = twiddles[9 + 5*((5*me + 1)%10) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R7).x; ry = (*R7).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R7).x = TR;
+		(*R7).y = TI;
+	}
+
+	{
+		T W = twiddles[9 + 5*((5*me + 1)%10) + 1];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R8).x; ry = (*R8).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R8).x = TR;
+		(*R8).y = TI;
+	}
+
+	{
+		T W = twiddles[9 + 5*((5*me + 1)%10) + 2];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R9).x; ry = (*R9).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R9).x = TR;
+		(*R9).y = TI;
+	}
+
+	{
+		T W = twiddles[9 + 5*((5*me + 1)%10) + 3];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R10).x; ry = (*R10).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R10).x = TR;
+		(*R10).y = TI;
+	}
+
+	{
+		T W = twiddles[9 + 5*((5*me + 1)%10) + 4];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R11).x; ry = (*R11).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R11).x = TR;
+		(*R11).y = TI;
+	}
+
+	{
+		T W = twiddles[9 + 5*((5*me + 2)%10) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R13).x; ry = (*R13).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R13).x = TR;
+		(*R13).y = TI;
+	}
+
+	{
+		T W = twiddles[9 + 5*((5*me + 2)%10) + 1];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R14).x; ry = (*R14).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R14).x = TR;
+		(*R14).y = TI;
+	}
+
+	{
+		T W = twiddles[9 + 5*((5*me + 2)%10) + 2];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R15).x; ry = (*R15).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R15).x = TR;
+		(*R15).y = TI;
+	}
+
+	{
+		T W = twiddles[9 + 5*((5*me + 2)%10) + 3];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R16).x; ry = (*R16).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R16).x = TR;
+		(*R16).y = TI;
+	}
+
+	{
+		T W = twiddles[9 + 5*((5*me + 2)%10) + 4];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R17).x; ry = (*R17).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R17).x = TR;
+		(*R17).y = TI;
+	}
+
+	{
+		T W = twiddles[9 + 5*((5*me + 3)%10) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R19).x; ry = (*R19).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R19).x = TR;
+		(*R19).y = TI;
+	}
+
+	{
+		T W = twiddles[9 + 5*((5*me + 3)%10) + 1];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R20).x; ry = (*R20).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R20).x = TR;
+		(*R20).y = TI;
+	}
+
+	{
+		T W = twiddles[9 + 5*((5*me + 3)%10) + 2];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R21).x; ry = (*R21).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R21).x = TR;
+		(*R21).y = TI;
+	}
+
+	{
+		T W = twiddles[9 + 5*((5*me + 3)%10) + 3];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R22).x; ry = (*R22).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R22).x = TR;
+		(*R22).y = TI;
+	}
+
+	{
+		T W = twiddles[9 + 5*((5*me + 3)%10) + 4];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R23).x; ry = (*R23).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R23).x = TR;
+		(*R23).y = TI;
+	}
+
+	{
+		T W = twiddles[9 + 5*((5*me + 4)%10) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R25).x; ry = (*R25).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R25).x = TR;
+		(*R25).y = TI;
+	}
+
+	{
+		T W = twiddles[9 + 5*((5*me + 4)%10) + 1];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R26).x; ry = (*R26).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R26).x = TR;
+		(*R26).y = TI;
+	}
+
+	{
+		T W = twiddles[9 + 5*((5*me + 4)%10) + 2];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R27).x; ry = (*R27).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R27).x = TR;
+		(*R27).y = TI;
+	}
+
+	{
+		T W = twiddles[9 + 5*((5*me + 4)%10) + 3];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R28).x; ry = (*R28).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R28).x = TR;
+		(*R28).y = TI;
+	}
+
+	{
+		T W = twiddles[9 + 5*((5*me + 4)%10) + 4];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R29).x; ry = (*R29).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R29).x = TR;
+		(*R29).y = TI;
+	}
+
+	FwdRad6B1(R0, R1, R2, R3, R4, R5);
+	FwdRad6B1(R6, R7, R8, R9, R10, R11);
+	FwdRad6B1(R12, R13, R14, R15, R16, R17);
+	FwdRad6B1(R18, R19, R20, R21, R22, R23);
+	FwdRad6B1(R24, R25, R26, R27, R28, R29);
+
+
+	if(rw)
+	{
+	bufOutRe[outOffset + ( ((5*me + 0)/10)*60 + (5*me + 0)%10 + 0 ) ] = (*R0).x;
+	bufOutRe[outOffset + ( ((5*me + 0)/10)*60 + (5*me + 0)%10 + 10 ) ] = (*R1).x;
+	bufOutRe[outOffset + ( ((5*me + 0)/10)*60 + (5*me + 0)%10 + 20 ) ] = (*R2).x;
+	bufOutRe[outOffset + ( ((5*me + 0)/10)*60 + (5*me + 0)%10 + 30 ) ] = (*R3).x;
+	bufOutRe[outOffset + ( ((5*me + 0)/10)*60 + (5*me + 0)%10 + 40 ) ] = (*R4).x;
+	bufOutRe[outOffset + ( ((5*me + 0)/10)*60 + (5*me + 0)%10 + 50 ) ] = (*R5).x;
+	bufOutRe[outOffset + ( ((5*me + 1)/10)*60 + (5*me + 1)%10 + 0 ) ] = (*R6).x;
+	bufOutRe[outOffset + ( ((5*me + 1)/10)*60 + (5*me + 1)%10 + 10 ) ] = (*R7).x;
+	bufOutRe[outOffset + ( ((5*me + 1)/10)*60 + (5*me + 1)%10 + 20 ) ] = (*R8).x;
+	bufOutRe[outOffset + ( ((5*me + 1)/10)*60 + (5*me + 1)%10 + 30 ) ] = (*R9).x;
+	bufOutRe[outOffset + ( ((5*me + 1)/10)*60 + (5*me + 1)%10 + 40 ) ] = (*R10).x;
+	bufOutRe[outOffset + ( ((5*me + 1)/10)*60 + (5*me + 1)%10 + 50 ) ] = (*R11).x;
+	bufOutRe[outOffset + ( ((5*me + 2)/10)*60 + (5*me + 2)%10 + 0 ) ] = (*R12).x;
+	bufOutRe[outOffset + ( ((5*me + 2)/10)*60 + (5*me + 2)%10 + 10 ) ] = (*R13).x;
+	bufOutRe[outOffset + ( ((5*me + 2)/10)*60 + (5*me + 2)%10 + 20 ) ] = (*R14).x;
+	bufOutRe[outOffset + ( ((5*me + 2)/10)*60 + (5*me + 2)%10 + 30 ) ] = (*R15).x;
+	bufOutRe[outOffset + ( ((5*me + 2)/10)*60 + (5*me + 2)%10 + 40 ) ] = (*R16).x;
+	bufOutRe[outOffset + ( ((5*me + 2)/10)*60 + (5*me + 2)%10 + 50 ) ] = (*R17).x;
+	bufOutRe[outOffset + ( ((5*me + 3)/10)*60 + (5*me + 3)%10 + 0 ) ] = (*R18).x;
+	bufOutRe[outOffset + ( ((5*me + 3)/10)*60 + (5*me + 3)%10 + 10 ) ] = (*R19).x;
+	bufOutRe[outOffset + ( ((5*me + 3)/10)*60 + (5*me + 3)%10 + 20 ) ] = (*R20).x;
+	bufOutRe[outOffset + ( ((5*me + 3)/10)*60 + (5*me + 3)%10 + 30 ) ] = (*R21).x;
+	bufOutRe[outOffset + ( ((5*me + 3)/10)*60 + (5*me + 3)%10 + 40 ) ] = (*R22).x;
+	bufOutRe[outOffset + ( ((5*me + 3)/10)*60 + (5*me + 3)%10 + 50 ) ] = (*R23).x;
+	bufOutRe[outOffset + ( ((5*me + 4)/10)*60 + (5*me + 4)%10 + 0 ) ] = (*R24).x;
+	bufOutRe[outOffset + ( ((5*me + 4)/10)*60 + (5*me + 4)%10 + 10 ) ] = (*R25).x;
+	bufOutRe[outOffset + ( ((5*me + 4)/10)*60 + (5*me + 4)%10 + 20 ) ] = (*R26).x;
+	bufOutRe[outOffset + ( ((5*me + 4)/10)*60 + (5*me + 4)%10 + 30 ) ] = (*R27).x;
+	bufOutRe[outOffset + ( ((5*me + 4)/10)*60 + (5*me + 4)%10 + 40 ) ] = (*R28).x;
+	bufOutRe[outOffset + ( ((5*me + 4)/10)*60 + (5*me + 4)%10 + 50 ) ] = (*R29).x;
+	}
+
+
+	__syncthreads();
+
+	if(rw)
+	{
+	(*R0).x = bufOutRe[outOffset + ( 0 + me*15 + 0 + 0 ) ];
+	(*R2).x = bufOutRe[outOffset + ( 0 + me*15 + 1 + 0 ) ];
+	(*R4).x = bufOutRe[outOffset + ( 0 + me*15 + 2 + 0 ) ];
+	(*R6).x = bufOutRe[outOffset + ( 0 + me*15 + 3 + 0 ) ];
+	(*R8).x = bufOutRe[outOffset + ( 0 + me*15 + 4 + 0 ) ];
+	(*R10).x = bufOutRe[outOffset + ( 0 + me*15 + 5 + 0 ) ];
+	(*R12).x = bufOutRe[outOffset + ( 0 + me*15 + 6 + 0 ) ];
+	(*R14).x = bufOutRe[outOffset + ( 0 + me*15 + 7 + 0 ) ];
+	(*R16).x = bufOutRe[outOffset + ( 0 + me*15 + 8 + 0 ) ];
+	(*R18).x = bufOutRe[outOffset + ( 0 + me*15 + 9 + 0 ) ];
+	(*R20).x = bufOutRe[outOffset + ( 0 + me*15 + 10 + 0 ) ];
+	(*R22).x = bufOutRe[outOffset + ( 0 + me*15 + 11 + 0 ) ];
+	(*R24).x = bufOutRe[outOffset + ( 0 + me*15 + 12 + 0 ) ];
+	(*R26).x = bufOutRe[outOffset + ( 0 + me*15 + 13 + 0 ) ];
+	(*R28).x = bufOutRe[outOffset + ( 0 + me*15 + 14 + 0 ) ];
+	(*R1).x = bufOutRe[outOffset + ( 0 + me*15 + 0 + 480 ) ];
+	(*R3).x = bufOutRe[outOffset + ( 0 + me*15 + 1 + 480 ) ];
+	(*R5).x = bufOutRe[outOffset + ( 0 + me*15 + 2 + 480 ) ];
+	(*R7).x = bufOutRe[outOffset + ( 0 + me*15 + 3 + 480 ) ];
+	(*R9).x = bufOutRe[outOffset + ( 0 + me*15 + 4 + 480 ) ];
+	(*R11).x = bufOutRe[outOffset + ( 0 + me*15 + 5 + 480 ) ];
+	(*R13).x = bufOutRe[outOffset + ( 0 + me*15 + 6 + 480 ) ];
+	(*R15).x = bufOutRe[outOffset + ( 0 + me*15 + 7 + 480 ) ];
+	(*R17).x = bufOutRe[outOffset + ( 0 + me*15 + 8 + 480 ) ];
+	(*R19).x = bufOutRe[outOffset + ( 0 + me*15 + 9 + 480 ) ];
+	(*R21).x = bufOutRe[outOffset + ( 0 + me*15 + 10 + 480 ) ];
+	(*R23).x = bufOutRe[outOffset + ( 0 + me*15 + 11 + 480 ) ];
+	(*R25).x = bufOutRe[outOffset + ( 0 + me*15 + 12 + 480 ) ];
+	(*R27).x = bufOutRe[outOffset + ( 0 + me*15 + 13 + 480 ) ];
+	(*R29).x = bufOutRe[outOffset + ( 0 + me*15 + 14 + 480 ) ];
+	}
+
+
+	__syncthreads();
+
+	if(rw)
+	{
+	bufOutIm[outOffset + ( ((5*me + 0)/10)*60 + (5*me + 0)%10 + 0 ) ] = (*R0).y;
+	bufOutIm[outOffset + ( ((5*me + 0)/10)*60 + (5*me + 0)%10 + 10 ) ] = (*R1).y;
+	bufOutIm[outOffset + ( ((5*me + 0)/10)*60 + (5*me + 0)%10 + 20 ) ] = (*R2).y;
+	bufOutIm[outOffset + ( ((5*me + 0)/10)*60 + (5*me + 0)%10 + 30 ) ] = (*R3).y;
+	bufOutIm[outOffset + ( ((5*me + 0)/10)*60 + (5*me + 0)%10 + 40 ) ] = (*R4).y;
+	bufOutIm[outOffset + ( ((5*me + 0)/10)*60 + (5*me + 0)%10 + 50 ) ] = (*R5).y;
+	bufOutIm[outOffset + ( ((5*me + 1)/10)*60 + (5*me + 1)%10 + 0 ) ] = (*R6).y;
+	bufOutIm[outOffset + ( ((5*me + 1)/10)*60 + (5*me + 1)%10 + 10 ) ] = (*R7).y;
+	bufOutIm[outOffset + ( ((5*me + 1)/10)*60 + (5*me + 1)%10 + 20 ) ] = (*R8).y;
+	bufOutIm[outOffset + ( ((5*me + 1)/10)*60 + (5*me + 1)%10 + 30 ) ] = (*R9).y;
+	bufOutIm[outOffset + ( ((5*me + 1)/10)*60 + (5*me + 1)%10 + 40 ) ] = (*R10).y;
+	bufOutIm[outOffset + ( ((5*me + 1)/10)*60 + (5*me + 1)%10 + 50 ) ] = (*R11).y;
+	bufOutIm[outOffset + ( ((5*me + 2)/10)*60 + (5*me + 2)%10 + 0 ) ] = (*R12).y;
+	bufOutIm[outOffset + ( ((5*me + 2)/10)*60 + (5*me + 2)%10 + 10 ) ] = (*R13).y;
+	bufOutIm[outOffset + ( ((5*me + 2)/10)*60 + (5*me + 2)%10 + 20 ) ] = (*R14).y;
+	bufOutIm[outOffset + ( ((5*me + 2)/10)*60 + (5*me + 2)%10 + 30 ) ] = (*R15).y;
+	bufOutIm[outOffset + ( ((5*me + 2)/10)*60 + (5*me + 2)%10 + 40 ) ] = (*R16).y;
+	bufOutIm[outOffset + ( ((5*me + 2)/10)*60 + (5*me + 2)%10 + 50 ) ] = (*R17).y;
+	bufOutIm[outOffset + ( ((5*me + 3)/10)*60 + (5*me + 3)%10 + 0 ) ] = (*R18).y;
+	bufOutIm[outOffset + ( ((5*me + 3)/10)*60 + (5*me + 3)%10 + 10 ) ] = (*R19).y;
+	bufOutIm[outOffset + ( ((5*me + 3)/10)*60 + (5*me + 3)%10 + 20 ) ] = (*R20).y;
+	bufOutIm[outOffset + ( ((5*me + 3)/10)*60 + (5*me + 3)%10 + 30 ) ] = (*R21).y;
+	bufOutIm[outOffset + ( ((5*me + 3)/10)*60 + (5*me + 3)%10 + 40 ) ] = (*R22).y;
+	bufOutIm[outOffset + ( ((5*me + 3)/10)*60 + (5*me + 3)%10 + 50 ) ] = (*R23).y;
+	bufOutIm[outOffset + ( ((5*me + 4)/10)*60 + (5*me + 4)%10 + 0 ) ] = (*R24).y;
+	bufOutIm[outOffset + ( ((5*me + 4)/10)*60 + (5*me + 4)%10 + 10 ) ] = (*R25).y;
+	bufOutIm[outOffset + ( ((5*me + 4)/10)*60 + (5*me + 4)%10 + 20 ) ] = (*R26).y;
+	bufOutIm[outOffset + ( ((5*me + 4)/10)*60 + (5*me + 4)%10 + 30 ) ] = (*R27).y;
+	bufOutIm[outOffset + ( ((5*me + 4)/10)*60 + (5*me + 4)%10 + 40 ) ] = (*R28).y;
+	bufOutIm[outOffset + ( ((5*me + 4)/10)*60 + (5*me + 4)%10 + 50 ) ] = (*R29).y;
+	}
+
+
+	__syncthreads();
+
+	if(rw)
+	{
+	(*R0).y = bufOutIm[outOffset + ( 0 + me*15 + 0 + 0 ) ];
+	(*R2).y = bufOutIm[outOffset + ( 0 + me*15 + 1 + 0 ) ];
+	(*R4).y = bufOutIm[outOffset + ( 0 + me*15 + 2 + 0 ) ];
+	(*R6).y = bufOutIm[outOffset + ( 0 + me*15 + 3 + 0 ) ];
+	(*R8).y = bufOutIm[outOffset + ( 0 + me*15 + 4 + 0 ) ];
+	(*R10).y = bufOutIm[outOffset + ( 0 + me*15 + 5 + 0 ) ];
+	(*R12).y = bufOutIm[outOffset + ( 0 + me*15 + 6 + 0 ) ];
+	(*R14).y = bufOutIm[outOffset + ( 0 + me*15 + 7 + 0 ) ];
+	(*R16).y = bufOutIm[outOffset + ( 0 + me*15 + 8 + 0 ) ];
+	(*R18).y = bufOutIm[outOffset + ( 0 + me*15 + 9 + 0 ) ];
+	(*R20).y = bufOutIm[outOffset + ( 0 + me*15 + 10 + 0 ) ];
+	(*R22).y = bufOutIm[outOffset + ( 0 + me*15 + 11 + 0 ) ];
+	(*R24).y = bufOutIm[outOffset + ( 0 + me*15 + 12 + 0 ) ];
+	(*R26).y = bufOutIm[outOffset + ( 0 + me*15 + 13 + 0 ) ];
+	(*R28).y = bufOutIm[outOffset + ( 0 + me*15 + 14 + 0 ) ];
+	(*R1).y = bufOutIm[outOffset + ( 0 + me*15 + 0 + 480 ) ];
+	(*R3).y = bufOutIm[outOffset + ( 0 + me*15 + 1 + 480 ) ];
+	(*R5).y = bufOutIm[outOffset + ( 0 + me*15 + 2 + 480 ) ];
+	(*R7).y = bufOutIm[outOffset + ( 0 + me*15 + 3 + 480 ) ];
+	(*R9).y = bufOutIm[outOffset + ( 0 + me*15 + 4 + 480 ) ];
+	(*R11).y = bufOutIm[outOffset + ( 0 + me*15 + 5 + 480 ) ];
+	(*R13).y = bufOutIm[outOffset + ( 0 + me*15 + 6 + 480 ) ];
+	(*R15).y = bufOutIm[outOffset + ( 0 + me*15 + 7 + 480 ) ];
+	(*R17).y = bufOutIm[outOffset + ( 0 + me*15 + 8 + 480 ) ];
+	(*R19).y = bufOutIm[outOffset + ( 0 + me*15 + 9 + 480 ) ];
+	(*R21).y = bufOutIm[outOffset + ( 0 + me*15 + 10 + 480 ) ];
+	(*R23).y = bufOutIm[outOffset + ( 0 + me*15 + 11 + 480 ) ];
+	(*R25).y = bufOutIm[outOffset + ( 0 + me*15 + 12 + 480 ) ];
+	(*R27).y = bufOutIm[outOffset + ( 0 + me*15 + 13 + 480 ) ];
+	(*R29).y = bufOutIm[outOffset + ( 0 + me*15 + 14 + 480 ) ];
+	}
+
+
+	__syncthreads();
+
+}
+
+template <typename T, StrideBin sb>
+__device__ void
+FwdPass2_len960(const T *twiddles, const size_t stride_in, const size_t stride_out, unsigned int rw, unsigned int b, unsigned int me, unsigned int inOffset, unsigned int outOffset, real_type_t<T> *bufInRe, real_type_t<T> *bufInIm, real_type_t<T> *bufOutRe, real_type_t<T> *bufOutIm, T *R0, T *R1, T *R2, T *R3, T *R4, T *R5, T *R6, T *R7, T *R8, T *R9, T *R10, T *R11, T *R12, T *R13, T *R14, T *R15, T *R16, T *R17, T *R18, T *R19, T *R20, T *R21, T *R22, T *R23, T *R24, T *R25, T *R26, T *R27, T *R28, T *R29)
+{
+
+
+
+
+	{
+		T W = twiddles[59 + 1*((15*me + 0)%60) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R1).x; ry = (*R1).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R1).x = TR;
+		(*R1).y = TI;
+	}
+
+	{
+		T W = twiddles[59 + 1*((15*me + 1)%60) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R3).x; ry = (*R3).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R3).x = TR;
+		(*R3).y = TI;
+	}
+
+	{
+		T W = twiddles[59 + 1*((15*me + 2)%60) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R5).x; ry = (*R5).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R5).x = TR;
+		(*R5).y = TI;
+	}
+
+	{
+		T W = twiddles[59 + 1*((15*me + 3)%60) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R7).x; ry = (*R7).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R7).x = TR;
+		(*R7).y = TI;
+	}
+
+	{
+		T W = twiddles[59 + 1*((15*me + 4)%60) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R9).x; ry = (*R9).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R9).x = TR;
+		(*R9).y = TI;
+	}
+
+	{
+		T W = twiddles[59 + 1*((15*me + 5)%60) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R11).x; ry = (*R11).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R11).x = TR;
+		(*R11).y = TI;
+	}
+
+	{
+		T W = twiddles[59 + 1*((15*me + 6)%60) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R13).x; ry = (*R13).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R13).x = TR;
+		(*R13).y = TI;
+	}
+
+	{
+		T W = twiddles[59 + 1*((15*me + 7)%60) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R15).x; ry = (*R15).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R15).x = TR;
+		(*R15).y = TI;
+	}
+
+	{
+		T W = twiddles[59 + 1*((15*me + 8)%60) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R17).x; ry = (*R17).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R17).x = TR;
+		(*R17).y = TI;
+	}
+
+	{
+		T W = twiddles[59 + 1*((15*me + 9)%60) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R19).x; ry = (*R19).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R19).x = TR;
+		(*R19).y = TI;
+	}
+
+	{
+		T W = twiddles[59 + 1*((15*me + 10)%60) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R21).x; ry = (*R21).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R21).x = TR;
+		(*R21).y = TI;
+	}
+
+	{
+		T W = twiddles[59 + 1*((15*me + 11)%60) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R23).x; ry = (*R23).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R23).x = TR;
+		(*R23).y = TI;
+	}
+
+	{
+		T W = twiddles[59 + 1*((15*me + 12)%60) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R25).x; ry = (*R25).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R25).x = TR;
+		(*R25).y = TI;
+	}
+
+	{
+		T W = twiddles[59 + 1*((15*me + 13)%60) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R27).x; ry = (*R27).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R27).x = TR;
+		(*R27).y = TI;
+	}
+
+	{
+		T W = twiddles[59 + 1*((15*me + 14)%60) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R29).x; ry = (*R29).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R29).x = TR;
+		(*R29).y = TI;
+	}
+
+	FwdRad2B1(R0, R1);
+	FwdRad2B1(R2, R3);
+	FwdRad2B1(R4, R5);
+	FwdRad2B1(R6, R7);
+	FwdRad2B1(R8, R9);
+	FwdRad2B1(R10, R11);
+	FwdRad2B1(R12, R13);
+	FwdRad2B1(R14, R15);
+	FwdRad2B1(R16, R17);
+	FwdRad2B1(R18, R19);
+	FwdRad2B1(R20, R21);
+	FwdRad2B1(R22, R23);
+	FwdRad2B1(R24, R25);
+	FwdRad2B1(R26, R27);
+	FwdRad2B1(R28, R29);
+
+
+	if(rw)
+	{
+	bufOutRe[outOffset + ( ((15*me + 0)/60)*120 + (15*me + 0)%60 + 0 ) ] = (*R0).x;
+	bufOutRe[outOffset + ( ((15*me + 0)/60)*120 + (15*me + 0)%60 + 60 ) ] = (*R1).x;
+	bufOutRe[outOffset + ( ((15*me + 1)/60)*120 + (15*me + 1)%60 + 0 ) ] = (*R2).x;
+	bufOutRe[outOffset + ( ((15*me + 1)/60)*120 + (15*me + 1)%60 + 60 ) ] = (*R3).x;
+	bufOutRe[outOffset + ( ((15*me + 2)/60)*120 + (15*me + 2)%60 + 0 ) ] = (*R4).x;
+	bufOutRe[outOffset + ( ((15*me + 2)/60)*120 + (15*me + 2)%60 + 60 ) ] = (*R5).x;
+	bufOutRe[outOffset + ( ((15*me + 3)/60)*120 + (15*me + 3)%60 + 0 ) ] = (*R6).x;
+	bufOutRe[outOffset + ( ((15*me + 3)/60)*120 + (15*me + 3)%60 + 60 ) ] = (*R7).x;
+	bufOutRe[outOffset + ( ((15*me + 4)/60)*120 + (15*me + 4)%60 + 0 ) ] = (*R8).x;
+	bufOutRe[outOffset + ( ((15*me + 4)/60)*120 + (15*me + 4)%60 + 60 ) ] = (*R9).x;
+	bufOutRe[outOffset + ( ((15*me + 5)/60)*120 + (15*me + 5)%60 + 0 ) ] = (*R10).x;
+	bufOutRe[outOffset + ( ((15*me + 5)/60)*120 + (15*me + 5)%60 + 60 ) ] = (*R11).x;
+	bufOutRe[outOffset + ( ((15*me + 6)/60)*120 + (15*me + 6)%60 + 0 ) ] = (*R12).x;
+	bufOutRe[outOffset + ( ((15*me + 6)/60)*120 + (15*me + 6)%60 + 60 ) ] = (*R13).x;
+	bufOutRe[outOffset + ( ((15*me + 7)/60)*120 + (15*me + 7)%60 + 0 ) ] = (*R14).x;
+	bufOutRe[outOffset + ( ((15*me + 7)/60)*120 + (15*me + 7)%60 + 60 ) ] = (*R15).x;
+	bufOutRe[outOffset + ( ((15*me + 8)/60)*120 + (15*me + 8)%60 + 0 ) ] = (*R16).x;
+	bufOutRe[outOffset + ( ((15*me + 8)/60)*120 + (15*me + 8)%60 + 60 ) ] = (*R17).x;
+	bufOutRe[outOffset + ( ((15*me + 9)/60)*120 + (15*me + 9)%60 + 0 ) ] = (*R18).x;
+	bufOutRe[outOffset + ( ((15*me + 9)/60)*120 + (15*me + 9)%60 + 60 ) ] = (*R19).x;
+	bufOutRe[outOffset + ( ((15*me + 10)/60)*120 + (15*me + 10)%60 + 0 ) ] = (*R20).x;
+	bufOutRe[outOffset + ( ((15*me + 10)/60)*120 + (15*me + 10)%60 + 60 ) ] = (*R21).x;
+	bufOutRe[outOffset + ( ((15*me + 11)/60)*120 + (15*me + 11)%60 + 0 ) ] = (*R22).x;
+	bufOutRe[outOffset + ( ((15*me + 11)/60)*120 + (15*me + 11)%60 + 60 ) ] = (*R23).x;
+	bufOutRe[outOffset + ( ((15*me + 12)/60)*120 + (15*me + 12)%60 + 0 ) ] = (*R24).x;
+	bufOutRe[outOffset + ( ((15*me + 12)/60)*120 + (15*me + 12)%60 + 60 ) ] = (*R25).x;
+	bufOutRe[outOffset + ( ((15*me + 13)/60)*120 + (15*me + 13)%60 + 0 ) ] = (*R26).x;
+	bufOutRe[outOffset + ( ((15*me + 13)/60)*120 + (15*me + 13)%60 + 60 ) ] = (*R27).x;
+	bufOutRe[outOffset + ( ((15*me + 14)/60)*120 + (15*me + 14)%60 + 0 ) ] = (*R28).x;
+	bufOutRe[outOffset + ( ((15*me + 14)/60)*120 + (15*me + 14)%60 + 60 ) ] = (*R29).x;
+	}
+
+
+	__syncthreads();
+
+	if(rw)
+	{
+	(*R0).x = bufOutRe[outOffset + ( 0 + me*15 + 0 + 0 ) ];
+	(*R2).x = bufOutRe[outOffset + ( 0 + me*15 + 1 + 0 ) ];
+	(*R4).x = bufOutRe[outOffset + ( 0 + me*15 + 2 + 0 ) ];
+	(*R6).x = bufOutRe[outOffset + ( 0 + me*15 + 3 + 0 ) ];
+	(*R8).x = bufOutRe[outOffset + ( 0 + me*15 + 4 + 0 ) ];
+	(*R10).x = bufOutRe[outOffset + ( 0 + me*15 + 5 + 0 ) ];
+	(*R12).x = bufOutRe[outOffset + ( 0 + me*15 + 6 + 0 ) ];
+	(*R14).x = bufOutRe[outOffset + ( 0 + me*15 + 7 + 0 ) ];
+	(*R16).x = bufOutRe[outOffset + ( 0 + me*15 + 8 + 0 ) ];
+	(*R18).x = bufOutRe[outOffset + ( 0 + me*15 + 9 + 0 ) ];
+	(*R20).x = bufOutRe[outOffset + ( 0 + me*15 + 10 + 0 ) ];
+	(*R22).x = bufOutRe[outOffset + ( 0 + me*15 + 11 + 0 ) ];
+	(*R24).x = bufOutRe[outOffset + ( 0 + me*15 + 12 + 0 ) ];
+	(*R26).x = bufOutRe[outOffset + ( 0 + me*15 + 13 + 0 ) ];
+	(*R28).x = bufOutRe[outOffset + ( 0 + me*15 + 14 + 0 ) ];
+	(*R1).x = bufOutRe[outOffset + ( 0 + me*15 + 0 + 480 ) ];
+	(*R3).x = bufOutRe[outOffset + ( 0 + me*15 + 1 + 480 ) ];
+	(*R5).x = bufOutRe[outOffset + ( 0 + me*15 + 2 + 480 ) ];
+	(*R7).x = bufOutRe[outOffset + ( 0 + me*15 + 3 + 480 ) ];
+	(*R9).x = bufOutRe[outOffset + ( 0 + me*15 + 4 + 480 ) ];
+	(*R11).x = bufOutRe[outOffset + ( 0 + me*15 + 5 + 480 ) ];
+	(*R13).x = bufOutRe[outOffset + ( 0 + me*15 + 6 + 480 ) ];
+	(*R15).x = bufOutRe[outOffset + ( 0 + me*15 + 7 + 480 ) ];
+	(*R17).x = bufOutRe[outOffset + ( 0 + me*15 + 8 + 480 ) ];
+	(*R19).x = bufOutRe[outOffset + ( 0 + me*15 + 9 + 480 ) ];
+	(*R21).x = bufOutRe[outOffset + ( 0 + me*15 + 10 + 480 ) ];
+	(*R23).x = bufOutRe[outOffset + ( 0 + me*15 + 11 + 480 ) ];
+	(*R25).x = bufOutRe[outOffset + ( 0 + me*15 + 12 + 480 ) ];
+	(*R27).x = bufOutRe[outOffset + ( 0 + me*15 + 13 + 480 ) ];
+	(*R29).x = bufOutRe[outOffset + ( 0 + me*15 + 14 + 480 ) ];
+	}
+
+
+	__syncthreads();
+
+	if(rw)
+	{
+	bufOutIm[outOffset + ( ((15*me + 0)/60)*120 + (15*me + 0)%60 + 0 ) ] = (*R0).y;
+	bufOutIm[outOffset + ( ((15*me + 0)/60)*120 + (15*me + 0)%60 + 60 ) ] = (*R1).y;
+	bufOutIm[outOffset + ( ((15*me + 1)/60)*120 + (15*me + 1)%60 + 0 ) ] = (*R2).y;
+	bufOutIm[outOffset + ( ((15*me + 1)/60)*120 + (15*me + 1)%60 + 60 ) ] = (*R3).y;
+	bufOutIm[outOffset + ( ((15*me + 2)/60)*120 + (15*me + 2)%60 + 0 ) ] = (*R4).y;
+	bufOutIm[outOffset + ( ((15*me + 2)/60)*120 + (15*me + 2)%60 + 60 ) ] = (*R5).y;
+	bufOutIm[outOffset + ( ((15*me + 3)/60)*120 + (15*me + 3)%60 + 0 ) ] = (*R6).y;
+	bufOutIm[outOffset + ( ((15*me + 3)/60)*120 + (15*me + 3)%60 + 60 ) ] = (*R7).y;
+	bufOutIm[outOffset + ( ((15*me + 4)/60)*120 + (15*me + 4)%60 + 0 ) ] = (*R8).y;
+	bufOutIm[outOffset + ( ((15*me + 4)/60)*120 + (15*me + 4)%60 + 60 ) ] = (*R9).y;
+	bufOutIm[outOffset + ( ((15*me + 5)/60)*120 + (15*me + 5)%60 + 0 ) ] = (*R10).y;
+	bufOutIm[outOffset + ( ((15*me + 5)/60)*120 + (15*me + 5)%60 + 60 ) ] = (*R11).y;
+	bufOutIm[outOffset + ( ((15*me + 6)/60)*120 + (15*me + 6)%60 + 0 ) ] = (*R12).y;
+	bufOutIm[outOffset + ( ((15*me + 6)/60)*120 + (15*me + 6)%60 + 60 ) ] = (*R13).y;
+	bufOutIm[outOffset + ( ((15*me + 7)/60)*120 + (15*me + 7)%60 + 0 ) ] = (*R14).y;
+	bufOutIm[outOffset + ( ((15*me + 7)/60)*120 + (15*me + 7)%60 + 60 ) ] = (*R15).y;
+	bufOutIm[outOffset + ( ((15*me + 8)/60)*120 + (15*me + 8)%60 + 0 ) ] = (*R16).y;
+	bufOutIm[outOffset + ( ((15*me + 8)/60)*120 + (15*me + 8)%60 + 60 ) ] = (*R17).y;
+	bufOutIm[outOffset + ( ((15*me + 9)/60)*120 + (15*me + 9)%60 + 0 ) ] = (*R18).y;
+	bufOutIm[outOffset + ( ((15*me + 9)/60)*120 + (15*me + 9)%60 + 60 ) ] = (*R19).y;
+	bufOutIm[outOffset + ( ((15*me + 10)/60)*120 + (15*me + 10)%60 + 0 ) ] = (*R20).y;
+	bufOutIm[outOffset + ( ((15*me + 10)/60)*120 + (15*me + 10)%60 + 60 ) ] = (*R21).y;
+	bufOutIm[outOffset + ( ((15*me + 11)/60)*120 + (15*me + 11)%60 + 0 ) ] = (*R22).y;
+	bufOutIm[outOffset + ( ((15*me + 11)/60)*120 + (15*me + 11)%60 + 60 ) ] = (*R23).y;
+	bufOutIm[outOffset + ( ((15*me + 12)/60)*120 + (15*me + 12)%60 + 0 ) ] = (*R24).y;
+	bufOutIm[outOffset + ( ((15*me + 12)/60)*120 + (15*me + 12)%60 + 60 ) ] = (*R25).y;
+	bufOutIm[outOffset + ( ((15*me + 13)/60)*120 + (15*me + 13)%60 + 0 ) ] = (*R26).y;
+	bufOutIm[outOffset + ( ((15*me + 13)/60)*120 + (15*me + 13)%60 + 60 ) ] = (*R27).y;
+	bufOutIm[outOffset + ( ((15*me + 14)/60)*120 + (15*me + 14)%60 + 0 ) ] = (*R28).y;
+	bufOutIm[outOffset + ( ((15*me + 14)/60)*120 + (15*me + 14)%60 + 60 ) ] = (*R29).y;
+	}
+
+
+	__syncthreads();
+
+	if(rw)
+	{
+	(*R0).y = bufOutIm[outOffset + ( 0 + me*15 + 0 + 0 ) ];
+	(*R2).y = bufOutIm[outOffset + ( 0 + me*15 + 1 + 0 ) ];
+	(*R4).y = bufOutIm[outOffset + ( 0 + me*15 + 2 + 0 ) ];
+	(*R6).y = bufOutIm[outOffset + ( 0 + me*15 + 3 + 0 ) ];
+	(*R8).y = bufOutIm[outOffset + ( 0 + me*15 + 4 + 0 ) ];
+	(*R10).y = bufOutIm[outOffset + ( 0 + me*15 + 5 + 0 ) ];
+	(*R12).y = bufOutIm[outOffset + ( 0 + me*15 + 6 + 0 ) ];
+	(*R14).y = bufOutIm[outOffset + ( 0 + me*15 + 7 + 0 ) ];
+	(*R16).y = bufOutIm[outOffset + ( 0 + me*15 + 8 + 0 ) ];
+	(*R18).y = bufOutIm[outOffset + ( 0 + me*15 + 9 + 0 ) ];
+	(*R20).y = bufOutIm[outOffset + ( 0 + me*15 + 10 + 0 ) ];
+	(*R22).y = bufOutIm[outOffset + ( 0 + me*15 + 11 + 0 ) ];
+	(*R24).y = bufOutIm[outOffset + ( 0 + me*15 + 12 + 0 ) ];
+	(*R26).y = bufOutIm[outOffset + ( 0 + me*15 + 13 + 0 ) ];
+	(*R28).y = bufOutIm[outOffset + ( 0 + me*15 + 14 + 0 ) ];
+	(*R1).y = bufOutIm[outOffset + ( 0 + me*15 + 0 + 480 ) ];
+	(*R3).y = bufOutIm[outOffset + ( 0 + me*15 + 1 + 480 ) ];
+	(*R5).y = bufOutIm[outOffset + ( 0 + me*15 + 2 + 480 ) ];
+	(*R7).y = bufOutIm[outOffset + ( 0 + me*15 + 3 + 480 ) ];
+	(*R9).y = bufOutIm[outOffset + ( 0 + me*15 + 4 + 480 ) ];
+	(*R11).y = bufOutIm[outOffset + ( 0 + me*15 + 5 + 480 ) ];
+	(*R13).y = bufOutIm[outOffset + ( 0 + me*15 + 6 + 480 ) ];
+	(*R15).y = bufOutIm[outOffset + ( 0 + me*15 + 7 + 480 ) ];
+	(*R17).y = bufOutIm[outOffset + ( 0 + me*15 + 8 + 480 ) ];
+	(*R19).y = bufOutIm[outOffset + ( 0 + me*15 + 9 + 480 ) ];
+	(*R21).y = bufOutIm[outOffset + ( 0 + me*15 + 10 + 480 ) ];
+	(*R23).y = bufOutIm[outOffset + ( 0 + me*15 + 11 + 480 ) ];
+	(*R25).y = bufOutIm[outOffset + ( 0 + me*15 + 12 + 480 ) ];
+	(*R27).y = bufOutIm[outOffset + ( 0 + me*15 + 13 + 480 ) ];
+	(*R29).y = bufOutIm[outOffset + ( 0 + me*15 + 14 + 480 ) ];
+	}
+
+
+	__syncthreads();
+
+}
+
+template <typename T, StrideBin sb>
+__device__ void
+FwdPass3_len960(const T *twiddles, const size_t stride_in, const size_t stride_out, unsigned int rw, unsigned int b, unsigned int me, unsigned int inOffset, unsigned int outOffset, real_type_t<T> *bufInRe, real_type_t<T> *bufInIm, real_type_t<T> *bufOutRe, real_type_t<T> *bufOutIm, T *R0, T *R1, T *R2, T *R3, T *R4, T *R5, T *R6, T *R7, T *R8, T *R9, T *R10, T *R11, T *R12, T *R13, T *R14, T *R15, T *R16, T *R17, T *R18, T *R19, T *R20, T *R21, T *R22, T *R23, T *R24, T *R25, T *R26, T *R27, T *R28, T *R29)
+{
+
+
+
+
+	{
+		T W = twiddles[119 + 1*((15*me + 0)%120) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R1).x; ry = (*R1).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R1).x = TR;
+		(*R1).y = TI;
+	}
+
+	{
+		T W = twiddles[119 + 1*((15*me + 1)%120) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R3).x; ry = (*R3).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R3).x = TR;
+		(*R3).y = TI;
+	}
+
+	{
+		T W = twiddles[119 + 1*((15*me + 2)%120) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R5).x; ry = (*R5).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R5).x = TR;
+		(*R5).y = TI;
+	}
+
+	{
+		T W = twiddles[119 + 1*((15*me + 3)%120) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R7).x; ry = (*R7).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R7).x = TR;
+		(*R7).y = TI;
+	}
+
+	{
+		T W = twiddles[119 + 1*((15*me + 4)%120) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R9).x; ry = (*R9).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R9).x = TR;
+		(*R9).y = TI;
+	}
+
+	{
+		T W = twiddles[119 + 1*((15*me + 5)%120) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R11).x; ry = (*R11).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R11).x = TR;
+		(*R11).y = TI;
+	}
+
+	{
+		T W = twiddles[119 + 1*((15*me + 6)%120) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R13).x; ry = (*R13).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R13).x = TR;
+		(*R13).y = TI;
+	}
+
+	{
+		T W = twiddles[119 + 1*((15*me + 7)%120) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R15).x; ry = (*R15).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R15).x = TR;
+		(*R15).y = TI;
+	}
+
+	{
+		T W = twiddles[119 + 1*((15*me + 8)%120) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R17).x; ry = (*R17).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R17).x = TR;
+		(*R17).y = TI;
+	}
+
+	{
+		T W = twiddles[119 + 1*((15*me + 9)%120) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R19).x; ry = (*R19).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R19).x = TR;
+		(*R19).y = TI;
+	}
+
+	{
+		T W = twiddles[119 + 1*((15*me + 10)%120) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R21).x; ry = (*R21).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R21).x = TR;
+		(*R21).y = TI;
+	}
+
+	{
+		T W = twiddles[119 + 1*((15*me + 11)%120) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R23).x; ry = (*R23).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R23).x = TR;
+		(*R23).y = TI;
+	}
+
+	{
+		T W = twiddles[119 + 1*((15*me + 12)%120) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R25).x; ry = (*R25).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R25).x = TR;
+		(*R25).y = TI;
+	}
+
+	{
+		T W = twiddles[119 + 1*((15*me + 13)%120) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R27).x; ry = (*R27).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R27).x = TR;
+		(*R27).y = TI;
+	}
+
+	{
+		T W = twiddles[119 + 1*((15*me + 14)%120) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R29).x; ry = (*R29).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R29).x = TR;
+		(*R29).y = TI;
+	}
+
+	FwdRad2B1(R0, R1);
+	FwdRad2B1(R2, R3);
+	FwdRad2B1(R4, R5);
+	FwdRad2B1(R6, R7);
+	FwdRad2B1(R8, R9);
+	FwdRad2B1(R10, R11);
+	FwdRad2B1(R12, R13);
+	FwdRad2B1(R14, R15);
+	FwdRad2B1(R16, R17);
+	FwdRad2B1(R18, R19);
+	FwdRad2B1(R20, R21);
+	FwdRad2B1(R22, R23);
+	FwdRad2B1(R24, R25);
+	FwdRad2B1(R26, R27);
+	FwdRad2B1(R28, R29);
+
+
+	if(rw)
+	{
+	bufOutRe[outOffset + ( ((15*me + 0)/120)*240 + (15*me + 0)%120 + 0 ) ] = (*R0).x;
+	bufOutRe[outOffset + ( ((15*me + 0)/120)*240 + (15*me + 0)%120 + 120 ) ] = (*R1).x;
+	bufOutRe[outOffset + ( ((15*me + 1)/120)*240 + (15*me + 1)%120 + 0 ) ] = (*R2).x;
+	bufOutRe[outOffset + ( ((15*me + 1)/120)*240 + (15*me + 1)%120 + 120 ) ] = (*R3).x;
+	bufOutRe[outOffset + ( ((15*me + 2)/120)*240 + (15*me + 2)%120 + 0 ) ] = (*R4).x;
+	bufOutRe[outOffset + ( ((15*me + 2)/120)*240 + (15*me + 2)%120 + 120 ) ] = (*R5).x;
+	bufOutRe[outOffset + ( ((15*me + 3)/120)*240 + (15*me + 3)%120 + 0 ) ] = (*R6).x;
+	bufOutRe[outOffset + ( ((15*me + 3)/120)*240 + (15*me + 3)%120 + 120 ) ] = (*R7).x;
+	bufOutRe[outOffset + ( ((15*me + 4)/120)*240 + (15*me + 4)%120 + 0 ) ] = (*R8).x;
+	bufOutRe[outOffset + ( ((15*me + 4)/120)*240 + (15*me + 4)%120 + 120 ) ] = (*R9).x;
+	bufOutRe[outOffset + ( ((15*me + 5)/120)*240 + (15*me + 5)%120 + 0 ) ] = (*R10).x;
+	bufOutRe[outOffset + ( ((15*me + 5)/120)*240 + (15*me + 5)%120 + 120 ) ] = (*R11).x;
+	bufOutRe[outOffset + ( ((15*me + 6)/120)*240 + (15*me + 6)%120 + 0 ) ] = (*R12).x;
+	bufOutRe[outOffset + ( ((15*me + 6)/120)*240 + (15*me + 6)%120 + 120 ) ] = (*R13).x;
+	bufOutRe[outOffset + ( ((15*me + 7)/120)*240 + (15*me + 7)%120 + 0 ) ] = (*R14).x;
+	bufOutRe[outOffset + ( ((15*me + 7)/120)*240 + (15*me + 7)%120 + 120 ) ] = (*R15).x;
+	bufOutRe[outOffset + ( ((15*me + 8)/120)*240 + (15*me + 8)%120 + 0 ) ] = (*R16).x;
+	bufOutRe[outOffset + ( ((15*me + 8)/120)*240 + (15*me + 8)%120 + 120 ) ] = (*R17).x;
+	bufOutRe[outOffset + ( ((15*me + 9)/120)*240 + (15*me + 9)%120 + 0 ) ] = (*R18).x;
+	bufOutRe[outOffset + ( ((15*me + 9)/120)*240 + (15*me + 9)%120 + 120 ) ] = (*R19).x;
+	bufOutRe[outOffset + ( ((15*me + 10)/120)*240 + (15*me + 10)%120 + 0 ) ] = (*R20).x;
+	bufOutRe[outOffset + ( ((15*me + 10)/120)*240 + (15*me + 10)%120 + 120 ) ] = (*R21).x;
+	bufOutRe[outOffset + ( ((15*me + 11)/120)*240 + (15*me + 11)%120 + 0 ) ] = (*R22).x;
+	bufOutRe[outOffset + ( ((15*me + 11)/120)*240 + (15*me + 11)%120 + 120 ) ] = (*R23).x;
+	bufOutRe[outOffset + ( ((15*me + 12)/120)*240 + (15*me + 12)%120 + 0 ) ] = (*R24).x;
+	bufOutRe[outOffset + ( ((15*me + 12)/120)*240 + (15*me + 12)%120 + 120 ) ] = (*R25).x;
+	bufOutRe[outOffset + ( ((15*me + 13)/120)*240 + (15*me + 13)%120 + 0 ) ] = (*R26).x;
+	bufOutRe[outOffset + ( ((15*me + 13)/120)*240 + (15*me + 13)%120 + 120 ) ] = (*R27).x;
+	bufOutRe[outOffset + ( ((15*me + 14)/120)*240 + (15*me + 14)%120 + 0 ) ] = (*R28).x;
+	bufOutRe[outOffset + ( ((15*me + 14)/120)*240 + (15*me + 14)%120 + 120 ) ] = (*R29).x;
+	}
+
+
+	__syncthreads();
+
+	if(rw)
+	{
+	(*R0).x = bufOutRe[outOffset + ( 0 + me*15 + 0 + 0 ) ];
+	(*R2).x = bufOutRe[outOffset + ( 0 + me*15 + 1 + 0 ) ];
+	(*R4).x = bufOutRe[outOffset + ( 0 + me*15 + 2 + 0 ) ];
+	(*R6).x = bufOutRe[outOffset + ( 0 + me*15 + 3 + 0 ) ];
+	(*R8).x = bufOutRe[outOffset + ( 0 + me*15 + 4 + 0 ) ];
+	(*R10).x = bufOutRe[outOffset + ( 0 + me*15 + 5 + 0 ) ];
+	(*R12).x = bufOutRe[outOffset + ( 0 + me*15 + 6 + 0 ) ];
+	(*R14).x = bufOutRe[outOffset + ( 0 + me*15 + 7 + 0 ) ];
+	(*R16).x = bufOutRe[outOffset + ( 0 + me*15 + 8 + 0 ) ];
+	(*R18).x = bufOutRe[outOffset + ( 0 + me*15 + 9 + 0 ) ];
+	(*R20).x = bufOutRe[outOffset + ( 0 + me*15 + 10 + 0 ) ];
+	(*R22).x = bufOutRe[outOffset + ( 0 + me*15 + 11 + 0 ) ];
+	(*R24).x = bufOutRe[outOffset + ( 0 + me*15 + 12 + 0 ) ];
+	(*R26).x = bufOutRe[outOffset + ( 0 + me*15 + 13 + 0 ) ];
+	(*R28).x = bufOutRe[outOffset + ( 0 + me*15 + 14 + 0 ) ];
+	(*R1).x = bufOutRe[outOffset + ( 0 + me*15 + 0 + 480 ) ];
+	(*R3).x = bufOutRe[outOffset + ( 0 + me*15 + 1 + 480 ) ];
+	(*R5).x = bufOutRe[outOffset + ( 0 + me*15 + 2 + 480 ) ];
+	(*R7).x = bufOutRe[outOffset + ( 0 + me*15 + 3 + 480 ) ];
+	(*R9).x = bufOutRe[outOffset + ( 0 + me*15 + 4 + 480 ) ];
+	(*R11).x = bufOutRe[outOffset + ( 0 + me*15 + 5 + 480 ) ];
+	(*R13).x = bufOutRe[outOffset + ( 0 + me*15 + 6 + 480 ) ];
+	(*R15).x = bufOutRe[outOffset + ( 0 + me*15 + 7 + 480 ) ];
+	(*R17).x = bufOutRe[outOffset + ( 0 + me*15 + 8 + 480 ) ];
+	(*R19).x = bufOutRe[outOffset + ( 0 + me*15 + 9 + 480 ) ];
+	(*R21).x = bufOutRe[outOffset + ( 0 + me*15 + 10 + 480 ) ];
+	(*R23).x = bufOutRe[outOffset + ( 0 + me*15 + 11 + 480 ) ];
+	(*R25).x = bufOutRe[outOffset + ( 0 + me*15 + 12 + 480 ) ];
+	(*R27).x = bufOutRe[outOffset + ( 0 + me*15 + 13 + 480 ) ];
+	(*R29).x = bufOutRe[outOffset + ( 0 + me*15 + 14 + 480 ) ];
+	}
+
+
+	__syncthreads();
+
+	if(rw)
+	{
+	bufOutIm[outOffset + ( ((15*me + 0)/120)*240 + (15*me + 0)%120 + 0 ) ] = (*R0).y;
+	bufOutIm[outOffset + ( ((15*me + 0)/120)*240 + (15*me + 0)%120 + 120 ) ] = (*R1).y;
+	bufOutIm[outOffset + ( ((15*me + 1)/120)*240 + (15*me + 1)%120 + 0 ) ] = (*R2).y;
+	bufOutIm[outOffset + ( ((15*me + 1)/120)*240 + (15*me + 1)%120 + 120 ) ] = (*R3).y;
+	bufOutIm[outOffset + ( ((15*me + 2)/120)*240 + (15*me + 2)%120 + 0 ) ] = (*R4).y;
+	bufOutIm[outOffset + ( ((15*me + 2)/120)*240 + (15*me + 2)%120 + 120 ) ] = (*R5).y;
+	bufOutIm[outOffset + ( ((15*me + 3)/120)*240 + (15*me + 3)%120 + 0 ) ] = (*R6).y;
+	bufOutIm[outOffset + ( ((15*me + 3)/120)*240 + (15*me + 3)%120 + 120 ) ] = (*R7).y;
+	bufOutIm[outOffset + ( ((15*me + 4)/120)*240 + (15*me + 4)%120 + 0 ) ] = (*R8).y;
+	bufOutIm[outOffset + ( ((15*me + 4)/120)*240 + (15*me + 4)%120 + 120 ) ] = (*R9).y;
+	bufOutIm[outOffset + ( ((15*me + 5)/120)*240 + (15*me + 5)%120 + 0 ) ] = (*R10).y;
+	bufOutIm[outOffset + ( ((15*me + 5)/120)*240 + (15*me + 5)%120 + 120 ) ] = (*R11).y;
+	bufOutIm[outOffset + ( ((15*me + 6)/120)*240 + (15*me + 6)%120 + 0 ) ] = (*R12).y;
+	bufOutIm[outOffset + ( ((15*me + 6)/120)*240 + (15*me + 6)%120 + 120 ) ] = (*R13).y;
+	bufOutIm[outOffset + ( ((15*me + 7)/120)*240 + (15*me + 7)%120 + 0 ) ] = (*R14).y;
+	bufOutIm[outOffset + ( ((15*me + 7)/120)*240 + (15*me + 7)%120 + 120 ) ] = (*R15).y;
+	bufOutIm[outOffset + ( ((15*me + 8)/120)*240 + (15*me + 8)%120 + 0 ) ] = (*R16).y;
+	bufOutIm[outOffset + ( ((15*me + 8)/120)*240 + (15*me + 8)%120 + 120 ) ] = (*R17).y;
+	bufOutIm[outOffset + ( ((15*me + 9)/120)*240 + (15*me + 9)%120 + 0 ) ] = (*R18).y;
+	bufOutIm[outOffset + ( ((15*me + 9)/120)*240 + (15*me + 9)%120 + 120 ) ] = (*R19).y;
+	bufOutIm[outOffset + ( ((15*me + 10)/120)*240 + (15*me + 10)%120 + 0 ) ] = (*R20).y;
+	bufOutIm[outOffset + ( ((15*me + 10)/120)*240 + (15*me + 10)%120 + 120 ) ] = (*R21).y;
+	bufOutIm[outOffset + ( ((15*me + 11)/120)*240 + (15*me + 11)%120 + 0 ) ] = (*R22).y;
+	bufOutIm[outOffset + ( ((15*me + 11)/120)*240 + (15*me + 11)%120 + 120 ) ] = (*R23).y;
+	bufOutIm[outOffset + ( ((15*me + 12)/120)*240 + (15*me + 12)%120 + 0 ) ] = (*R24).y;
+	bufOutIm[outOffset + ( ((15*me + 12)/120)*240 + (15*me + 12)%120 + 120 ) ] = (*R25).y;
+	bufOutIm[outOffset + ( ((15*me + 13)/120)*240 + (15*me + 13)%120 + 0 ) ] = (*R26).y;
+	bufOutIm[outOffset + ( ((15*me + 13)/120)*240 + (15*me + 13)%120 + 120 ) ] = (*R27).y;
+	bufOutIm[outOffset + ( ((15*me + 14)/120)*240 + (15*me + 14)%120 + 0 ) ] = (*R28).y;
+	bufOutIm[outOffset + ( ((15*me + 14)/120)*240 + (15*me + 14)%120 + 120 ) ] = (*R29).y;
+	}
+
+
+	__syncthreads();
+
+	if(rw)
+	{
+	(*R0).y = bufOutIm[outOffset + ( 0 + me*15 + 0 + 0 ) ];
+	(*R2).y = bufOutIm[outOffset + ( 0 + me*15 + 1 + 0 ) ];
+	(*R4).y = bufOutIm[outOffset + ( 0 + me*15 + 2 + 0 ) ];
+	(*R6).y = bufOutIm[outOffset + ( 0 + me*15 + 3 + 0 ) ];
+	(*R8).y = bufOutIm[outOffset + ( 0 + me*15 + 4 + 0 ) ];
+	(*R10).y = bufOutIm[outOffset + ( 0 + me*15 + 5 + 0 ) ];
+	(*R12).y = bufOutIm[outOffset + ( 0 + me*15 + 6 + 0 ) ];
+	(*R14).y = bufOutIm[outOffset + ( 0 + me*15 + 7 + 0 ) ];
+	(*R16).y = bufOutIm[outOffset + ( 0 + me*15 + 8 + 0 ) ];
+	(*R18).y = bufOutIm[outOffset + ( 0 + me*15 + 9 + 0 ) ];
+	(*R20).y = bufOutIm[outOffset + ( 0 + me*15 + 10 + 0 ) ];
+	(*R22).y = bufOutIm[outOffset + ( 0 + me*15 + 11 + 0 ) ];
+	(*R24).y = bufOutIm[outOffset + ( 0 + me*15 + 12 + 0 ) ];
+	(*R26).y = bufOutIm[outOffset + ( 0 + me*15 + 13 + 0 ) ];
+	(*R28).y = bufOutIm[outOffset + ( 0 + me*15 + 14 + 0 ) ];
+	(*R1).y = bufOutIm[outOffset + ( 0 + me*15 + 0 + 480 ) ];
+	(*R3).y = bufOutIm[outOffset + ( 0 + me*15 + 1 + 480 ) ];
+	(*R5).y = bufOutIm[outOffset + ( 0 + me*15 + 2 + 480 ) ];
+	(*R7).y = bufOutIm[outOffset + ( 0 + me*15 + 3 + 480 ) ];
+	(*R9).y = bufOutIm[outOffset + ( 0 + me*15 + 4 + 480 ) ];
+	(*R11).y = bufOutIm[outOffset + ( 0 + me*15 + 5 + 480 ) ];
+	(*R13).y = bufOutIm[outOffset + ( 0 + me*15 + 6 + 480 ) ];
+	(*R15).y = bufOutIm[outOffset + ( 0 + me*15 + 7 + 480 ) ];
+	(*R17).y = bufOutIm[outOffset + ( 0 + me*15 + 8 + 480 ) ];
+	(*R19).y = bufOutIm[outOffset + ( 0 + me*15 + 9 + 480 ) ];
+	(*R21).y = bufOutIm[outOffset + ( 0 + me*15 + 10 + 480 ) ];
+	(*R23).y = bufOutIm[outOffset + ( 0 + me*15 + 11 + 480 ) ];
+	(*R25).y = bufOutIm[outOffset + ( 0 + me*15 + 12 + 480 ) ];
+	(*R27).y = bufOutIm[outOffset + ( 0 + me*15 + 13 + 480 ) ];
+	(*R29).y = bufOutIm[outOffset + ( 0 + me*15 + 14 + 480 ) ];
+	}
+
+
+	__syncthreads();
+
+}
+
+template <typename T, StrideBin sb>
+__device__ void
+FwdPass4_len960(const T *twiddles, const size_t stride_in, const size_t stride_out, unsigned int rw, unsigned int b, unsigned int me, unsigned int inOffset, unsigned int outOffset, real_type_t<T> *bufInRe, real_type_t<T> *bufInIm, real_type_t<T> *bufOutRe, real_type_t<T> *bufOutIm, T *R0, T *R1, T *R2, T *R3, T *R4, T *R5, T *R6, T *R7, T *R8, T *R9, T *R10, T *R11, T *R12, T *R13, T *R14, T *R15, T *R16, T *R17, T *R18, T *R19, T *R20, T *R21, T *R22, T *R23, T *R24, T *R25, T *R26, T *R27, T *R28, T *R29)
+{
+
+
+
+
+	{
+		T W = twiddles[239 + 1*((15*me + 0)%240) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R1).x; ry = (*R1).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R1).x = TR;
+		(*R1).y = TI;
+	}
+
+	{
+		T W = twiddles[239 + 1*((15*me + 1)%240) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R3).x; ry = (*R3).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R3).x = TR;
+		(*R3).y = TI;
+	}
+
+	{
+		T W = twiddles[239 + 1*((15*me + 2)%240) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R5).x; ry = (*R5).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R5).x = TR;
+		(*R5).y = TI;
+	}
+
+	{
+		T W = twiddles[239 + 1*((15*me + 3)%240) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R7).x; ry = (*R7).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R7).x = TR;
+		(*R7).y = TI;
+	}
+
+	{
+		T W = twiddles[239 + 1*((15*me + 4)%240) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R9).x; ry = (*R9).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R9).x = TR;
+		(*R9).y = TI;
+	}
+
+	{
+		T W = twiddles[239 + 1*((15*me + 5)%240) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R11).x; ry = (*R11).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R11).x = TR;
+		(*R11).y = TI;
+	}
+
+	{
+		T W = twiddles[239 + 1*((15*me + 6)%240) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R13).x; ry = (*R13).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R13).x = TR;
+		(*R13).y = TI;
+	}
+
+	{
+		T W = twiddles[239 + 1*((15*me + 7)%240) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R15).x; ry = (*R15).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R15).x = TR;
+		(*R15).y = TI;
+	}
+
+	{
+		T W = twiddles[239 + 1*((15*me + 8)%240) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R17).x; ry = (*R17).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R17).x = TR;
+		(*R17).y = TI;
+	}
+
+	{
+		T W = twiddles[239 + 1*((15*me + 9)%240) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R19).x; ry = (*R19).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R19).x = TR;
+		(*R19).y = TI;
+	}
+
+	{
+		T W = twiddles[239 + 1*((15*me + 10)%240) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R21).x; ry = (*R21).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R21).x = TR;
+		(*R21).y = TI;
+	}
+
+	{
+		T W = twiddles[239 + 1*((15*me + 11)%240) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R23).x; ry = (*R23).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R23).x = TR;
+		(*R23).y = TI;
+	}
+
+	{
+		T W = twiddles[239 + 1*((15*me + 12)%240) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R25).x; ry = (*R25).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R25).x = TR;
+		(*R25).y = TI;
+	}
+
+	{
+		T W = twiddles[239 + 1*((15*me + 13)%240) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R27).x; ry = (*R27).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R27).x = TR;
+		(*R27).y = TI;
+	}
+
+	{
+		T W = twiddles[239 + 1*((15*me + 14)%240) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R29).x; ry = (*R29).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R29).x = TR;
+		(*R29).y = TI;
+	}
+
+	FwdRad2B1(R0, R1);
+	FwdRad2B1(R2, R3);
+	FwdRad2B1(R4, R5);
+	FwdRad2B1(R6, R7);
+	FwdRad2B1(R8, R9);
+	FwdRad2B1(R10, R11);
+	FwdRad2B1(R12, R13);
+	FwdRad2B1(R14, R15);
+	FwdRad2B1(R16, R17);
+	FwdRad2B1(R18, R19);
+	FwdRad2B1(R20, R21);
+	FwdRad2B1(R22, R23);
+	FwdRad2B1(R24, R25);
+	FwdRad2B1(R26, R27);
+	FwdRad2B1(R28, R29);
+
+
+	if(rw)
+	{
+	bufOutRe[outOffset + ( ((15*me + 0)/240)*480 + (15*me + 0)%240 + 0 ) ] = (*R0).x;
+	bufOutRe[outOffset + ( ((15*me + 0)/240)*480 + (15*me + 0)%240 + 240 ) ] = (*R1).x;
+	bufOutRe[outOffset + ( ((15*me + 1)/240)*480 + (15*me + 1)%240 + 0 ) ] = (*R2).x;
+	bufOutRe[outOffset + ( ((15*me + 1)/240)*480 + (15*me + 1)%240 + 240 ) ] = (*R3).x;
+	bufOutRe[outOffset + ( ((15*me + 2)/240)*480 + (15*me + 2)%240 + 0 ) ] = (*R4).x;
+	bufOutRe[outOffset + ( ((15*me + 2)/240)*480 + (15*me + 2)%240 + 240 ) ] = (*R5).x;
+	bufOutRe[outOffset + ( ((15*me + 3)/240)*480 + (15*me + 3)%240 + 0 ) ] = (*R6).x;
+	bufOutRe[outOffset + ( ((15*me + 3)/240)*480 + (15*me + 3)%240 + 240 ) ] = (*R7).x;
+	bufOutRe[outOffset + ( ((15*me + 4)/240)*480 + (15*me + 4)%240 + 0 ) ] = (*R8).x;
+	bufOutRe[outOffset + ( ((15*me + 4)/240)*480 + (15*me + 4)%240 + 240 ) ] = (*R9).x;
+	bufOutRe[outOffset + ( ((15*me + 5)/240)*480 + (15*me + 5)%240 + 0 ) ] = (*R10).x;
+	bufOutRe[outOffset + ( ((15*me + 5)/240)*480 + (15*me + 5)%240 + 240 ) ] = (*R11).x;
+	bufOutRe[outOffset + ( ((15*me + 6)/240)*480 + (15*me + 6)%240 + 0 ) ] = (*R12).x;
+	bufOutRe[outOffset + ( ((15*me + 6)/240)*480 + (15*me + 6)%240 + 240 ) ] = (*R13).x;
+	bufOutRe[outOffset + ( ((15*me + 7)/240)*480 + (15*me + 7)%240 + 0 ) ] = (*R14).x;
+	bufOutRe[outOffset + ( ((15*me + 7)/240)*480 + (15*me + 7)%240 + 240 ) ] = (*R15).x;
+	bufOutRe[outOffset + ( ((15*me + 8)/240)*480 + (15*me + 8)%240 + 0 ) ] = (*R16).x;
+	bufOutRe[outOffset + ( ((15*me + 8)/240)*480 + (15*me + 8)%240 + 240 ) ] = (*R17).x;
+	bufOutRe[outOffset + ( ((15*me + 9)/240)*480 + (15*me + 9)%240 + 0 ) ] = (*R18).x;
+	bufOutRe[outOffset + ( ((15*me + 9)/240)*480 + (15*me + 9)%240 + 240 ) ] = (*R19).x;
+	bufOutRe[outOffset + ( ((15*me + 10)/240)*480 + (15*me + 10)%240 + 0 ) ] = (*R20).x;
+	bufOutRe[outOffset + ( ((15*me + 10)/240)*480 + (15*me + 10)%240 + 240 ) ] = (*R21).x;
+	bufOutRe[outOffset + ( ((15*me + 11)/240)*480 + (15*me + 11)%240 + 0 ) ] = (*R22).x;
+	bufOutRe[outOffset + ( ((15*me + 11)/240)*480 + (15*me + 11)%240 + 240 ) ] = (*R23).x;
+	bufOutRe[outOffset + ( ((15*me + 12)/240)*480 + (15*me + 12)%240 + 0 ) ] = (*R24).x;
+	bufOutRe[outOffset + ( ((15*me + 12)/240)*480 + (15*me + 12)%240 + 240 ) ] = (*R25).x;
+	bufOutRe[outOffset + ( ((15*me + 13)/240)*480 + (15*me + 13)%240 + 0 ) ] = (*R26).x;
+	bufOutRe[outOffset + ( ((15*me + 13)/240)*480 + (15*me + 13)%240 + 240 ) ] = (*R27).x;
+	bufOutRe[outOffset + ( ((15*me + 14)/240)*480 + (15*me + 14)%240 + 0 ) ] = (*R28).x;
+	bufOutRe[outOffset + ( ((15*me + 14)/240)*480 + (15*me + 14)%240 + 240 ) ] = (*R29).x;
+	}
+
+
+	__syncthreads();
+
+	if(rw)
+	{
+	(*R0).x = bufOutRe[outOffset + ( 0 + me*15 + 0 + 0 ) ];
+	(*R2).x = bufOutRe[outOffset + ( 0 + me*15 + 1 + 0 ) ];
+	(*R4).x = bufOutRe[outOffset + ( 0 + me*15 + 2 + 0 ) ];
+	(*R6).x = bufOutRe[outOffset + ( 0 + me*15 + 3 + 0 ) ];
+	(*R8).x = bufOutRe[outOffset + ( 0 + me*15 + 4 + 0 ) ];
+	(*R10).x = bufOutRe[outOffset + ( 0 + me*15 + 5 + 0 ) ];
+	(*R12).x = bufOutRe[outOffset + ( 0 + me*15 + 6 + 0 ) ];
+	(*R14).x = bufOutRe[outOffset + ( 0 + me*15 + 7 + 0 ) ];
+	(*R16).x = bufOutRe[outOffset + ( 0 + me*15 + 8 + 0 ) ];
+	(*R18).x = bufOutRe[outOffset + ( 0 + me*15 + 9 + 0 ) ];
+	(*R20).x = bufOutRe[outOffset + ( 0 + me*15 + 10 + 0 ) ];
+	(*R22).x = bufOutRe[outOffset + ( 0 + me*15 + 11 + 0 ) ];
+	(*R24).x = bufOutRe[outOffset + ( 0 + me*15 + 12 + 0 ) ];
+	(*R26).x = bufOutRe[outOffset + ( 0 + me*15 + 13 + 0 ) ];
+	(*R28).x = bufOutRe[outOffset + ( 0 + me*15 + 14 + 0 ) ];
+	(*R1).x = bufOutRe[outOffset + ( 0 + me*15 + 0 + 480 ) ];
+	(*R3).x = bufOutRe[outOffset + ( 0 + me*15 + 1 + 480 ) ];
+	(*R5).x = bufOutRe[outOffset + ( 0 + me*15 + 2 + 480 ) ];
+	(*R7).x = bufOutRe[outOffset + ( 0 + me*15 + 3 + 480 ) ];
+	(*R9).x = bufOutRe[outOffset + ( 0 + me*15 + 4 + 480 ) ];
+	(*R11).x = bufOutRe[outOffset + ( 0 + me*15 + 5 + 480 ) ];
+	(*R13).x = bufOutRe[outOffset + ( 0 + me*15 + 6 + 480 ) ];
+	(*R15).x = bufOutRe[outOffset + ( 0 + me*15 + 7 + 480 ) ];
+	(*R17).x = bufOutRe[outOffset + ( 0 + me*15 + 8 + 480 ) ];
+	(*R19).x = bufOutRe[outOffset + ( 0 + me*15 + 9 + 480 ) ];
+	(*R21).x = bufOutRe[outOffset + ( 0 + me*15 + 10 + 480 ) ];
+	(*R23).x = bufOutRe[outOffset + ( 0 + me*15 + 11 + 480 ) ];
+	(*R25).x = bufOutRe[outOffset + ( 0 + me*15 + 12 + 480 ) ];
+	(*R27).x = bufOutRe[outOffset + ( 0 + me*15 + 13 + 480 ) ];
+	(*R29).x = bufOutRe[outOffset + ( 0 + me*15 + 14 + 480 ) ];
+	}
+
+
+	__syncthreads();
+
+	if(rw)
+	{
+	bufOutIm[outOffset + ( ((15*me + 0)/240)*480 + (15*me + 0)%240 + 0 ) ] = (*R0).y;
+	bufOutIm[outOffset + ( ((15*me + 0)/240)*480 + (15*me + 0)%240 + 240 ) ] = (*R1).y;
+	bufOutIm[outOffset + ( ((15*me + 1)/240)*480 + (15*me + 1)%240 + 0 ) ] = (*R2).y;
+	bufOutIm[outOffset + ( ((15*me + 1)/240)*480 + (15*me + 1)%240 + 240 ) ] = (*R3).y;
+	bufOutIm[outOffset + ( ((15*me + 2)/240)*480 + (15*me + 2)%240 + 0 ) ] = (*R4).y;
+	bufOutIm[outOffset + ( ((15*me + 2)/240)*480 + (15*me + 2)%240 + 240 ) ] = (*R5).y;
+	bufOutIm[outOffset + ( ((15*me + 3)/240)*480 + (15*me + 3)%240 + 0 ) ] = (*R6).y;
+	bufOutIm[outOffset + ( ((15*me + 3)/240)*480 + (15*me + 3)%240 + 240 ) ] = (*R7).y;
+	bufOutIm[outOffset + ( ((15*me + 4)/240)*480 + (15*me + 4)%240 + 0 ) ] = (*R8).y;
+	bufOutIm[outOffset + ( ((15*me + 4)/240)*480 + (15*me + 4)%240 + 240 ) ] = (*R9).y;
+	bufOutIm[outOffset + ( ((15*me + 5)/240)*480 + (15*me + 5)%240 + 0 ) ] = (*R10).y;
+	bufOutIm[outOffset + ( ((15*me + 5)/240)*480 + (15*me + 5)%240 + 240 ) ] = (*R11).y;
+	bufOutIm[outOffset + ( ((15*me + 6)/240)*480 + (15*me + 6)%240 + 0 ) ] = (*R12).y;
+	bufOutIm[outOffset + ( ((15*me + 6)/240)*480 + (15*me + 6)%240 + 240 ) ] = (*R13).y;
+	bufOutIm[outOffset + ( ((15*me + 7)/240)*480 + (15*me + 7)%240 + 0 ) ] = (*R14).y;
+	bufOutIm[outOffset + ( ((15*me + 7)/240)*480 + (15*me + 7)%240 + 240 ) ] = (*R15).y;
+	bufOutIm[outOffset + ( ((15*me + 8)/240)*480 + (15*me + 8)%240 + 0 ) ] = (*R16).y;
+	bufOutIm[outOffset + ( ((15*me + 8)/240)*480 + (15*me + 8)%240 + 240 ) ] = (*R17).y;
+	bufOutIm[outOffset + ( ((15*me + 9)/240)*480 + (15*me + 9)%240 + 0 ) ] = (*R18).y;
+	bufOutIm[outOffset + ( ((15*me + 9)/240)*480 + (15*me + 9)%240 + 240 ) ] = (*R19).y;
+	bufOutIm[outOffset + ( ((15*me + 10)/240)*480 + (15*me + 10)%240 + 0 ) ] = (*R20).y;
+	bufOutIm[outOffset + ( ((15*me + 10)/240)*480 + (15*me + 10)%240 + 240 ) ] = (*R21).y;
+	bufOutIm[outOffset + ( ((15*me + 11)/240)*480 + (15*me + 11)%240 + 0 ) ] = (*R22).y;
+	bufOutIm[outOffset + ( ((15*me + 11)/240)*480 + (15*me + 11)%240 + 240 ) ] = (*R23).y;
+	bufOutIm[outOffset + ( ((15*me + 12)/240)*480 + (15*me + 12)%240 + 0 ) ] = (*R24).y;
+	bufOutIm[outOffset + ( ((15*me + 12)/240)*480 + (15*me + 12)%240 + 240 ) ] = (*R25).y;
+	bufOutIm[outOffset + ( ((15*me + 13)/240)*480 + (15*me + 13)%240 + 0 ) ] = (*R26).y;
+	bufOutIm[outOffset + ( ((15*me + 13)/240)*480 + (15*me + 13)%240 + 240 ) ] = (*R27).y;
+	bufOutIm[outOffset + ( ((15*me + 14)/240)*480 + (15*me + 14)%240 + 0 ) ] = (*R28).y;
+	bufOutIm[outOffset + ( ((15*me + 14)/240)*480 + (15*me + 14)%240 + 240 ) ] = (*R29).y;
+	}
+
+
+	__syncthreads();
+
+	if(rw)
+	{
+	(*R0).y = bufOutIm[outOffset + ( 0 + me*15 + 0 + 0 ) ];
+	(*R2).y = bufOutIm[outOffset + ( 0 + me*15 + 1 + 0 ) ];
+	(*R4).y = bufOutIm[outOffset + ( 0 + me*15 + 2 + 0 ) ];
+	(*R6).y = bufOutIm[outOffset + ( 0 + me*15 + 3 + 0 ) ];
+	(*R8).y = bufOutIm[outOffset + ( 0 + me*15 + 4 + 0 ) ];
+	(*R10).y = bufOutIm[outOffset + ( 0 + me*15 + 5 + 0 ) ];
+	(*R12).y = bufOutIm[outOffset + ( 0 + me*15 + 6 + 0 ) ];
+	(*R14).y = bufOutIm[outOffset + ( 0 + me*15 + 7 + 0 ) ];
+	(*R16).y = bufOutIm[outOffset + ( 0 + me*15 + 8 + 0 ) ];
+	(*R18).y = bufOutIm[outOffset + ( 0 + me*15 + 9 + 0 ) ];
+	(*R20).y = bufOutIm[outOffset + ( 0 + me*15 + 10 + 0 ) ];
+	(*R22).y = bufOutIm[outOffset + ( 0 + me*15 + 11 + 0 ) ];
+	(*R24).y = bufOutIm[outOffset + ( 0 + me*15 + 12 + 0 ) ];
+	(*R26).y = bufOutIm[outOffset + ( 0 + me*15 + 13 + 0 ) ];
+	(*R28).y = bufOutIm[outOffset + ( 0 + me*15 + 14 + 0 ) ];
+	(*R1).y = bufOutIm[outOffset + ( 0 + me*15 + 0 + 480 ) ];
+	(*R3).y = bufOutIm[outOffset + ( 0 + me*15 + 1 + 480 ) ];
+	(*R5).y = bufOutIm[outOffset + ( 0 + me*15 + 2 + 480 ) ];
+	(*R7).y = bufOutIm[outOffset + ( 0 + me*15 + 3 + 480 ) ];
+	(*R9).y = bufOutIm[outOffset + ( 0 + me*15 + 4 + 480 ) ];
+	(*R11).y = bufOutIm[outOffset + ( 0 + me*15 + 5 + 480 ) ];
+	(*R13).y = bufOutIm[outOffset + ( 0 + me*15 + 6 + 480 ) ];
+	(*R15).y = bufOutIm[outOffset + ( 0 + me*15 + 7 + 480 ) ];
+	(*R17).y = bufOutIm[outOffset + ( 0 + me*15 + 8 + 480 ) ];
+	(*R19).y = bufOutIm[outOffset + ( 0 + me*15 + 9 + 480 ) ];
+	(*R21).y = bufOutIm[outOffset + ( 0 + me*15 + 10 + 480 ) ];
+	(*R23).y = bufOutIm[outOffset + ( 0 + me*15 + 11 + 480 ) ];
+	(*R25).y = bufOutIm[outOffset + ( 0 + me*15 + 12 + 480 ) ];
+	(*R27).y = bufOutIm[outOffset + ( 0 + me*15 + 13 + 480 ) ];
+	(*R29).y = bufOutIm[outOffset + ( 0 + me*15 + 14 + 480 ) ];
+	}
+
+
+	__syncthreads();
+
+}
+
+template <typename T, StrideBin sb>
+__device__ void
+FwdPass5_len960(const T *twiddles, const size_t stride_in, const size_t stride_out, unsigned int rw, unsigned int b, unsigned int me, unsigned int inOffset, unsigned int outOffset, real_type_t<T> *bufInRe, real_type_t<T> *bufInIm, T *bufOut, T *R0, T *R1, T *R2, T *R3, T *R4, T *R5, T *R6, T *R7, T *R8, T *R9, T *R10, T *R11, T *R12, T *R13, T *R14, T *R15, T *R16, T *R17, T *R18, T *R19, T *R20, T *R21, T *R22, T *R23, T *R24, T *R25, T *R26, T *R27, T *R28, T *R29)
+{
+
+
+
+
+	{
+		T W = twiddles[479 + 1*((15*me + 0)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R1).x; ry = (*R1).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R1).x = TR;
+		(*R1).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 1)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R3).x; ry = (*R3).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R3).x = TR;
+		(*R3).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 2)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R5).x; ry = (*R5).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R5).x = TR;
+		(*R5).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 3)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R7).x; ry = (*R7).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R7).x = TR;
+		(*R7).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 4)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R9).x; ry = (*R9).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R9).x = TR;
+		(*R9).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 5)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R11).x; ry = (*R11).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R11).x = TR;
+		(*R11).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 6)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R13).x; ry = (*R13).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R13).x = TR;
+		(*R13).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 7)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R15).x; ry = (*R15).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R15).x = TR;
+		(*R15).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 8)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R17).x; ry = (*R17).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R17).x = TR;
+		(*R17).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 9)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R19).x; ry = (*R19).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R19).x = TR;
+		(*R19).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 10)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R21).x; ry = (*R21).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R21).x = TR;
+		(*R21).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 11)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R23).x; ry = (*R23).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R23).x = TR;
+		(*R23).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 12)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R25).x; ry = (*R25).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R25).x = TR;
+		(*R25).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 13)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R27).x; ry = (*R27).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R27).x = TR;
+		(*R27).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 14)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R29).x; ry = (*R29).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R29).x = TR;
+		(*R29).y = TI;
+	}
+
+	FwdRad2B1(R0, R1);
+	FwdRad2B1(R2, R3);
+	FwdRad2B1(R4, R5);
+	FwdRad2B1(R6, R7);
+	FwdRad2B1(R8, R9);
+	FwdRad2B1(R10, R11);
+	FwdRad2B1(R12, R13);
+	FwdRad2B1(R14, R15);
+	FwdRad2B1(R16, R17);
+	FwdRad2B1(R18, R19);
+	FwdRad2B1(R20, R21);
+	FwdRad2B1(R22, R23);
+	FwdRad2B1(R24, R25);
+	FwdRad2B1(R26, R27);
+	FwdRad2B1(R28, R29);
+
+
+	if(rw)
+	{
+	bufOut[outOffset + ( 15*me + 0 + 0 )*stride_out] = (*R0);
+	bufOut[outOffset + ( 15*me + 1 + 0 )*stride_out] = (*R2);
+	bufOut[outOffset + ( 15*me + 2 + 0 )*stride_out] = (*R4);
+	bufOut[outOffset + ( 15*me + 3 + 0 )*stride_out] = (*R6);
+	bufOut[outOffset + ( 15*me + 4 + 0 )*stride_out] = (*R8);
+	bufOut[outOffset + ( 15*me + 5 + 0 )*stride_out] = (*R10);
+	bufOut[outOffset + ( 15*me + 6 + 0 )*stride_out] = (*R12);
+	bufOut[outOffset + ( 15*me + 7 + 0 )*stride_out] = (*R14);
+	bufOut[outOffset + ( 15*me + 8 + 0 )*stride_out] = (*R16);
+	bufOut[outOffset + ( 15*me + 9 + 0 )*stride_out] = (*R18);
+	bufOut[outOffset + ( 15*me + 10 + 0 )*stride_out] = (*R20);
+	bufOut[outOffset + ( 15*me + 11 + 0 )*stride_out] = (*R22);
+	bufOut[outOffset + ( 15*me + 12 + 0 )*stride_out] = (*R24);
+	bufOut[outOffset + ( 15*me + 13 + 0 )*stride_out] = (*R26);
+	bufOut[outOffset + ( 15*me + 14 + 0 )*stride_out] = (*R28);
+	bufOut[outOffset + ( 15*me + 0 + 480 )*stride_out] = (*R1);
+	bufOut[outOffset + ( 15*me + 1 + 480 )*stride_out] = (*R3);
+	bufOut[outOffset + ( 15*me + 2 + 480 )*stride_out] = (*R5);
+	bufOut[outOffset + ( 15*me + 3 + 480 )*stride_out] = (*R7);
+	bufOut[outOffset + ( 15*me + 4 + 480 )*stride_out] = (*R9);
+	bufOut[outOffset + ( 15*me + 5 + 480 )*stride_out] = (*R11);
+	bufOut[outOffset + ( 15*me + 6 + 480 )*stride_out] = (*R13);
+	bufOut[outOffset + ( 15*me + 7 + 480 )*stride_out] = (*R15);
+	bufOut[outOffset + ( 15*me + 8 + 480 )*stride_out] = (*R17);
+	bufOut[outOffset + ( 15*me + 9 + 480 )*stride_out] = (*R19);
+	bufOut[outOffset + ( 15*me + 10 + 480 )*stride_out] = (*R21);
+	bufOut[outOffset + ( 15*me + 11 + 480 )*stride_out] = (*R23);
+	bufOut[outOffset + ( 15*me + 12 + 480 )*stride_out] = (*R25);
+	bufOut[outOffset + ( 15*me + 13 + 480 )*stride_out] = (*R27);
+	bufOut[outOffset + ( 15*me + 14 + 480 )*stride_out] = (*R29);
+	}
+
+}
+
+template <typename T, StrideBin sb>
+__device__ void
+FwdPass5_len960(const T *twiddles, const size_t stride_in, const size_t stride_out, unsigned int rw, unsigned int b, unsigned int me, unsigned int inOffset, unsigned int outOffset, real_type_t<T> *bufInRe, real_type_t<T> *bufInIm, real_type_t<T> *bufOutRe, real_type_t<T> *bufOutIm, T *R0, T *R1, T *R2, T *R3, T *R4, T *R5, T *R6, T *R7, T *R8, T *R9, T *R10, T *R11, T *R12, T *R13, T *R14, T *R15, T *R16, T *R17, T *R18, T *R19, T *R20, T *R21, T *R22, T *R23, T *R24, T *R25, T *R26, T *R27, T *R28, T *R29)
+{
+
+
+
+
+	{
+		T W = twiddles[479 + 1*((15*me + 0)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R1).x; ry = (*R1).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R1).x = TR;
+		(*R1).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 1)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R3).x; ry = (*R3).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R3).x = TR;
+		(*R3).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 2)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R5).x; ry = (*R5).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R5).x = TR;
+		(*R5).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 3)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R7).x; ry = (*R7).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R7).x = TR;
+		(*R7).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 4)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R9).x; ry = (*R9).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R9).x = TR;
+		(*R9).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 5)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R11).x; ry = (*R11).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R11).x = TR;
+		(*R11).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 6)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R13).x; ry = (*R13).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R13).x = TR;
+		(*R13).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 7)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R15).x; ry = (*R15).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R15).x = TR;
+		(*R15).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 8)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R17).x; ry = (*R17).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R17).x = TR;
+		(*R17).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 9)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R19).x; ry = (*R19).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R19).x = TR;
+		(*R19).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 10)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R21).x; ry = (*R21).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R21).x = TR;
+		(*R21).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 11)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R23).x; ry = (*R23).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R23).x = TR;
+		(*R23).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 12)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R25).x; ry = (*R25).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R25).x = TR;
+		(*R25).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 13)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R27).x; ry = (*R27).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R27).x = TR;
+		(*R27).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 14)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R29).x; ry = (*R29).y;
+		TR = wx * rx - wy * ry;
+		TI = wy * rx + wx * ry;
+		(*R29).x = TR;
+		(*R29).y = TI;
+	}
+
+	FwdRad2B1(R0, R1);
+	FwdRad2B1(R2, R3);
+	FwdRad2B1(R4, R5);
+	FwdRad2B1(R6, R7);
+	FwdRad2B1(R8, R9);
+	FwdRad2B1(R10, R11);
+	FwdRad2B1(R12, R13);
+	FwdRad2B1(R14, R15);
+	FwdRad2B1(R16, R17);
+	FwdRad2B1(R18, R19);
+	FwdRad2B1(R20, R21);
+	FwdRad2B1(R22, R23);
+	FwdRad2B1(R24, R25);
+	FwdRad2B1(R26, R27);
+	FwdRad2B1(R28, R29);
+
+
+	if(rw)
+	{
+	bufOutRe[outOffset + ( 15*me + 0 + 0 )*stride_out] = (*R0).x;
+	bufOutIm[outOffset + ( 15*me + 0 + 0 )*stride_out] = (*R0).y;
+	bufOutRe[outOffset + ( 15*me + 1 + 0 )*stride_out] = (*R2).x;
+	bufOutIm[outOffset + ( 15*me + 1 + 0 )*stride_out] = (*R2).y;
+	bufOutRe[outOffset + ( 15*me + 2 + 0 )*stride_out] = (*R4).x;
+	bufOutIm[outOffset + ( 15*me + 2 + 0 )*stride_out] = (*R4).y;
+	bufOutRe[outOffset + ( 15*me + 3 + 0 )*stride_out] = (*R6).x;
+	bufOutIm[outOffset + ( 15*me + 3 + 0 )*stride_out] = (*R6).y;
+	bufOutRe[outOffset + ( 15*me + 4 + 0 )*stride_out] = (*R8).x;
+	bufOutIm[outOffset + ( 15*me + 4 + 0 )*stride_out] = (*R8).y;
+	bufOutRe[outOffset + ( 15*me + 5 + 0 )*stride_out] = (*R10).x;
+	bufOutIm[outOffset + ( 15*me + 5 + 0 )*stride_out] = (*R10).y;
+	bufOutRe[outOffset + ( 15*me + 6 + 0 )*stride_out] = (*R12).x;
+	bufOutIm[outOffset + ( 15*me + 6 + 0 )*stride_out] = (*R12).y;
+	bufOutRe[outOffset + ( 15*me + 7 + 0 )*stride_out] = (*R14).x;
+	bufOutIm[outOffset + ( 15*me + 7 + 0 )*stride_out] = (*R14).y;
+	bufOutRe[outOffset + ( 15*me + 8 + 0 )*stride_out] = (*R16).x;
+	bufOutIm[outOffset + ( 15*me + 8 + 0 )*stride_out] = (*R16).y;
+	bufOutRe[outOffset + ( 15*me + 9 + 0 )*stride_out] = (*R18).x;
+	bufOutIm[outOffset + ( 15*me + 9 + 0 )*stride_out] = (*R18).y;
+	bufOutRe[outOffset + ( 15*me + 10 + 0 )*stride_out] = (*R20).x;
+	bufOutIm[outOffset + ( 15*me + 10 + 0 )*stride_out] = (*R20).y;
+	bufOutRe[outOffset + ( 15*me + 11 + 0 )*stride_out] = (*R22).x;
+	bufOutIm[outOffset + ( 15*me + 11 + 0 )*stride_out] = (*R22).y;
+	bufOutRe[outOffset + ( 15*me + 12 + 0 )*stride_out] = (*R24).x;
+	bufOutIm[outOffset + ( 15*me + 12 + 0 )*stride_out] = (*R24).y;
+	bufOutRe[outOffset + ( 15*me + 13 + 0 )*stride_out] = (*R26).x;
+	bufOutIm[outOffset + ( 15*me + 13 + 0 )*stride_out] = (*R26).y;
+	bufOutRe[outOffset + ( 15*me + 14 + 0 )*stride_out] = (*R28).x;
+	bufOutIm[outOffset + ( 15*me + 14 + 0 )*stride_out] = (*R28).y;
+	bufOutRe[outOffset + ( 15*me + 0 + 480 )*stride_out] = (*R1).x;
+	bufOutIm[outOffset + ( 15*me + 0 + 480 )*stride_out] = (*R1).y;
+	bufOutRe[outOffset + ( 15*me + 1 + 480 )*stride_out] = (*R3).x;
+	bufOutIm[outOffset + ( 15*me + 1 + 480 )*stride_out] = (*R3).y;
+	bufOutRe[outOffset + ( 15*me + 2 + 480 )*stride_out] = (*R5).x;
+	bufOutIm[outOffset + ( 15*me + 2 + 480 )*stride_out] = (*R5).y;
+	bufOutRe[outOffset + ( 15*me + 3 + 480 )*stride_out] = (*R7).x;
+	bufOutIm[outOffset + ( 15*me + 3 + 480 )*stride_out] = (*R7).y;
+	bufOutRe[outOffset + ( 15*me + 4 + 480 )*stride_out] = (*R9).x;
+	bufOutIm[outOffset + ( 15*me + 4 + 480 )*stride_out] = (*R9).y;
+	bufOutRe[outOffset + ( 15*me + 5 + 480 )*stride_out] = (*R11).x;
+	bufOutIm[outOffset + ( 15*me + 5 + 480 )*stride_out] = (*R11).y;
+	bufOutRe[outOffset + ( 15*me + 6 + 480 )*stride_out] = (*R13).x;
+	bufOutIm[outOffset + ( 15*me + 6 + 480 )*stride_out] = (*R13).y;
+	bufOutRe[outOffset + ( 15*me + 7 + 480 )*stride_out] = (*R15).x;
+	bufOutIm[outOffset + ( 15*me + 7 + 480 )*stride_out] = (*R15).y;
+	bufOutRe[outOffset + ( 15*me + 8 + 480 )*stride_out] = (*R17).x;
+	bufOutIm[outOffset + ( 15*me + 8 + 480 )*stride_out] = (*R17).y;
+	bufOutRe[outOffset + ( 15*me + 9 + 480 )*stride_out] = (*R19).x;
+	bufOutIm[outOffset + ( 15*me + 9 + 480 )*stride_out] = (*R19).y;
+	bufOutRe[outOffset + ( 15*me + 10 + 480 )*stride_out] = (*R21).x;
+	bufOutIm[outOffset + ( 15*me + 10 + 480 )*stride_out] = (*R21).y;
+	bufOutRe[outOffset + ( 15*me + 11 + 480 )*stride_out] = (*R23).x;
+	bufOutIm[outOffset + ( 15*me + 11 + 480 )*stride_out] = (*R23).y;
+	bufOutRe[outOffset + ( 15*me + 12 + 480 )*stride_out] = (*R25).x;
+	bufOutIm[outOffset + ( 15*me + 12 + 480 )*stride_out] = (*R25).y;
+	bufOutRe[outOffset + ( 15*me + 13 + 480 )*stride_out] = (*R27).x;
+	bufOutIm[outOffset + ( 15*me + 13 + 480 )*stride_out] = (*R27).y;
+	bufOutRe[outOffset + ( 15*me + 14 + 480 )*stride_out] = (*R29).x;
+	bufOutIm[outOffset + ( 15*me + 14 + 480 )*stride_out] = (*R29).y;
+	}
+
+}
+
+template <typename T, StrideBin sb>
+__device__ void
+InvPass0_len960(const T *twiddles, const size_t stride_in, const size_t stride_out, unsigned int rw, unsigned int b, unsigned int me, unsigned int inOffset, unsigned int outOffset, T *bufIn, real_type_t<T> *bufOutRe, real_type_t<T> *bufOutIm, T *R0, T *R1, T *R2, T *R3, T *R4, T *R5, T *R6, T *R7, T *R8, T *R9, T *R10, T *R11, T *R12, T *R13, T *R14, T *R15, T *R16, T *R17, T *R18, T *R19, T *R20, T *R21, T *R22, T *R23, T *R24, T *R25, T *R26, T *R27, T *R28, T *R29)
+{
+
+
+	if(rw)
+	{
+	(*R0) = bufIn[inOffset + ( 0 + me*3 + 0 + 0 )*stride_in];
+	(*R10) = bufIn[inOffset + ( 0 + me*3 + 1 + 0 )*stride_in];
+	(*R20) = bufIn[inOffset + ( 0 + me*3 + 2 + 0 )*stride_in];
+	(*R1) = bufIn[inOffset + ( 0 + me*3 + 0 + 96 )*stride_in];
+	(*R11) = bufIn[inOffset + ( 0 + me*3 + 1 + 96 )*stride_in];
+	(*R21) = bufIn[inOffset + ( 0 + me*3 + 2 + 96 )*stride_in];
+	(*R2) = bufIn[inOffset + ( 0 + me*3 + 0 + 192 )*stride_in];
+	(*R12) = bufIn[inOffset + ( 0 + me*3 + 1 + 192 )*stride_in];
+	(*R22) = bufIn[inOffset + ( 0 + me*3 + 2 + 192 )*stride_in];
+	(*R3) = bufIn[inOffset + ( 0 + me*3 + 0 + 288 )*stride_in];
+	(*R13) = bufIn[inOffset + ( 0 + me*3 + 1 + 288 )*stride_in];
+	(*R23) = bufIn[inOffset + ( 0 + me*3 + 2 + 288 )*stride_in];
+	(*R4) = bufIn[inOffset + ( 0 + me*3 + 0 + 384 )*stride_in];
+	(*R14) = bufIn[inOffset + ( 0 + me*3 + 1 + 384 )*stride_in];
+	(*R24) = bufIn[inOffset + ( 0 + me*3 + 2 + 384 )*stride_in];
+	(*R5) = bufIn[inOffset + ( 0 + me*3 + 0 + 480 )*stride_in];
+	(*R15) = bufIn[inOffset + ( 0 + me*3 + 1 + 480 )*stride_in];
+	(*R25) = bufIn[inOffset + ( 0 + me*3 + 2 + 480 )*stride_in];
+	(*R6) = bufIn[inOffset + ( 0 + me*3 + 0 + 576 )*stride_in];
+	(*R16) = bufIn[inOffset + ( 0 + me*3 + 1 + 576 )*stride_in];
+	(*R26) = bufIn[inOffset + ( 0 + me*3 + 2 + 576 )*stride_in];
+	(*R7) = bufIn[inOffset + ( 0 + me*3 + 0 + 672 )*stride_in];
+	(*R17) = bufIn[inOffset + ( 0 + me*3 + 1 + 672 )*stride_in];
+	(*R27) = bufIn[inOffset + ( 0 + me*3 + 2 + 672 )*stride_in];
+	(*R8) = bufIn[inOffset + ( 0 + me*3 + 0 + 768 )*stride_in];
+	(*R18) = bufIn[inOffset + ( 0 + me*3 + 1 + 768 )*stride_in];
+	(*R28) = bufIn[inOffset + ( 0 + me*3 + 2 + 768 )*stride_in];
+	(*R9) = bufIn[inOffset + ( 0 + me*3 + 0 + 864 )*stride_in];
+	(*R19) = bufIn[inOffset + ( 0 + me*3 + 1 + 864 )*stride_in];
+	(*R29) = bufIn[inOffset + ( 0 + me*3 + 2 + 864 )*stride_in];
+	}
+
+
+
+	InvRad10B1(R0, R1, R2, R3, R4, R5, R6, R7, R8, R9);
+	InvRad10B1(R10, R11, R12, R13, R14, R15, R16, R17, R18, R19);
+	InvRad10B1(R20, R21, R22, R23, R24, R25, R26, R27, R28, R29);
+
+
+	if(rw)
+	{
+	bufOutRe[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 0 ) ] = (*R0).x;
+	bufOutRe[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 1 ) ] = (*R1).x;
+	bufOutRe[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 2 ) ] = (*R2).x;
+	bufOutRe[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 3 ) ] = (*R3).x;
+	bufOutRe[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 4 ) ] = (*R4).x;
+	bufOutRe[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 5 ) ] = (*R5).x;
+	bufOutRe[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 6 ) ] = (*R6).x;
+	bufOutRe[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 7 ) ] = (*R7).x;
+	bufOutRe[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 8 ) ] = (*R8).x;
+	bufOutRe[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 9 ) ] = (*R9).x;
+	bufOutRe[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 0 ) ] = (*R10).x;
+	bufOutRe[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 1 ) ] = (*R11).x;
+	bufOutRe[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 2 ) ] = (*R12).x;
+	bufOutRe[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 3 ) ] = (*R13).x;
+	bufOutRe[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 4 ) ] = (*R14).x;
+	bufOutRe[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 5 ) ] = (*R15).x;
+	bufOutRe[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 6 ) ] = (*R16).x;
+	bufOutRe[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 7 ) ] = (*R17).x;
+	bufOutRe[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 8 ) ] = (*R18).x;
+	bufOutRe[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 9 ) ] = (*R19).x;
+	bufOutRe[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 0 ) ] = (*R20).x;
+	bufOutRe[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 1 ) ] = (*R21).x;
+	bufOutRe[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 2 ) ] = (*R22).x;
+	bufOutRe[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 3 ) ] = (*R23).x;
+	bufOutRe[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 4 ) ] = (*R24).x;
+	bufOutRe[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 5 ) ] = (*R25).x;
+	bufOutRe[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 6 ) ] = (*R26).x;
+	bufOutRe[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 7 ) ] = (*R27).x;
+	bufOutRe[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 8 ) ] = (*R28).x;
+	bufOutRe[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 9 ) ] = (*R29).x;
+	}
+
+
+	__syncthreads();
+
+	if(rw)
+	{
+	(*R0).x = bufOutRe[outOffset + ( 0 + me*5 + 0 + 0 ) ];
+	(*R6).x = bufOutRe[outOffset + ( 0 + me*5 + 1 + 0 ) ];
+	(*R12).x = bufOutRe[outOffset + ( 0 + me*5 + 2 + 0 ) ];
+	(*R18).x = bufOutRe[outOffset + ( 0 + me*5 + 3 + 0 ) ];
+	(*R24).x = bufOutRe[outOffset + ( 0 + me*5 + 4 + 0 ) ];
+	(*R1).x = bufOutRe[outOffset + ( 0 + me*5 + 0 + 160 ) ];
+	(*R7).x = bufOutRe[outOffset + ( 0 + me*5 + 1 + 160 ) ];
+	(*R13).x = bufOutRe[outOffset + ( 0 + me*5 + 2 + 160 ) ];
+	(*R19).x = bufOutRe[outOffset + ( 0 + me*5 + 3 + 160 ) ];
+	(*R25).x = bufOutRe[outOffset + ( 0 + me*5 + 4 + 160 ) ];
+	(*R2).x = bufOutRe[outOffset + ( 0 + me*5 + 0 + 320 ) ];
+	(*R8).x = bufOutRe[outOffset + ( 0 + me*5 + 1 + 320 ) ];
+	(*R14).x = bufOutRe[outOffset + ( 0 + me*5 + 2 + 320 ) ];
+	(*R20).x = bufOutRe[outOffset + ( 0 + me*5 + 3 + 320 ) ];
+	(*R26).x = bufOutRe[outOffset + ( 0 + me*5 + 4 + 320 ) ];
+	(*R3).x = bufOutRe[outOffset + ( 0 + me*5 + 0 + 480 ) ];
+	(*R9).x = bufOutRe[outOffset + ( 0 + me*5 + 1 + 480 ) ];
+	(*R15).x = bufOutRe[outOffset + ( 0 + me*5 + 2 + 480 ) ];
+	(*R21).x = bufOutRe[outOffset + ( 0 + me*5 + 3 + 480 ) ];
+	(*R27).x = bufOutRe[outOffset + ( 0 + me*5 + 4 + 480 ) ];
+	(*R4).x = bufOutRe[outOffset + ( 0 + me*5 + 0 + 640 ) ];
+	(*R10).x = bufOutRe[outOffset + ( 0 + me*5 + 1 + 640 ) ];
+	(*R16).x = bufOutRe[outOffset + ( 0 + me*5 + 2 + 640 ) ];
+	(*R22).x = bufOutRe[outOffset + ( 0 + me*5 + 3 + 640 ) ];
+	(*R28).x = bufOutRe[outOffset + ( 0 + me*5 + 4 + 640 ) ];
+	(*R5).x = bufOutRe[outOffset + ( 0 + me*5 + 0 + 800 ) ];
+	(*R11).x = bufOutRe[outOffset + ( 0 + me*5 + 1 + 800 ) ];
+	(*R17).x = bufOutRe[outOffset + ( 0 + me*5 + 2 + 800 ) ];
+	(*R23).x = bufOutRe[outOffset + ( 0 + me*5 + 3 + 800 ) ];
+	(*R29).x = bufOutRe[outOffset + ( 0 + me*5 + 4 + 800 ) ];
+	}
+
+
+	__syncthreads();
+
+	if(rw)
+	{
+	bufOutIm[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 0 ) ] = (*R0).y;
+	bufOutIm[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 1 ) ] = (*R1).y;
+	bufOutIm[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 2 ) ] = (*R2).y;
+	bufOutIm[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 3 ) ] = (*R3).y;
+	bufOutIm[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 4 ) ] = (*R4).y;
+	bufOutIm[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 5 ) ] = (*R5).y;
+	bufOutIm[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 6 ) ] = (*R6).y;
+	bufOutIm[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 7 ) ] = (*R7).y;
+	bufOutIm[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 8 ) ] = (*R8).y;
+	bufOutIm[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 9 ) ] = (*R9).y;
+	bufOutIm[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 0 ) ] = (*R10).y;
+	bufOutIm[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 1 ) ] = (*R11).y;
+	bufOutIm[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 2 ) ] = (*R12).y;
+	bufOutIm[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 3 ) ] = (*R13).y;
+	bufOutIm[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 4 ) ] = (*R14).y;
+	bufOutIm[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 5 ) ] = (*R15).y;
+	bufOutIm[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 6 ) ] = (*R16).y;
+	bufOutIm[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 7 ) ] = (*R17).y;
+	bufOutIm[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 8 ) ] = (*R18).y;
+	bufOutIm[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 9 ) ] = (*R19).y;
+	bufOutIm[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 0 ) ] = (*R20).y;
+	bufOutIm[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 1 ) ] = (*R21).y;
+	bufOutIm[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 2 ) ] = (*R22).y;
+	bufOutIm[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 3 ) ] = (*R23).y;
+	bufOutIm[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 4 ) ] = (*R24).y;
+	bufOutIm[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 5 ) ] = (*R25).y;
+	bufOutIm[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 6 ) ] = (*R26).y;
+	bufOutIm[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 7 ) ] = (*R27).y;
+	bufOutIm[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 8 ) ] = (*R28).y;
+	bufOutIm[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 9 ) ] = (*R29).y;
+	}
+
+
+	__syncthreads();
+
+	if(rw)
+	{
+	(*R0).y = bufOutIm[outOffset + ( 0 + me*5 + 0 + 0 ) ];
+	(*R6).y = bufOutIm[outOffset + ( 0 + me*5 + 1 + 0 ) ];
+	(*R12).y = bufOutIm[outOffset + ( 0 + me*5 + 2 + 0 ) ];
+	(*R18).y = bufOutIm[outOffset + ( 0 + me*5 + 3 + 0 ) ];
+	(*R24).y = bufOutIm[outOffset + ( 0 + me*5 + 4 + 0 ) ];
+	(*R1).y = bufOutIm[outOffset + ( 0 + me*5 + 0 + 160 ) ];
+	(*R7).y = bufOutIm[outOffset + ( 0 + me*5 + 1 + 160 ) ];
+	(*R13).y = bufOutIm[outOffset + ( 0 + me*5 + 2 + 160 ) ];
+	(*R19).y = bufOutIm[outOffset + ( 0 + me*5 + 3 + 160 ) ];
+	(*R25).y = bufOutIm[outOffset + ( 0 + me*5 + 4 + 160 ) ];
+	(*R2).y = bufOutIm[outOffset + ( 0 + me*5 + 0 + 320 ) ];
+	(*R8).y = bufOutIm[outOffset + ( 0 + me*5 + 1 + 320 ) ];
+	(*R14).y = bufOutIm[outOffset + ( 0 + me*5 + 2 + 320 ) ];
+	(*R20).y = bufOutIm[outOffset + ( 0 + me*5 + 3 + 320 ) ];
+	(*R26).y = bufOutIm[outOffset + ( 0 + me*5 + 4 + 320 ) ];
+	(*R3).y = bufOutIm[outOffset + ( 0 + me*5 + 0 + 480 ) ];
+	(*R9).y = bufOutIm[outOffset + ( 0 + me*5 + 1 + 480 ) ];
+	(*R15).y = bufOutIm[outOffset + ( 0 + me*5 + 2 + 480 ) ];
+	(*R21).y = bufOutIm[outOffset + ( 0 + me*5 + 3 + 480 ) ];
+	(*R27).y = bufOutIm[outOffset + ( 0 + me*5 + 4 + 480 ) ];
+	(*R4).y = bufOutIm[outOffset + ( 0 + me*5 + 0 + 640 ) ];
+	(*R10).y = bufOutIm[outOffset + ( 0 + me*5 + 1 + 640 ) ];
+	(*R16).y = bufOutIm[outOffset + ( 0 + me*5 + 2 + 640 ) ];
+	(*R22).y = bufOutIm[outOffset + ( 0 + me*5 + 3 + 640 ) ];
+	(*R28).y = bufOutIm[outOffset + ( 0 + me*5 + 4 + 640 ) ];
+	(*R5).y = bufOutIm[outOffset + ( 0 + me*5 + 0 + 800 ) ];
+	(*R11).y = bufOutIm[outOffset + ( 0 + me*5 + 1 + 800 ) ];
+	(*R17).y = bufOutIm[outOffset + ( 0 + me*5 + 2 + 800 ) ];
+	(*R23).y = bufOutIm[outOffset + ( 0 + me*5 + 3 + 800 ) ];
+	(*R29).y = bufOutIm[outOffset + ( 0 + me*5 + 4 + 800 ) ];
+	}
+
+
+	__syncthreads();
+
+}
+
+template <typename T, StrideBin sb>
+__device__ void
+InvPass0_len960(const T *twiddles, const size_t stride_in, const size_t stride_out, unsigned int rw, unsigned int b, unsigned int me, unsigned int inOffset, unsigned int outOffset, real_type_t<T> *bufInRe, real_type_t<T> *bufInIm, real_type_t<T> *bufOutRe, real_type_t<T> *bufOutIm, T *R0, T *R1, T *R2, T *R3, T *R4, T *R5, T *R6, T *R7, T *R8, T *R9, T *R10, T *R11, T *R12, T *R13, T *R14, T *R15, T *R16, T *R17, T *R18, T *R19, T *R20, T *R21, T *R22, T *R23, T *R24, T *R25, T *R26, T *R27, T *R28, T *R29)
+{
+
+
+	if(rw)
+	{
+	(*R0).x = bufInRe[inOffset + ( 0 + me*3 + 0 + 0 )*stride_in];
+	(*R0).y = bufInIm[inOffset + ( 0 + me*3 + 0 + 0 )*stride_in];
+	(*R10).x = bufInRe[inOffset + ( 0 + me*3 + 1 + 0 )*stride_in];
+	(*R10).y = bufInIm[inOffset + ( 0 + me*3 + 1 + 0 )*stride_in];
+	(*R20).x = bufInRe[inOffset + ( 0 + me*3 + 2 + 0 )*stride_in];
+	(*R20).y = bufInIm[inOffset + ( 0 + me*3 + 2 + 0 )*stride_in];
+	(*R1).x = bufInRe[inOffset + ( 0 + me*3 + 0 + 96 )*stride_in];
+	(*R1).y = bufInIm[inOffset + ( 0 + me*3 + 0 + 96 )*stride_in];
+	(*R11).x = bufInRe[inOffset + ( 0 + me*3 + 1 + 96 )*stride_in];
+	(*R11).y = bufInIm[inOffset + ( 0 + me*3 + 1 + 96 )*stride_in];
+	(*R21).x = bufInRe[inOffset + ( 0 + me*3 + 2 + 96 )*stride_in];
+	(*R21).y = bufInIm[inOffset + ( 0 + me*3 + 2 + 96 )*stride_in];
+	(*R2).x = bufInRe[inOffset + ( 0 + me*3 + 0 + 192 )*stride_in];
+	(*R2).y = bufInIm[inOffset + ( 0 + me*3 + 0 + 192 )*stride_in];
+	(*R12).x = bufInRe[inOffset + ( 0 + me*3 + 1 + 192 )*stride_in];
+	(*R12).y = bufInIm[inOffset + ( 0 + me*3 + 1 + 192 )*stride_in];
+	(*R22).x = bufInRe[inOffset + ( 0 + me*3 + 2 + 192 )*stride_in];
+	(*R22).y = bufInIm[inOffset + ( 0 + me*3 + 2 + 192 )*stride_in];
+	(*R3).x = bufInRe[inOffset + ( 0 + me*3 + 0 + 288 )*stride_in];
+	(*R3).y = bufInIm[inOffset + ( 0 + me*3 + 0 + 288 )*stride_in];
+	(*R13).x = bufInRe[inOffset + ( 0 + me*3 + 1 + 288 )*stride_in];
+	(*R13).y = bufInIm[inOffset + ( 0 + me*3 + 1 + 288 )*stride_in];
+	(*R23).x = bufInRe[inOffset + ( 0 + me*3 + 2 + 288 )*stride_in];
+	(*R23).y = bufInIm[inOffset + ( 0 + me*3 + 2 + 288 )*stride_in];
+	(*R4).x = bufInRe[inOffset + ( 0 + me*3 + 0 + 384 )*stride_in];
+	(*R4).y = bufInIm[inOffset + ( 0 + me*3 + 0 + 384 )*stride_in];
+	(*R14).x = bufInRe[inOffset + ( 0 + me*3 + 1 + 384 )*stride_in];
+	(*R14).y = bufInIm[inOffset + ( 0 + me*3 + 1 + 384 )*stride_in];
+	(*R24).x = bufInRe[inOffset + ( 0 + me*3 + 2 + 384 )*stride_in];
+	(*R24).y = bufInIm[inOffset + ( 0 + me*3 + 2 + 384 )*stride_in];
+	(*R5).x = bufInRe[inOffset + ( 0 + me*3 + 0 + 480 )*stride_in];
+	(*R5).y = bufInIm[inOffset + ( 0 + me*3 + 0 + 480 )*stride_in];
+	(*R15).x = bufInRe[inOffset + ( 0 + me*3 + 1 + 480 )*stride_in];
+	(*R15).y = bufInIm[inOffset + ( 0 + me*3 + 1 + 480 )*stride_in];
+	(*R25).x = bufInRe[inOffset + ( 0 + me*3 + 2 + 480 )*stride_in];
+	(*R25).y = bufInIm[inOffset + ( 0 + me*3 + 2 + 480 )*stride_in];
+	(*R6).x = bufInRe[inOffset + ( 0 + me*3 + 0 + 576 )*stride_in];
+	(*R6).y = bufInIm[inOffset + ( 0 + me*3 + 0 + 576 )*stride_in];
+	(*R16).x = bufInRe[inOffset + ( 0 + me*3 + 1 + 576 )*stride_in];
+	(*R16).y = bufInIm[inOffset + ( 0 + me*3 + 1 + 576 )*stride_in];
+	(*R26).x = bufInRe[inOffset + ( 0 + me*3 + 2 + 576 )*stride_in];
+	(*R26).y = bufInIm[inOffset + ( 0 + me*3 + 2 + 576 )*stride_in];
+	(*R7).x = bufInRe[inOffset + ( 0 + me*3 + 0 + 672 )*stride_in];
+	(*R7).y = bufInIm[inOffset + ( 0 + me*3 + 0 + 672 )*stride_in];
+	(*R17).x = bufInRe[inOffset + ( 0 + me*3 + 1 + 672 )*stride_in];
+	(*R17).y = bufInIm[inOffset + ( 0 + me*3 + 1 + 672 )*stride_in];
+	(*R27).x = bufInRe[inOffset + ( 0 + me*3 + 2 + 672 )*stride_in];
+	(*R27).y = bufInIm[inOffset + ( 0 + me*3 + 2 + 672 )*stride_in];
+	(*R8).x = bufInRe[inOffset + ( 0 + me*3 + 0 + 768 )*stride_in];
+	(*R8).y = bufInIm[inOffset + ( 0 + me*3 + 0 + 768 )*stride_in];
+	(*R18).x = bufInRe[inOffset + ( 0 + me*3 + 1 + 768 )*stride_in];
+	(*R18).y = bufInIm[inOffset + ( 0 + me*3 + 1 + 768 )*stride_in];
+	(*R28).x = bufInRe[inOffset + ( 0 + me*3 + 2 + 768 )*stride_in];
+	(*R28).y = bufInIm[inOffset + ( 0 + me*3 + 2 + 768 )*stride_in];
+	(*R9).x = bufInRe[inOffset + ( 0 + me*3 + 0 + 864 )*stride_in];
+	(*R9).y = bufInIm[inOffset + ( 0 + me*3 + 0 + 864 )*stride_in];
+	(*R19).x = bufInRe[inOffset + ( 0 + me*3 + 1 + 864 )*stride_in];
+	(*R19).y = bufInIm[inOffset + ( 0 + me*3 + 1 + 864 )*stride_in];
+	(*R29).x = bufInRe[inOffset + ( 0 + me*3 + 2 + 864 )*stride_in];
+	(*R29).y = bufInIm[inOffset + ( 0 + me*3 + 2 + 864 )*stride_in];
+	}
+
+
+
+	InvRad10B1(R0, R1, R2, R3, R4, R5, R6, R7, R8, R9);
+	InvRad10B1(R10, R11, R12, R13, R14, R15, R16, R17, R18, R19);
+	InvRad10B1(R20, R21, R22, R23, R24, R25, R26, R27, R28, R29);
+
+
+	if(rw)
+	{
+	bufOutRe[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 0 ) ] = (*R0).x;
+	bufOutRe[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 1 ) ] = (*R1).x;
+	bufOutRe[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 2 ) ] = (*R2).x;
+	bufOutRe[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 3 ) ] = (*R3).x;
+	bufOutRe[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 4 ) ] = (*R4).x;
+	bufOutRe[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 5 ) ] = (*R5).x;
+	bufOutRe[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 6 ) ] = (*R6).x;
+	bufOutRe[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 7 ) ] = (*R7).x;
+	bufOutRe[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 8 ) ] = (*R8).x;
+	bufOutRe[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 9 ) ] = (*R9).x;
+	bufOutRe[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 0 ) ] = (*R10).x;
+	bufOutRe[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 1 ) ] = (*R11).x;
+	bufOutRe[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 2 ) ] = (*R12).x;
+	bufOutRe[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 3 ) ] = (*R13).x;
+	bufOutRe[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 4 ) ] = (*R14).x;
+	bufOutRe[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 5 ) ] = (*R15).x;
+	bufOutRe[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 6 ) ] = (*R16).x;
+	bufOutRe[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 7 ) ] = (*R17).x;
+	bufOutRe[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 8 ) ] = (*R18).x;
+	bufOutRe[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 9 ) ] = (*R19).x;
+	bufOutRe[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 0 ) ] = (*R20).x;
+	bufOutRe[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 1 ) ] = (*R21).x;
+	bufOutRe[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 2 ) ] = (*R22).x;
+	bufOutRe[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 3 ) ] = (*R23).x;
+	bufOutRe[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 4 ) ] = (*R24).x;
+	bufOutRe[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 5 ) ] = (*R25).x;
+	bufOutRe[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 6 ) ] = (*R26).x;
+	bufOutRe[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 7 ) ] = (*R27).x;
+	bufOutRe[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 8 ) ] = (*R28).x;
+	bufOutRe[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 9 ) ] = (*R29).x;
+	}
+
+
+	__syncthreads();
+
+	if(rw)
+	{
+	(*R0).x = bufOutRe[outOffset + ( 0 + me*5 + 0 + 0 ) ];
+	(*R6).x = bufOutRe[outOffset + ( 0 + me*5 + 1 + 0 ) ];
+	(*R12).x = bufOutRe[outOffset + ( 0 + me*5 + 2 + 0 ) ];
+	(*R18).x = bufOutRe[outOffset + ( 0 + me*5 + 3 + 0 ) ];
+	(*R24).x = bufOutRe[outOffset + ( 0 + me*5 + 4 + 0 ) ];
+	(*R1).x = bufOutRe[outOffset + ( 0 + me*5 + 0 + 160 ) ];
+	(*R7).x = bufOutRe[outOffset + ( 0 + me*5 + 1 + 160 ) ];
+	(*R13).x = bufOutRe[outOffset + ( 0 + me*5 + 2 + 160 ) ];
+	(*R19).x = bufOutRe[outOffset + ( 0 + me*5 + 3 + 160 ) ];
+	(*R25).x = bufOutRe[outOffset + ( 0 + me*5 + 4 + 160 ) ];
+	(*R2).x = bufOutRe[outOffset + ( 0 + me*5 + 0 + 320 ) ];
+	(*R8).x = bufOutRe[outOffset + ( 0 + me*5 + 1 + 320 ) ];
+	(*R14).x = bufOutRe[outOffset + ( 0 + me*5 + 2 + 320 ) ];
+	(*R20).x = bufOutRe[outOffset + ( 0 + me*5 + 3 + 320 ) ];
+	(*R26).x = bufOutRe[outOffset + ( 0 + me*5 + 4 + 320 ) ];
+	(*R3).x = bufOutRe[outOffset + ( 0 + me*5 + 0 + 480 ) ];
+	(*R9).x = bufOutRe[outOffset + ( 0 + me*5 + 1 + 480 ) ];
+	(*R15).x = bufOutRe[outOffset + ( 0 + me*5 + 2 + 480 ) ];
+	(*R21).x = bufOutRe[outOffset + ( 0 + me*5 + 3 + 480 ) ];
+	(*R27).x = bufOutRe[outOffset + ( 0 + me*5 + 4 + 480 ) ];
+	(*R4).x = bufOutRe[outOffset + ( 0 + me*5 + 0 + 640 ) ];
+	(*R10).x = bufOutRe[outOffset + ( 0 + me*5 + 1 + 640 ) ];
+	(*R16).x = bufOutRe[outOffset + ( 0 + me*5 + 2 + 640 ) ];
+	(*R22).x = bufOutRe[outOffset + ( 0 + me*5 + 3 + 640 ) ];
+	(*R28).x = bufOutRe[outOffset + ( 0 + me*5 + 4 + 640 ) ];
+	(*R5).x = bufOutRe[outOffset + ( 0 + me*5 + 0 + 800 ) ];
+	(*R11).x = bufOutRe[outOffset + ( 0 + me*5 + 1 + 800 ) ];
+	(*R17).x = bufOutRe[outOffset + ( 0 + me*5 + 2 + 800 ) ];
+	(*R23).x = bufOutRe[outOffset + ( 0 + me*5 + 3 + 800 ) ];
+	(*R29).x = bufOutRe[outOffset + ( 0 + me*5 + 4 + 800 ) ];
+	}
+
+
+	__syncthreads();
+
+	if(rw)
+	{
+	bufOutIm[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 0 ) ] = (*R0).y;
+	bufOutIm[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 1 ) ] = (*R1).y;
+	bufOutIm[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 2 ) ] = (*R2).y;
+	bufOutIm[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 3 ) ] = (*R3).y;
+	bufOutIm[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 4 ) ] = (*R4).y;
+	bufOutIm[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 5 ) ] = (*R5).y;
+	bufOutIm[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 6 ) ] = (*R6).y;
+	bufOutIm[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 7 ) ] = (*R7).y;
+	bufOutIm[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 8 ) ] = (*R8).y;
+	bufOutIm[outOffset + ( ((3*me + 0)/1)*10 + (3*me + 0)%1 + 9 ) ] = (*R9).y;
+	bufOutIm[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 0 ) ] = (*R10).y;
+	bufOutIm[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 1 ) ] = (*R11).y;
+	bufOutIm[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 2 ) ] = (*R12).y;
+	bufOutIm[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 3 ) ] = (*R13).y;
+	bufOutIm[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 4 ) ] = (*R14).y;
+	bufOutIm[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 5 ) ] = (*R15).y;
+	bufOutIm[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 6 ) ] = (*R16).y;
+	bufOutIm[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 7 ) ] = (*R17).y;
+	bufOutIm[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 8 ) ] = (*R18).y;
+	bufOutIm[outOffset + ( ((3*me + 1)/1)*10 + (3*me + 1)%1 + 9 ) ] = (*R19).y;
+	bufOutIm[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 0 ) ] = (*R20).y;
+	bufOutIm[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 1 ) ] = (*R21).y;
+	bufOutIm[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 2 ) ] = (*R22).y;
+	bufOutIm[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 3 ) ] = (*R23).y;
+	bufOutIm[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 4 ) ] = (*R24).y;
+	bufOutIm[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 5 ) ] = (*R25).y;
+	bufOutIm[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 6 ) ] = (*R26).y;
+	bufOutIm[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 7 ) ] = (*R27).y;
+	bufOutIm[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 8 ) ] = (*R28).y;
+	bufOutIm[outOffset + ( ((3*me + 2)/1)*10 + (3*me + 2)%1 + 9 ) ] = (*R29).y;
+	}
+
+
+	__syncthreads();
+
+	if(rw)
+	{
+	(*R0).y = bufOutIm[outOffset + ( 0 + me*5 + 0 + 0 ) ];
+	(*R6).y = bufOutIm[outOffset + ( 0 + me*5 + 1 + 0 ) ];
+	(*R12).y = bufOutIm[outOffset + ( 0 + me*5 + 2 + 0 ) ];
+	(*R18).y = bufOutIm[outOffset + ( 0 + me*5 + 3 + 0 ) ];
+	(*R24).y = bufOutIm[outOffset + ( 0 + me*5 + 4 + 0 ) ];
+	(*R1).y = bufOutIm[outOffset + ( 0 + me*5 + 0 + 160 ) ];
+	(*R7).y = bufOutIm[outOffset + ( 0 + me*5 + 1 + 160 ) ];
+	(*R13).y = bufOutIm[outOffset + ( 0 + me*5 + 2 + 160 ) ];
+	(*R19).y = bufOutIm[outOffset + ( 0 + me*5 + 3 + 160 ) ];
+	(*R25).y = bufOutIm[outOffset + ( 0 + me*5 + 4 + 160 ) ];
+	(*R2).y = bufOutIm[outOffset + ( 0 + me*5 + 0 + 320 ) ];
+	(*R8).y = bufOutIm[outOffset + ( 0 + me*5 + 1 + 320 ) ];
+	(*R14).y = bufOutIm[outOffset + ( 0 + me*5 + 2 + 320 ) ];
+	(*R20).y = bufOutIm[outOffset + ( 0 + me*5 + 3 + 320 ) ];
+	(*R26).y = bufOutIm[outOffset + ( 0 + me*5 + 4 + 320 ) ];
+	(*R3).y = bufOutIm[outOffset + ( 0 + me*5 + 0 + 480 ) ];
+	(*R9).y = bufOutIm[outOffset + ( 0 + me*5 + 1 + 480 ) ];
+	(*R15).y = bufOutIm[outOffset + ( 0 + me*5 + 2 + 480 ) ];
+	(*R21).y = bufOutIm[outOffset + ( 0 + me*5 + 3 + 480 ) ];
+	(*R27).y = bufOutIm[outOffset + ( 0 + me*5 + 4 + 480 ) ];
+	(*R4).y = bufOutIm[outOffset + ( 0 + me*5 + 0 + 640 ) ];
+	(*R10).y = bufOutIm[outOffset + ( 0 + me*5 + 1 + 640 ) ];
+	(*R16).y = bufOutIm[outOffset + ( 0 + me*5 + 2 + 640 ) ];
+	(*R22).y = bufOutIm[outOffset + ( 0 + me*5 + 3 + 640 ) ];
+	(*R28).y = bufOutIm[outOffset + ( 0 + me*5 + 4 + 640 ) ];
+	(*R5).y = bufOutIm[outOffset + ( 0 + me*5 + 0 + 800 ) ];
+	(*R11).y = bufOutIm[outOffset + ( 0 + me*5 + 1 + 800 ) ];
+	(*R17).y = bufOutIm[outOffset + ( 0 + me*5 + 2 + 800 ) ];
+	(*R23).y = bufOutIm[outOffset + ( 0 + me*5 + 3 + 800 ) ];
+	(*R29).y = bufOutIm[outOffset + ( 0 + me*5 + 4 + 800 ) ];
+	}
+
+
+	__syncthreads();
+
+}
+
+template <typename T, StrideBin sb>
+__device__ void
+InvPass1_len960(const T *twiddles, const size_t stride_in, const size_t stride_out, unsigned int rw, unsigned int b, unsigned int me, unsigned int inOffset, unsigned int outOffset, real_type_t<T> *bufInRe, real_type_t<T> *bufInIm, real_type_t<T> *bufOutRe, real_type_t<T> *bufOutIm, T *R0, T *R1, T *R2, T *R3, T *R4, T *R5, T *R6, T *R7, T *R8, T *R9, T *R10, T *R11, T *R12, T *R13, T *R14, T *R15, T *R16, T *R17, T *R18, T *R19, T *R20, T *R21, T *R22, T *R23, T *R24, T *R25, T *R26, T *R27, T *R28, T *R29)
+{
+
+
+
+
+	{
+		T W = twiddles[9 + 5*((5*me + 0)%10) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R1).x; ry = (*R1).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R1).x = TR;
+		(*R1).y = TI;
+	}
+
+	{
+		T W = twiddles[9 + 5*((5*me + 0)%10) + 1];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R2).x; ry = (*R2).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R2).x = TR;
+		(*R2).y = TI;
+	}
+
+	{
+		T W = twiddles[9 + 5*((5*me + 0)%10) + 2];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R3).x; ry = (*R3).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R3).x = TR;
+		(*R3).y = TI;
+	}
+
+	{
+		T W = twiddles[9 + 5*((5*me + 0)%10) + 3];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R4).x; ry = (*R4).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R4).x = TR;
+		(*R4).y = TI;
+	}
+
+	{
+		T W = twiddles[9 + 5*((5*me + 0)%10) + 4];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R5).x; ry = (*R5).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R5).x = TR;
+		(*R5).y = TI;
+	}
+
+	{
+		T W = twiddles[9 + 5*((5*me + 1)%10) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R7).x; ry = (*R7).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R7).x = TR;
+		(*R7).y = TI;
+	}
+
+	{
+		T W = twiddles[9 + 5*((5*me + 1)%10) + 1];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R8).x; ry = (*R8).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R8).x = TR;
+		(*R8).y = TI;
+	}
+
+	{
+		T W = twiddles[9 + 5*((5*me + 1)%10) + 2];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R9).x; ry = (*R9).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R9).x = TR;
+		(*R9).y = TI;
+	}
+
+	{
+		T W = twiddles[9 + 5*((5*me + 1)%10) + 3];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R10).x; ry = (*R10).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R10).x = TR;
+		(*R10).y = TI;
+	}
+
+	{
+		T W = twiddles[9 + 5*((5*me + 1)%10) + 4];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R11).x; ry = (*R11).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R11).x = TR;
+		(*R11).y = TI;
+	}
+
+	{
+		T W = twiddles[9 + 5*((5*me + 2)%10) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R13).x; ry = (*R13).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R13).x = TR;
+		(*R13).y = TI;
+	}
+
+	{
+		T W = twiddles[9 + 5*((5*me + 2)%10) + 1];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R14).x; ry = (*R14).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R14).x = TR;
+		(*R14).y = TI;
+	}
+
+	{
+		T W = twiddles[9 + 5*((5*me + 2)%10) + 2];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R15).x; ry = (*R15).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R15).x = TR;
+		(*R15).y = TI;
+	}
+
+	{
+		T W = twiddles[9 + 5*((5*me + 2)%10) + 3];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R16).x; ry = (*R16).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R16).x = TR;
+		(*R16).y = TI;
+	}
+
+	{
+		T W = twiddles[9 + 5*((5*me + 2)%10) + 4];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R17).x; ry = (*R17).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R17).x = TR;
+		(*R17).y = TI;
+	}
+
+	{
+		T W = twiddles[9 + 5*((5*me + 3)%10) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R19).x; ry = (*R19).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R19).x = TR;
+		(*R19).y = TI;
+	}
+
+	{
+		T W = twiddles[9 + 5*((5*me + 3)%10) + 1];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R20).x; ry = (*R20).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R20).x = TR;
+		(*R20).y = TI;
+	}
+
+	{
+		T W = twiddles[9 + 5*((5*me + 3)%10) + 2];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R21).x; ry = (*R21).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R21).x = TR;
+		(*R21).y = TI;
+	}
+
+	{
+		T W = twiddles[9 + 5*((5*me + 3)%10) + 3];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R22).x; ry = (*R22).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R22).x = TR;
+		(*R22).y = TI;
+	}
+
+	{
+		T W = twiddles[9 + 5*((5*me + 3)%10) + 4];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R23).x; ry = (*R23).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R23).x = TR;
+		(*R23).y = TI;
+	}
+
+	{
+		T W = twiddles[9 + 5*((5*me + 4)%10) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R25).x; ry = (*R25).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R25).x = TR;
+		(*R25).y = TI;
+	}
+
+	{
+		T W = twiddles[9 + 5*((5*me + 4)%10) + 1];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R26).x; ry = (*R26).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R26).x = TR;
+		(*R26).y = TI;
+	}
+
+	{
+		T W = twiddles[9 + 5*((5*me + 4)%10) + 2];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R27).x; ry = (*R27).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R27).x = TR;
+		(*R27).y = TI;
+	}
+
+	{
+		T W = twiddles[9 + 5*((5*me + 4)%10) + 3];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R28).x; ry = (*R28).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R28).x = TR;
+		(*R28).y = TI;
+	}
+
+	{
+		T W = twiddles[9 + 5*((5*me + 4)%10) + 4];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R29).x; ry = (*R29).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R29).x = TR;
+		(*R29).y = TI;
+	}
+
+	InvRad6B1(R0, R1, R2, R3, R4, R5);
+	InvRad6B1(R6, R7, R8, R9, R10, R11);
+	InvRad6B1(R12, R13, R14, R15, R16, R17);
+	InvRad6B1(R18, R19, R20, R21, R22, R23);
+	InvRad6B1(R24, R25, R26, R27, R28, R29);
+
+
+	if(rw)
+	{
+	bufOutRe[outOffset + ( ((5*me + 0)/10)*60 + (5*me + 0)%10 + 0 ) ] = (*R0).x;
+	bufOutRe[outOffset + ( ((5*me + 0)/10)*60 + (5*me + 0)%10 + 10 ) ] = (*R1).x;
+	bufOutRe[outOffset + ( ((5*me + 0)/10)*60 + (5*me + 0)%10 + 20 ) ] = (*R2).x;
+	bufOutRe[outOffset + ( ((5*me + 0)/10)*60 + (5*me + 0)%10 + 30 ) ] = (*R3).x;
+	bufOutRe[outOffset + ( ((5*me + 0)/10)*60 + (5*me + 0)%10 + 40 ) ] = (*R4).x;
+	bufOutRe[outOffset + ( ((5*me + 0)/10)*60 + (5*me + 0)%10 + 50 ) ] = (*R5).x;
+	bufOutRe[outOffset + ( ((5*me + 1)/10)*60 + (5*me + 1)%10 + 0 ) ] = (*R6).x;
+	bufOutRe[outOffset + ( ((5*me + 1)/10)*60 + (5*me + 1)%10 + 10 ) ] = (*R7).x;
+	bufOutRe[outOffset + ( ((5*me + 1)/10)*60 + (5*me + 1)%10 + 20 ) ] = (*R8).x;
+	bufOutRe[outOffset + ( ((5*me + 1)/10)*60 + (5*me + 1)%10 + 30 ) ] = (*R9).x;
+	bufOutRe[outOffset + ( ((5*me + 1)/10)*60 + (5*me + 1)%10 + 40 ) ] = (*R10).x;
+	bufOutRe[outOffset + ( ((5*me + 1)/10)*60 + (5*me + 1)%10 + 50 ) ] = (*R11).x;
+	bufOutRe[outOffset + ( ((5*me + 2)/10)*60 + (5*me + 2)%10 + 0 ) ] = (*R12).x;
+	bufOutRe[outOffset + ( ((5*me + 2)/10)*60 + (5*me + 2)%10 + 10 ) ] = (*R13).x;
+	bufOutRe[outOffset + ( ((5*me + 2)/10)*60 + (5*me + 2)%10 + 20 ) ] = (*R14).x;
+	bufOutRe[outOffset + ( ((5*me + 2)/10)*60 + (5*me + 2)%10 + 30 ) ] = (*R15).x;
+	bufOutRe[outOffset + ( ((5*me + 2)/10)*60 + (5*me + 2)%10 + 40 ) ] = (*R16).x;
+	bufOutRe[outOffset + ( ((5*me + 2)/10)*60 + (5*me + 2)%10 + 50 ) ] = (*R17).x;
+	bufOutRe[outOffset + ( ((5*me + 3)/10)*60 + (5*me + 3)%10 + 0 ) ] = (*R18).x;
+	bufOutRe[outOffset + ( ((5*me + 3)/10)*60 + (5*me + 3)%10 + 10 ) ] = (*R19).x;
+	bufOutRe[outOffset + ( ((5*me + 3)/10)*60 + (5*me + 3)%10 + 20 ) ] = (*R20).x;
+	bufOutRe[outOffset + ( ((5*me + 3)/10)*60 + (5*me + 3)%10 + 30 ) ] = (*R21).x;
+	bufOutRe[outOffset + ( ((5*me + 3)/10)*60 + (5*me + 3)%10 + 40 ) ] = (*R22).x;
+	bufOutRe[outOffset + ( ((5*me + 3)/10)*60 + (5*me + 3)%10 + 50 ) ] = (*R23).x;
+	bufOutRe[outOffset + ( ((5*me + 4)/10)*60 + (5*me + 4)%10 + 0 ) ] = (*R24).x;
+	bufOutRe[outOffset + ( ((5*me + 4)/10)*60 + (5*me + 4)%10 + 10 ) ] = (*R25).x;
+	bufOutRe[outOffset + ( ((5*me + 4)/10)*60 + (5*me + 4)%10 + 20 ) ] = (*R26).x;
+	bufOutRe[outOffset + ( ((5*me + 4)/10)*60 + (5*me + 4)%10 + 30 ) ] = (*R27).x;
+	bufOutRe[outOffset + ( ((5*me + 4)/10)*60 + (5*me + 4)%10 + 40 ) ] = (*R28).x;
+	bufOutRe[outOffset + ( ((5*me + 4)/10)*60 + (5*me + 4)%10 + 50 ) ] = (*R29).x;
+	}
+
+
+	__syncthreads();
+
+	if(rw)
+	{
+	(*R0).x = bufOutRe[outOffset + ( 0 + me*15 + 0 + 0 ) ];
+	(*R2).x = bufOutRe[outOffset + ( 0 + me*15 + 1 + 0 ) ];
+	(*R4).x = bufOutRe[outOffset + ( 0 + me*15 + 2 + 0 ) ];
+	(*R6).x = bufOutRe[outOffset + ( 0 + me*15 + 3 + 0 ) ];
+	(*R8).x = bufOutRe[outOffset + ( 0 + me*15 + 4 + 0 ) ];
+	(*R10).x = bufOutRe[outOffset + ( 0 + me*15 + 5 + 0 ) ];
+	(*R12).x = bufOutRe[outOffset + ( 0 + me*15 + 6 + 0 ) ];
+	(*R14).x = bufOutRe[outOffset + ( 0 + me*15 + 7 + 0 ) ];
+	(*R16).x = bufOutRe[outOffset + ( 0 + me*15 + 8 + 0 ) ];
+	(*R18).x = bufOutRe[outOffset + ( 0 + me*15 + 9 + 0 ) ];
+	(*R20).x = bufOutRe[outOffset + ( 0 + me*15 + 10 + 0 ) ];
+	(*R22).x = bufOutRe[outOffset + ( 0 + me*15 + 11 + 0 ) ];
+	(*R24).x = bufOutRe[outOffset + ( 0 + me*15 + 12 + 0 ) ];
+	(*R26).x = bufOutRe[outOffset + ( 0 + me*15 + 13 + 0 ) ];
+	(*R28).x = bufOutRe[outOffset + ( 0 + me*15 + 14 + 0 ) ];
+	(*R1).x = bufOutRe[outOffset + ( 0 + me*15 + 0 + 480 ) ];
+	(*R3).x = bufOutRe[outOffset + ( 0 + me*15 + 1 + 480 ) ];
+	(*R5).x = bufOutRe[outOffset + ( 0 + me*15 + 2 + 480 ) ];
+	(*R7).x = bufOutRe[outOffset + ( 0 + me*15 + 3 + 480 ) ];
+	(*R9).x = bufOutRe[outOffset + ( 0 + me*15 + 4 + 480 ) ];
+	(*R11).x = bufOutRe[outOffset + ( 0 + me*15 + 5 + 480 ) ];
+	(*R13).x = bufOutRe[outOffset + ( 0 + me*15 + 6 + 480 ) ];
+	(*R15).x = bufOutRe[outOffset + ( 0 + me*15 + 7 + 480 ) ];
+	(*R17).x = bufOutRe[outOffset + ( 0 + me*15 + 8 + 480 ) ];
+	(*R19).x = bufOutRe[outOffset + ( 0 + me*15 + 9 + 480 ) ];
+	(*R21).x = bufOutRe[outOffset + ( 0 + me*15 + 10 + 480 ) ];
+	(*R23).x = bufOutRe[outOffset + ( 0 + me*15 + 11 + 480 ) ];
+	(*R25).x = bufOutRe[outOffset + ( 0 + me*15 + 12 + 480 ) ];
+	(*R27).x = bufOutRe[outOffset + ( 0 + me*15 + 13 + 480 ) ];
+	(*R29).x = bufOutRe[outOffset + ( 0 + me*15 + 14 + 480 ) ];
+	}
+
+
+	__syncthreads();
+
+	if(rw)
+	{
+	bufOutIm[outOffset + ( ((5*me + 0)/10)*60 + (5*me + 0)%10 + 0 ) ] = (*R0).y;
+	bufOutIm[outOffset + ( ((5*me + 0)/10)*60 + (5*me + 0)%10 + 10 ) ] = (*R1).y;
+	bufOutIm[outOffset + ( ((5*me + 0)/10)*60 + (5*me + 0)%10 + 20 ) ] = (*R2).y;
+	bufOutIm[outOffset + ( ((5*me + 0)/10)*60 + (5*me + 0)%10 + 30 ) ] = (*R3).y;
+	bufOutIm[outOffset + ( ((5*me + 0)/10)*60 + (5*me + 0)%10 + 40 ) ] = (*R4).y;
+	bufOutIm[outOffset + ( ((5*me + 0)/10)*60 + (5*me + 0)%10 + 50 ) ] = (*R5).y;
+	bufOutIm[outOffset + ( ((5*me + 1)/10)*60 + (5*me + 1)%10 + 0 ) ] = (*R6).y;
+	bufOutIm[outOffset + ( ((5*me + 1)/10)*60 + (5*me + 1)%10 + 10 ) ] = (*R7).y;
+	bufOutIm[outOffset + ( ((5*me + 1)/10)*60 + (5*me + 1)%10 + 20 ) ] = (*R8).y;
+	bufOutIm[outOffset + ( ((5*me + 1)/10)*60 + (5*me + 1)%10 + 30 ) ] = (*R9).y;
+	bufOutIm[outOffset + ( ((5*me + 1)/10)*60 + (5*me + 1)%10 + 40 ) ] = (*R10).y;
+	bufOutIm[outOffset + ( ((5*me + 1)/10)*60 + (5*me + 1)%10 + 50 ) ] = (*R11).y;
+	bufOutIm[outOffset + ( ((5*me + 2)/10)*60 + (5*me + 2)%10 + 0 ) ] = (*R12).y;
+	bufOutIm[outOffset + ( ((5*me + 2)/10)*60 + (5*me + 2)%10 + 10 ) ] = (*R13).y;
+	bufOutIm[outOffset + ( ((5*me + 2)/10)*60 + (5*me + 2)%10 + 20 ) ] = (*R14).y;
+	bufOutIm[outOffset + ( ((5*me + 2)/10)*60 + (5*me + 2)%10 + 30 ) ] = (*R15).y;
+	bufOutIm[outOffset + ( ((5*me + 2)/10)*60 + (5*me + 2)%10 + 40 ) ] = (*R16).y;
+	bufOutIm[outOffset + ( ((5*me + 2)/10)*60 + (5*me + 2)%10 + 50 ) ] = (*R17).y;
+	bufOutIm[outOffset + ( ((5*me + 3)/10)*60 + (5*me + 3)%10 + 0 ) ] = (*R18).y;
+	bufOutIm[outOffset + ( ((5*me + 3)/10)*60 + (5*me + 3)%10 + 10 ) ] = (*R19).y;
+	bufOutIm[outOffset + ( ((5*me + 3)/10)*60 + (5*me + 3)%10 + 20 ) ] = (*R20).y;
+	bufOutIm[outOffset + ( ((5*me + 3)/10)*60 + (5*me + 3)%10 + 30 ) ] = (*R21).y;
+	bufOutIm[outOffset + ( ((5*me + 3)/10)*60 + (5*me + 3)%10 + 40 ) ] = (*R22).y;
+	bufOutIm[outOffset + ( ((5*me + 3)/10)*60 + (5*me + 3)%10 + 50 ) ] = (*R23).y;
+	bufOutIm[outOffset + ( ((5*me + 4)/10)*60 + (5*me + 4)%10 + 0 ) ] = (*R24).y;
+	bufOutIm[outOffset + ( ((5*me + 4)/10)*60 + (5*me + 4)%10 + 10 ) ] = (*R25).y;
+	bufOutIm[outOffset + ( ((5*me + 4)/10)*60 + (5*me + 4)%10 + 20 ) ] = (*R26).y;
+	bufOutIm[outOffset + ( ((5*me + 4)/10)*60 + (5*me + 4)%10 + 30 ) ] = (*R27).y;
+	bufOutIm[outOffset + ( ((5*me + 4)/10)*60 + (5*me + 4)%10 + 40 ) ] = (*R28).y;
+	bufOutIm[outOffset + ( ((5*me + 4)/10)*60 + (5*me + 4)%10 + 50 ) ] = (*R29).y;
+	}
+
+
+	__syncthreads();
+
+	if(rw)
+	{
+	(*R0).y = bufOutIm[outOffset + ( 0 + me*15 + 0 + 0 ) ];
+	(*R2).y = bufOutIm[outOffset + ( 0 + me*15 + 1 + 0 ) ];
+	(*R4).y = bufOutIm[outOffset + ( 0 + me*15 + 2 + 0 ) ];
+	(*R6).y = bufOutIm[outOffset + ( 0 + me*15 + 3 + 0 ) ];
+	(*R8).y = bufOutIm[outOffset + ( 0 + me*15 + 4 + 0 ) ];
+	(*R10).y = bufOutIm[outOffset + ( 0 + me*15 + 5 + 0 ) ];
+	(*R12).y = bufOutIm[outOffset + ( 0 + me*15 + 6 + 0 ) ];
+	(*R14).y = bufOutIm[outOffset + ( 0 + me*15 + 7 + 0 ) ];
+	(*R16).y = bufOutIm[outOffset + ( 0 + me*15 + 8 + 0 ) ];
+	(*R18).y = bufOutIm[outOffset + ( 0 + me*15 + 9 + 0 ) ];
+	(*R20).y = bufOutIm[outOffset + ( 0 + me*15 + 10 + 0 ) ];
+	(*R22).y = bufOutIm[outOffset + ( 0 + me*15 + 11 + 0 ) ];
+	(*R24).y = bufOutIm[outOffset + ( 0 + me*15 + 12 + 0 ) ];
+	(*R26).y = bufOutIm[outOffset + ( 0 + me*15 + 13 + 0 ) ];
+	(*R28).y = bufOutIm[outOffset + ( 0 + me*15 + 14 + 0 ) ];
+	(*R1).y = bufOutIm[outOffset + ( 0 + me*15 + 0 + 480 ) ];
+	(*R3).y = bufOutIm[outOffset + ( 0 + me*15 + 1 + 480 ) ];
+	(*R5).y = bufOutIm[outOffset + ( 0 + me*15 + 2 + 480 ) ];
+	(*R7).y = bufOutIm[outOffset + ( 0 + me*15 + 3 + 480 ) ];
+	(*R9).y = bufOutIm[outOffset + ( 0 + me*15 + 4 + 480 ) ];
+	(*R11).y = bufOutIm[outOffset + ( 0 + me*15 + 5 + 480 ) ];
+	(*R13).y = bufOutIm[outOffset + ( 0 + me*15 + 6 + 480 ) ];
+	(*R15).y = bufOutIm[outOffset + ( 0 + me*15 + 7 + 480 ) ];
+	(*R17).y = bufOutIm[outOffset + ( 0 + me*15 + 8 + 480 ) ];
+	(*R19).y = bufOutIm[outOffset + ( 0 + me*15 + 9 + 480 ) ];
+	(*R21).y = bufOutIm[outOffset + ( 0 + me*15 + 10 + 480 ) ];
+	(*R23).y = bufOutIm[outOffset + ( 0 + me*15 + 11 + 480 ) ];
+	(*R25).y = bufOutIm[outOffset + ( 0 + me*15 + 12 + 480 ) ];
+	(*R27).y = bufOutIm[outOffset + ( 0 + me*15 + 13 + 480 ) ];
+	(*R29).y = bufOutIm[outOffset + ( 0 + me*15 + 14 + 480 ) ];
+	}
+
+
+	__syncthreads();
+
+}
+
+template <typename T, StrideBin sb>
+__device__ void
+InvPass2_len960(const T *twiddles, const size_t stride_in, const size_t stride_out, unsigned int rw, unsigned int b, unsigned int me, unsigned int inOffset, unsigned int outOffset, real_type_t<T> *bufInRe, real_type_t<T> *bufInIm, real_type_t<T> *bufOutRe, real_type_t<T> *bufOutIm, T *R0, T *R1, T *R2, T *R3, T *R4, T *R5, T *R6, T *R7, T *R8, T *R9, T *R10, T *R11, T *R12, T *R13, T *R14, T *R15, T *R16, T *R17, T *R18, T *R19, T *R20, T *R21, T *R22, T *R23, T *R24, T *R25, T *R26, T *R27, T *R28, T *R29)
+{
+
+
+
+
+	{
+		T W = twiddles[59 + 1*((15*me + 0)%60) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R1).x; ry = (*R1).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R1).x = TR;
+		(*R1).y = TI;
+	}
+
+	{
+		T W = twiddles[59 + 1*((15*me + 1)%60) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R3).x; ry = (*R3).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R3).x = TR;
+		(*R3).y = TI;
+	}
+
+	{
+		T W = twiddles[59 + 1*((15*me + 2)%60) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R5).x; ry = (*R5).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R5).x = TR;
+		(*R5).y = TI;
+	}
+
+	{
+		T W = twiddles[59 + 1*((15*me + 3)%60) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R7).x; ry = (*R7).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R7).x = TR;
+		(*R7).y = TI;
+	}
+
+	{
+		T W = twiddles[59 + 1*((15*me + 4)%60) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R9).x; ry = (*R9).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R9).x = TR;
+		(*R9).y = TI;
+	}
+
+	{
+		T W = twiddles[59 + 1*((15*me + 5)%60) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R11).x; ry = (*R11).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R11).x = TR;
+		(*R11).y = TI;
+	}
+
+	{
+		T W = twiddles[59 + 1*((15*me + 6)%60) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R13).x; ry = (*R13).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R13).x = TR;
+		(*R13).y = TI;
+	}
+
+	{
+		T W = twiddles[59 + 1*((15*me + 7)%60) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R15).x; ry = (*R15).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R15).x = TR;
+		(*R15).y = TI;
+	}
+
+	{
+		T W = twiddles[59 + 1*((15*me + 8)%60) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R17).x; ry = (*R17).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R17).x = TR;
+		(*R17).y = TI;
+	}
+
+	{
+		T W = twiddles[59 + 1*((15*me + 9)%60) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R19).x; ry = (*R19).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R19).x = TR;
+		(*R19).y = TI;
+	}
+
+	{
+		T W = twiddles[59 + 1*((15*me + 10)%60) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R21).x; ry = (*R21).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R21).x = TR;
+		(*R21).y = TI;
+	}
+
+	{
+		T W = twiddles[59 + 1*((15*me + 11)%60) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R23).x; ry = (*R23).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R23).x = TR;
+		(*R23).y = TI;
+	}
+
+	{
+		T W = twiddles[59 + 1*((15*me + 12)%60) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R25).x; ry = (*R25).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R25).x = TR;
+		(*R25).y = TI;
+	}
+
+	{
+		T W = twiddles[59 + 1*((15*me + 13)%60) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R27).x; ry = (*R27).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R27).x = TR;
+		(*R27).y = TI;
+	}
+
+	{
+		T W = twiddles[59 + 1*((15*me + 14)%60) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R29).x; ry = (*R29).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R29).x = TR;
+		(*R29).y = TI;
+	}
+
+	InvRad2B1(R0, R1);
+	InvRad2B1(R2, R3);
+	InvRad2B1(R4, R5);
+	InvRad2B1(R6, R7);
+	InvRad2B1(R8, R9);
+	InvRad2B1(R10, R11);
+	InvRad2B1(R12, R13);
+	InvRad2B1(R14, R15);
+	InvRad2B1(R16, R17);
+	InvRad2B1(R18, R19);
+	InvRad2B1(R20, R21);
+	InvRad2B1(R22, R23);
+	InvRad2B1(R24, R25);
+	InvRad2B1(R26, R27);
+	InvRad2B1(R28, R29);
+
+
+	if(rw)
+	{
+	bufOutRe[outOffset + ( ((15*me + 0)/60)*120 + (15*me + 0)%60 + 0 ) ] = (*R0).x;
+	bufOutRe[outOffset + ( ((15*me + 0)/60)*120 + (15*me + 0)%60 + 60 ) ] = (*R1).x;
+	bufOutRe[outOffset + ( ((15*me + 1)/60)*120 + (15*me + 1)%60 + 0 ) ] = (*R2).x;
+	bufOutRe[outOffset + ( ((15*me + 1)/60)*120 + (15*me + 1)%60 + 60 ) ] = (*R3).x;
+	bufOutRe[outOffset + ( ((15*me + 2)/60)*120 + (15*me + 2)%60 + 0 ) ] = (*R4).x;
+	bufOutRe[outOffset + ( ((15*me + 2)/60)*120 + (15*me + 2)%60 + 60 ) ] = (*R5).x;
+	bufOutRe[outOffset + ( ((15*me + 3)/60)*120 + (15*me + 3)%60 + 0 ) ] = (*R6).x;
+	bufOutRe[outOffset + ( ((15*me + 3)/60)*120 + (15*me + 3)%60 + 60 ) ] = (*R7).x;
+	bufOutRe[outOffset + ( ((15*me + 4)/60)*120 + (15*me + 4)%60 + 0 ) ] = (*R8).x;
+	bufOutRe[outOffset + ( ((15*me + 4)/60)*120 + (15*me + 4)%60 + 60 ) ] = (*R9).x;
+	bufOutRe[outOffset + ( ((15*me + 5)/60)*120 + (15*me + 5)%60 + 0 ) ] = (*R10).x;
+	bufOutRe[outOffset + ( ((15*me + 5)/60)*120 + (15*me + 5)%60 + 60 ) ] = (*R11).x;
+	bufOutRe[outOffset + ( ((15*me + 6)/60)*120 + (15*me + 6)%60 + 0 ) ] = (*R12).x;
+	bufOutRe[outOffset + ( ((15*me + 6)/60)*120 + (15*me + 6)%60 + 60 ) ] = (*R13).x;
+	bufOutRe[outOffset + ( ((15*me + 7)/60)*120 + (15*me + 7)%60 + 0 ) ] = (*R14).x;
+	bufOutRe[outOffset + ( ((15*me + 7)/60)*120 + (15*me + 7)%60 + 60 ) ] = (*R15).x;
+	bufOutRe[outOffset + ( ((15*me + 8)/60)*120 + (15*me + 8)%60 + 0 ) ] = (*R16).x;
+	bufOutRe[outOffset + ( ((15*me + 8)/60)*120 + (15*me + 8)%60 + 60 ) ] = (*R17).x;
+	bufOutRe[outOffset + ( ((15*me + 9)/60)*120 + (15*me + 9)%60 + 0 ) ] = (*R18).x;
+	bufOutRe[outOffset + ( ((15*me + 9)/60)*120 + (15*me + 9)%60 + 60 ) ] = (*R19).x;
+	bufOutRe[outOffset + ( ((15*me + 10)/60)*120 + (15*me + 10)%60 + 0 ) ] = (*R20).x;
+	bufOutRe[outOffset + ( ((15*me + 10)/60)*120 + (15*me + 10)%60 + 60 ) ] = (*R21).x;
+	bufOutRe[outOffset + ( ((15*me + 11)/60)*120 + (15*me + 11)%60 + 0 ) ] = (*R22).x;
+	bufOutRe[outOffset + ( ((15*me + 11)/60)*120 + (15*me + 11)%60 + 60 ) ] = (*R23).x;
+	bufOutRe[outOffset + ( ((15*me + 12)/60)*120 + (15*me + 12)%60 + 0 ) ] = (*R24).x;
+	bufOutRe[outOffset + ( ((15*me + 12)/60)*120 + (15*me + 12)%60 + 60 ) ] = (*R25).x;
+	bufOutRe[outOffset + ( ((15*me + 13)/60)*120 + (15*me + 13)%60 + 0 ) ] = (*R26).x;
+	bufOutRe[outOffset + ( ((15*me + 13)/60)*120 + (15*me + 13)%60 + 60 ) ] = (*R27).x;
+	bufOutRe[outOffset + ( ((15*me + 14)/60)*120 + (15*me + 14)%60 + 0 ) ] = (*R28).x;
+	bufOutRe[outOffset + ( ((15*me + 14)/60)*120 + (15*me + 14)%60 + 60 ) ] = (*R29).x;
+	}
+
+
+	__syncthreads();
+
+	if(rw)
+	{
+	(*R0).x = bufOutRe[outOffset + ( 0 + me*15 + 0 + 0 ) ];
+	(*R2).x = bufOutRe[outOffset + ( 0 + me*15 + 1 + 0 ) ];
+	(*R4).x = bufOutRe[outOffset + ( 0 + me*15 + 2 + 0 ) ];
+	(*R6).x = bufOutRe[outOffset + ( 0 + me*15 + 3 + 0 ) ];
+	(*R8).x = bufOutRe[outOffset + ( 0 + me*15 + 4 + 0 ) ];
+	(*R10).x = bufOutRe[outOffset + ( 0 + me*15 + 5 + 0 ) ];
+	(*R12).x = bufOutRe[outOffset + ( 0 + me*15 + 6 + 0 ) ];
+	(*R14).x = bufOutRe[outOffset + ( 0 + me*15 + 7 + 0 ) ];
+	(*R16).x = bufOutRe[outOffset + ( 0 + me*15 + 8 + 0 ) ];
+	(*R18).x = bufOutRe[outOffset + ( 0 + me*15 + 9 + 0 ) ];
+	(*R20).x = bufOutRe[outOffset + ( 0 + me*15 + 10 + 0 ) ];
+	(*R22).x = bufOutRe[outOffset + ( 0 + me*15 + 11 + 0 ) ];
+	(*R24).x = bufOutRe[outOffset + ( 0 + me*15 + 12 + 0 ) ];
+	(*R26).x = bufOutRe[outOffset + ( 0 + me*15 + 13 + 0 ) ];
+	(*R28).x = bufOutRe[outOffset + ( 0 + me*15 + 14 + 0 ) ];
+	(*R1).x = bufOutRe[outOffset + ( 0 + me*15 + 0 + 480 ) ];
+	(*R3).x = bufOutRe[outOffset + ( 0 + me*15 + 1 + 480 ) ];
+	(*R5).x = bufOutRe[outOffset + ( 0 + me*15 + 2 + 480 ) ];
+	(*R7).x = bufOutRe[outOffset + ( 0 + me*15 + 3 + 480 ) ];
+	(*R9).x = bufOutRe[outOffset + ( 0 + me*15 + 4 + 480 ) ];
+	(*R11).x = bufOutRe[outOffset + ( 0 + me*15 + 5 + 480 ) ];
+	(*R13).x = bufOutRe[outOffset + ( 0 + me*15 + 6 + 480 ) ];
+	(*R15).x = bufOutRe[outOffset + ( 0 + me*15 + 7 + 480 ) ];
+	(*R17).x = bufOutRe[outOffset + ( 0 + me*15 + 8 + 480 ) ];
+	(*R19).x = bufOutRe[outOffset + ( 0 + me*15 + 9 + 480 ) ];
+	(*R21).x = bufOutRe[outOffset + ( 0 + me*15 + 10 + 480 ) ];
+	(*R23).x = bufOutRe[outOffset + ( 0 + me*15 + 11 + 480 ) ];
+	(*R25).x = bufOutRe[outOffset + ( 0 + me*15 + 12 + 480 ) ];
+	(*R27).x = bufOutRe[outOffset + ( 0 + me*15 + 13 + 480 ) ];
+	(*R29).x = bufOutRe[outOffset + ( 0 + me*15 + 14 + 480 ) ];
+	}
+
+
+	__syncthreads();
+
+	if(rw)
+	{
+	bufOutIm[outOffset + ( ((15*me + 0)/60)*120 + (15*me + 0)%60 + 0 ) ] = (*R0).y;
+	bufOutIm[outOffset + ( ((15*me + 0)/60)*120 + (15*me + 0)%60 + 60 ) ] = (*R1).y;
+	bufOutIm[outOffset + ( ((15*me + 1)/60)*120 + (15*me + 1)%60 + 0 ) ] = (*R2).y;
+	bufOutIm[outOffset + ( ((15*me + 1)/60)*120 + (15*me + 1)%60 + 60 ) ] = (*R3).y;
+	bufOutIm[outOffset + ( ((15*me + 2)/60)*120 + (15*me + 2)%60 + 0 ) ] = (*R4).y;
+	bufOutIm[outOffset + ( ((15*me + 2)/60)*120 + (15*me + 2)%60 + 60 ) ] = (*R5).y;
+	bufOutIm[outOffset + ( ((15*me + 3)/60)*120 + (15*me + 3)%60 + 0 ) ] = (*R6).y;
+	bufOutIm[outOffset + ( ((15*me + 3)/60)*120 + (15*me + 3)%60 + 60 ) ] = (*R7).y;
+	bufOutIm[outOffset + ( ((15*me + 4)/60)*120 + (15*me + 4)%60 + 0 ) ] = (*R8).y;
+	bufOutIm[outOffset + ( ((15*me + 4)/60)*120 + (15*me + 4)%60 + 60 ) ] = (*R9).y;
+	bufOutIm[outOffset + ( ((15*me + 5)/60)*120 + (15*me + 5)%60 + 0 ) ] = (*R10).y;
+	bufOutIm[outOffset + ( ((15*me + 5)/60)*120 + (15*me + 5)%60 + 60 ) ] = (*R11).y;
+	bufOutIm[outOffset + ( ((15*me + 6)/60)*120 + (15*me + 6)%60 + 0 ) ] = (*R12).y;
+	bufOutIm[outOffset + ( ((15*me + 6)/60)*120 + (15*me + 6)%60 + 60 ) ] = (*R13).y;
+	bufOutIm[outOffset + ( ((15*me + 7)/60)*120 + (15*me + 7)%60 + 0 ) ] = (*R14).y;
+	bufOutIm[outOffset + ( ((15*me + 7)/60)*120 + (15*me + 7)%60 + 60 ) ] = (*R15).y;
+	bufOutIm[outOffset + ( ((15*me + 8)/60)*120 + (15*me + 8)%60 + 0 ) ] = (*R16).y;
+	bufOutIm[outOffset + ( ((15*me + 8)/60)*120 + (15*me + 8)%60 + 60 ) ] = (*R17).y;
+	bufOutIm[outOffset + ( ((15*me + 9)/60)*120 + (15*me + 9)%60 + 0 ) ] = (*R18).y;
+	bufOutIm[outOffset + ( ((15*me + 9)/60)*120 + (15*me + 9)%60 + 60 ) ] = (*R19).y;
+	bufOutIm[outOffset + ( ((15*me + 10)/60)*120 + (15*me + 10)%60 + 0 ) ] = (*R20).y;
+	bufOutIm[outOffset + ( ((15*me + 10)/60)*120 + (15*me + 10)%60 + 60 ) ] = (*R21).y;
+	bufOutIm[outOffset + ( ((15*me + 11)/60)*120 + (15*me + 11)%60 + 0 ) ] = (*R22).y;
+	bufOutIm[outOffset + ( ((15*me + 11)/60)*120 + (15*me + 11)%60 + 60 ) ] = (*R23).y;
+	bufOutIm[outOffset + ( ((15*me + 12)/60)*120 + (15*me + 12)%60 + 0 ) ] = (*R24).y;
+	bufOutIm[outOffset + ( ((15*me + 12)/60)*120 + (15*me + 12)%60 + 60 ) ] = (*R25).y;
+	bufOutIm[outOffset + ( ((15*me + 13)/60)*120 + (15*me + 13)%60 + 0 ) ] = (*R26).y;
+	bufOutIm[outOffset + ( ((15*me + 13)/60)*120 + (15*me + 13)%60 + 60 ) ] = (*R27).y;
+	bufOutIm[outOffset + ( ((15*me + 14)/60)*120 + (15*me + 14)%60 + 0 ) ] = (*R28).y;
+	bufOutIm[outOffset + ( ((15*me + 14)/60)*120 + (15*me + 14)%60 + 60 ) ] = (*R29).y;
+	}
+
+
+	__syncthreads();
+
+	if(rw)
+	{
+	(*R0).y = bufOutIm[outOffset + ( 0 + me*15 + 0 + 0 ) ];
+	(*R2).y = bufOutIm[outOffset + ( 0 + me*15 + 1 + 0 ) ];
+	(*R4).y = bufOutIm[outOffset + ( 0 + me*15 + 2 + 0 ) ];
+	(*R6).y = bufOutIm[outOffset + ( 0 + me*15 + 3 + 0 ) ];
+	(*R8).y = bufOutIm[outOffset + ( 0 + me*15 + 4 + 0 ) ];
+	(*R10).y = bufOutIm[outOffset + ( 0 + me*15 + 5 + 0 ) ];
+	(*R12).y = bufOutIm[outOffset + ( 0 + me*15 + 6 + 0 ) ];
+	(*R14).y = bufOutIm[outOffset + ( 0 + me*15 + 7 + 0 ) ];
+	(*R16).y = bufOutIm[outOffset + ( 0 + me*15 + 8 + 0 ) ];
+	(*R18).y = bufOutIm[outOffset + ( 0 + me*15 + 9 + 0 ) ];
+	(*R20).y = bufOutIm[outOffset + ( 0 + me*15 + 10 + 0 ) ];
+	(*R22).y = bufOutIm[outOffset + ( 0 + me*15 + 11 + 0 ) ];
+	(*R24).y = bufOutIm[outOffset + ( 0 + me*15 + 12 + 0 ) ];
+	(*R26).y = bufOutIm[outOffset + ( 0 + me*15 + 13 + 0 ) ];
+	(*R28).y = bufOutIm[outOffset + ( 0 + me*15 + 14 + 0 ) ];
+	(*R1).y = bufOutIm[outOffset + ( 0 + me*15 + 0 + 480 ) ];
+	(*R3).y = bufOutIm[outOffset + ( 0 + me*15 + 1 + 480 ) ];
+	(*R5).y = bufOutIm[outOffset + ( 0 + me*15 + 2 + 480 ) ];
+	(*R7).y = bufOutIm[outOffset + ( 0 + me*15 + 3 + 480 ) ];
+	(*R9).y = bufOutIm[outOffset + ( 0 + me*15 + 4 + 480 ) ];
+	(*R11).y = bufOutIm[outOffset + ( 0 + me*15 + 5 + 480 ) ];
+	(*R13).y = bufOutIm[outOffset + ( 0 + me*15 + 6 + 480 ) ];
+	(*R15).y = bufOutIm[outOffset + ( 0 + me*15 + 7 + 480 ) ];
+	(*R17).y = bufOutIm[outOffset + ( 0 + me*15 + 8 + 480 ) ];
+	(*R19).y = bufOutIm[outOffset + ( 0 + me*15 + 9 + 480 ) ];
+	(*R21).y = bufOutIm[outOffset + ( 0 + me*15 + 10 + 480 ) ];
+	(*R23).y = bufOutIm[outOffset + ( 0 + me*15 + 11 + 480 ) ];
+	(*R25).y = bufOutIm[outOffset + ( 0 + me*15 + 12 + 480 ) ];
+	(*R27).y = bufOutIm[outOffset + ( 0 + me*15 + 13 + 480 ) ];
+	(*R29).y = bufOutIm[outOffset + ( 0 + me*15 + 14 + 480 ) ];
+	}
+
+
+	__syncthreads();
+
+}
+
+template <typename T, StrideBin sb>
+__device__ void
+InvPass3_len960(const T *twiddles, const size_t stride_in, const size_t stride_out, unsigned int rw, unsigned int b, unsigned int me, unsigned int inOffset, unsigned int outOffset, real_type_t<T> *bufInRe, real_type_t<T> *bufInIm, real_type_t<T> *bufOutRe, real_type_t<T> *bufOutIm, T *R0, T *R1, T *R2, T *R3, T *R4, T *R5, T *R6, T *R7, T *R8, T *R9, T *R10, T *R11, T *R12, T *R13, T *R14, T *R15, T *R16, T *R17, T *R18, T *R19, T *R20, T *R21, T *R22, T *R23, T *R24, T *R25, T *R26, T *R27, T *R28, T *R29)
+{
+
+
+
+
+	{
+		T W = twiddles[119 + 1*((15*me + 0)%120) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R1).x; ry = (*R1).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R1).x = TR;
+		(*R1).y = TI;
+	}
+
+	{
+		T W = twiddles[119 + 1*((15*me + 1)%120) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R3).x; ry = (*R3).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R3).x = TR;
+		(*R3).y = TI;
+	}
+
+	{
+		T W = twiddles[119 + 1*((15*me + 2)%120) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R5).x; ry = (*R5).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R5).x = TR;
+		(*R5).y = TI;
+	}
+
+	{
+		T W = twiddles[119 + 1*((15*me + 3)%120) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R7).x; ry = (*R7).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R7).x = TR;
+		(*R7).y = TI;
+	}
+
+	{
+		T W = twiddles[119 + 1*((15*me + 4)%120) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R9).x; ry = (*R9).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R9).x = TR;
+		(*R9).y = TI;
+	}
+
+	{
+		T W = twiddles[119 + 1*((15*me + 5)%120) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R11).x; ry = (*R11).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R11).x = TR;
+		(*R11).y = TI;
+	}
+
+	{
+		T W = twiddles[119 + 1*((15*me + 6)%120) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R13).x; ry = (*R13).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R13).x = TR;
+		(*R13).y = TI;
+	}
+
+	{
+		T W = twiddles[119 + 1*((15*me + 7)%120) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R15).x; ry = (*R15).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R15).x = TR;
+		(*R15).y = TI;
+	}
+
+	{
+		T W = twiddles[119 + 1*((15*me + 8)%120) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R17).x; ry = (*R17).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R17).x = TR;
+		(*R17).y = TI;
+	}
+
+	{
+		T W = twiddles[119 + 1*((15*me + 9)%120) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R19).x; ry = (*R19).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R19).x = TR;
+		(*R19).y = TI;
+	}
+
+	{
+		T W = twiddles[119 + 1*((15*me + 10)%120) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R21).x; ry = (*R21).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R21).x = TR;
+		(*R21).y = TI;
+	}
+
+	{
+		T W = twiddles[119 + 1*((15*me + 11)%120) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R23).x; ry = (*R23).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R23).x = TR;
+		(*R23).y = TI;
+	}
+
+	{
+		T W = twiddles[119 + 1*((15*me + 12)%120) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R25).x; ry = (*R25).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R25).x = TR;
+		(*R25).y = TI;
+	}
+
+	{
+		T W = twiddles[119 + 1*((15*me + 13)%120) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R27).x; ry = (*R27).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R27).x = TR;
+		(*R27).y = TI;
+	}
+
+	{
+		T W = twiddles[119 + 1*((15*me + 14)%120) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R29).x; ry = (*R29).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R29).x = TR;
+		(*R29).y = TI;
+	}
+
+	InvRad2B1(R0, R1);
+	InvRad2B1(R2, R3);
+	InvRad2B1(R4, R5);
+	InvRad2B1(R6, R7);
+	InvRad2B1(R8, R9);
+	InvRad2B1(R10, R11);
+	InvRad2B1(R12, R13);
+	InvRad2B1(R14, R15);
+	InvRad2B1(R16, R17);
+	InvRad2B1(R18, R19);
+	InvRad2B1(R20, R21);
+	InvRad2B1(R22, R23);
+	InvRad2B1(R24, R25);
+	InvRad2B1(R26, R27);
+	InvRad2B1(R28, R29);
+
+
+	if(rw)
+	{
+	bufOutRe[outOffset + ( ((15*me + 0)/120)*240 + (15*me + 0)%120 + 0 ) ] = (*R0).x;
+	bufOutRe[outOffset + ( ((15*me + 0)/120)*240 + (15*me + 0)%120 + 120 ) ] = (*R1).x;
+	bufOutRe[outOffset + ( ((15*me + 1)/120)*240 + (15*me + 1)%120 + 0 ) ] = (*R2).x;
+	bufOutRe[outOffset + ( ((15*me + 1)/120)*240 + (15*me + 1)%120 + 120 ) ] = (*R3).x;
+	bufOutRe[outOffset + ( ((15*me + 2)/120)*240 + (15*me + 2)%120 + 0 ) ] = (*R4).x;
+	bufOutRe[outOffset + ( ((15*me + 2)/120)*240 + (15*me + 2)%120 + 120 ) ] = (*R5).x;
+	bufOutRe[outOffset + ( ((15*me + 3)/120)*240 + (15*me + 3)%120 + 0 ) ] = (*R6).x;
+	bufOutRe[outOffset + ( ((15*me + 3)/120)*240 + (15*me + 3)%120 + 120 ) ] = (*R7).x;
+	bufOutRe[outOffset + ( ((15*me + 4)/120)*240 + (15*me + 4)%120 + 0 ) ] = (*R8).x;
+	bufOutRe[outOffset + ( ((15*me + 4)/120)*240 + (15*me + 4)%120 + 120 ) ] = (*R9).x;
+	bufOutRe[outOffset + ( ((15*me + 5)/120)*240 + (15*me + 5)%120 + 0 ) ] = (*R10).x;
+	bufOutRe[outOffset + ( ((15*me + 5)/120)*240 + (15*me + 5)%120 + 120 ) ] = (*R11).x;
+	bufOutRe[outOffset + ( ((15*me + 6)/120)*240 + (15*me + 6)%120 + 0 ) ] = (*R12).x;
+	bufOutRe[outOffset + ( ((15*me + 6)/120)*240 + (15*me + 6)%120 + 120 ) ] = (*R13).x;
+	bufOutRe[outOffset + ( ((15*me + 7)/120)*240 + (15*me + 7)%120 + 0 ) ] = (*R14).x;
+	bufOutRe[outOffset + ( ((15*me + 7)/120)*240 + (15*me + 7)%120 + 120 ) ] = (*R15).x;
+	bufOutRe[outOffset + ( ((15*me + 8)/120)*240 + (15*me + 8)%120 + 0 ) ] = (*R16).x;
+	bufOutRe[outOffset + ( ((15*me + 8)/120)*240 + (15*me + 8)%120 + 120 ) ] = (*R17).x;
+	bufOutRe[outOffset + ( ((15*me + 9)/120)*240 + (15*me + 9)%120 + 0 ) ] = (*R18).x;
+	bufOutRe[outOffset + ( ((15*me + 9)/120)*240 + (15*me + 9)%120 + 120 ) ] = (*R19).x;
+	bufOutRe[outOffset + ( ((15*me + 10)/120)*240 + (15*me + 10)%120 + 0 ) ] = (*R20).x;
+	bufOutRe[outOffset + ( ((15*me + 10)/120)*240 + (15*me + 10)%120 + 120 ) ] = (*R21).x;
+	bufOutRe[outOffset + ( ((15*me + 11)/120)*240 + (15*me + 11)%120 + 0 ) ] = (*R22).x;
+	bufOutRe[outOffset + ( ((15*me + 11)/120)*240 + (15*me + 11)%120 + 120 ) ] = (*R23).x;
+	bufOutRe[outOffset + ( ((15*me + 12)/120)*240 + (15*me + 12)%120 + 0 ) ] = (*R24).x;
+	bufOutRe[outOffset + ( ((15*me + 12)/120)*240 + (15*me + 12)%120 + 120 ) ] = (*R25).x;
+	bufOutRe[outOffset + ( ((15*me + 13)/120)*240 + (15*me + 13)%120 + 0 ) ] = (*R26).x;
+	bufOutRe[outOffset + ( ((15*me + 13)/120)*240 + (15*me + 13)%120 + 120 ) ] = (*R27).x;
+	bufOutRe[outOffset + ( ((15*me + 14)/120)*240 + (15*me + 14)%120 + 0 ) ] = (*R28).x;
+	bufOutRe[outOffset + ( ((15*me + 14)/120)*240 + (15*me + 14)%120 + 120 ) ] = (*R29).x;
+	}
+
+
+	__syncthreads();
+
+	if(rw)
+	{
+	(*R0).x = bufOutRe[outOffset + ( 0 + me*15 + 0 + 0 ) ];
+	(*R2).x = bufOutRe[outOffset + ( 0 + me*15 + 1 + 0 ) ];
+	(*R4).x = bufOutRe[outOffset + ( 0 + me*15 + 2 + 0 ) ];
+	(*R6).x = bufOutRe[outOffset + ( 0 + me*15 + 3 + 0 ) ];
+	(*R8).x = bufOutRe[outOffset + ( 0 + me*15 + 4 + 0 ) ];
+	(*R10).x = bufOutRe[outOffset + ( 0 + me*15 + 5 + 0 ) ];
+	(*R12).x = bufOutRe[outOffset + ( 0 + me*15 + 6 + 0 ) ];
+	(*R14).x = bufOutRe[outOffset + ( 0 + me*15 + 7 + 0 ) ];
+	(*R16).x = bufOutRe[outOffset + ( 0 + me*15 + 8 + 0 ) ];
+	(*R18).x = bufOutRe[outOffset + ( 0 + me*15 + 9 + 0 ) ];
+	(*R20).x = bufOutRe[outOffset + ( 0 + me*15 + 10 + 0 ) ];
+	(*R22).x = bufOutRe[outOffset + ( 0 + me*15 + 11 + 0 ) ];
+	(*R24).x = bufOutRe[outOffset + ( 0 + me*15 + 12 + 0 ) ];
+	(*R26).x = bufOutRe[outOffset + ( 0 + me*15 + 13 + 0 ) ];
+	(*R28).x = bufOutRe[outOffset + ( 0 + me*15 + 14 + 0 ) ];
+	(*R1).x = bufOutRe[outOffset + ( 0 + me*15 + 0 + 480 ) ];
+	(*R3).x = bufOutRe[outOffset + ( 0 + me*15 + 1 + 480 ) ];
+	(*R5).x = bufOutRe[outOffset + ( 0 + me*15 + 2 + 480 ) ];
+	(*R7).x = bufOutRe[outOffset + ( 0 + me*15 + 3 + 480 ) ];
+	(*R9).x = bufOutRe[outOffset + ( 0 + me*15 + 4 + 480 ) ];
+	(*R11).x = bufOutRe[outOffset + ( 0 + me*15 + 5 + 480 ) ];
+	(*R13).x = bufOutRe[outOffset + ( 0 + me*15 + 6 + 480 ) ];
+	(*R15).x = bufOutRe[outOffset + ( 0 + me*15 + 7 + 480 ) ];
+	(*R17).x = bufOutRe[outOffset + ( 0 + me*15 + 8 + 480 ) ];
+	(*R19).x = bufOutRe[outOffset + ( 0 + me*15 + 9 + 480 ) ];
+	(*R21).x = bufOutRe[outOffset + ( 0 + me*15 + 10 + 480 ) ];
+	(*R23).x = bufOutRe[outOffset + ( 0 + me*15 + 11 + 480 ) ];
+	(*R25).x = bufOutRe[outOffset + ( 0 + me*15 + 12 + 480 ) ];
+	(*R27).x = bufOutRe[outOffset + ( 0 + me*15 + 13 + 480 ) ];
+	(*R29).x = bufOutRe[outOffset + ( 0 + me*15 + 14 + 480 ) ];
+	}
+
+
+	__syncthreads();
+
+	if(rw)
+	{
+	bufOutIm[outOffset + ( ((15*me + 0)/120)*240 + (15*me + 0)%120 + 0 ) ] = (*R0).y;
+	bufOutIm[outOffset + ( ((15*me + 0)/120)*240 + (15*me + 0)%120 + 120 ) ] = (*R1).y;
+	bufOutIm[outOffset + ( ((15*me + 1)/120)*240 + (15*me + 1)%120 + 0 ) ] = (*R2).y;
+	bufOutIm[outOffset + ( ((15*me + 1)/120)*240 + (15*me + 1)%120 + 120 ) ] = (*R3).y;
+	bufOutIm[outOffset + ( ((15*me + 2)/120)*240 + (15*me + 2)%120 + 0 ) ] = (*R4).y;
+	bufOutIm[outOffset + ( ((15*me + 2)/120)*240 + (15*me + 2)%120 + 120 ) ] = (*R5).y;
+	bufOutIm[outOffset + ( ((15*me + 3)/120)*240 + (15*me + 3)%120 + 0 ) ] = (*R6).y;
+	bufOutIm[outOffset + ( ((15*me + 3)/120)*240 + (15*me + 3)%120 + 120 ) ] = (*R7).y;
+	bufOutIm[outOffset + ( ((15*me + 4)/120)*240 + (15*me + 4)%120 + 0 ) ] = (*R8).y;
+	bufOutIm[outOffset + ( ((15*me + 4)/120)*240 + (15*me + 4)%120 + 120 ) ] = (*R9).y;
+	bufOutIm[outOffset + ( ((15*me + 5)/120)*240 + (15*me + 5)%120 + 0 ) ] = (*R10).y;
+	bufOutIm[outOffset + ( ((15*me + 5)/120)*240 + (15*me + 5)%120 + 120 ) ] = (*R11).y;
+	bufOutIm[outOffset + ( ((15*me + 6)/120)*240 + (15*me + 6)%120 + 0 ) ] = (*R12).y;
+	bufOutIm[outOffset + ( ((15*me + 6)/120)*240 + (15*me + 6)%120 + 120 ) ] = (*R13).y;
+	bufOutIm[outOffset + ( ((15*me + 7)/120)*240 + (15*me + 7)%120 + 0 ) ] = (*R14).y;
+	bufOutIm[outOffset + ( ((15*me + 7)/120)*240 + (15*me + 7)%120 + 120 ) ] = (*R15).y;
+	bufOutIm[outOffset + ( ((15*me + 8)/120)*240 + (15*me + 8)%120 + 0 ) ] = (*R16).y;
+	bufOutIm[outOffset + ( ((15*me + 8)/120)*240 + (15*me + 8)%120 + 120 ) ] = (*R17).y;
+	bufOutIm[outOffset + ( ((15*me + 9)/120)*240 + (15*me + 9)%120 + 0 ) ] = (*R18).y;
+	bufOutIm[outOffset + ( ((15*me + 9)/120)*240 + (15*me + 9)%120 + 120 ) ] = (*R19).y;
+	bufOutIm[outOffset + ( ((15*me + 10)/120)*240 + (15*me + 10)%120 + 0 ) ] = (*R20).y;
+	bufOutIm[outOffset + ( ((15*me + 10)/120)*240 + (15*me + 10)%120 + 120 ) ] = (*R21).y;
+	bufOutIm[outOffset + ( ((15*me + 11)/120)*240 + (15*me + 11)%120 + 0 ) ] = (*R22).y;
+	bufOutIm[outOffset + ( ((15*me + 11)/120)*240 + (15*me + 11)%120 + 120 ) ] = (*R23).y;
+	bufOutIm[outOffset + ( ((15*me + 12)/120)*240 + (15*me + 12)%120 + 0 ) ] = (*R24).y;
+	bufOutIm[outOffset + ( ((15*me + 12)/120)*240 + (15*me + 12)%120 + 120 ) ] = (*R25).y;
+	bufOutIm[outOffset + ( ((15*me + 13)/120)*240 + (15*me + 13)%120 + 0 ) ] = (*R26).y;
+	bufOutIm[outOffset + ( ((15*me + 13)/120)*240 + (15*me + 13)%120 + 120 ) ] = (*R27).y;
+	bufOutIm[outOffset + ( ((15*me + 14)/120)*240 + (15*me + 14)%120 + 0 ) ] = (*R28).y;
+	bufOutIm[outOffset + ( ((15*me + 14)/120)*240 + (15*me + 14)%120 + 120 ) ] = (*R29).y;
+	}
+
+
+	__syncthreads();
+
+	if(rw)
+	{
+	(*R0).y = bufOutIm[outOffset + ( 0 + me*15 + 0 + 0 ) ];
+	(*R2).y = bufOutIm[outOffset + ( 0 + me*15 + 1 + 0 ) ];
+	(*R4).y = bufOutIm[outOffset + ( 0 + me*15 + 2 + 0 ) ];
+	(*R6).y = bufOutIm[outOffset + ( 0 + me*15 + 3 + 0 ) ];
+	(*R8).y = bufOutIm[outOffset + ( 0 + me*15 + 4 + 0 ) ];
+	(*R10).y = bufOutIm[outOffset + ( 0 + me*15 + 5 + 0 ) ];
+	(*R12).y = bufOutIm[outOffset + ( 0 + me*15 + 6 + 0 ) ];
+	(*R14).y = bufOutIm[outOffset + ( 0 + me*15 + 7 + 0 ) ];
+	(*R16).y = bufOutIm[outOffset + ( 0 + me*15 + 8 + 0 ) ];
+	(*R18).y = bufOutIm[outOffset + ( 0 + me*15 + 9 + 0 ) ];
+	(*R20).y = bufOutIm[outOffset + ( 0 + me*15 + 10 + 0 ) ];
+	(*R22).y = bufOutIm[outOffset + ( 0 + me*15 + 11 + 0 ) ];
+	(*R24).y = bufOutIm[outOffset + ( 0 + me*15 + 12 + 0 ) ];
+	(*R26).y = bufOutIm[outOffset + ( 0 + me*15 + 13 + 0 ) ];
+	(*R28).y = bufOutIm[outOffset + ( 0 + me*15 + 14 + 0 ) ];
+	(*R1).y = bufOutIm[outOffset + ( 0 + me*15 + 0 + 480 ) ];
+	(*R3).y = bufOutIm[outOffset + ( 0 + me*15 + 1 + 480 ) ];
+	(*R5).y = bufOutIm[outOffset + ( 0 + me*15 + 2 + 480 ) ];
+	(*R7).y = bufOutIm[outOffset + ( 0 + me*15 + 3 + 480 ) ];
+	(*R9).y = bufOutIm[outOffset + ( 0 + me*15 + 4 + 480 ) ];
+	(*R11).y = bufOutIm[outOffset + ( 0 + me*15 + 5 + 480 ) ];
+	(*R13).y = bufOutIm[outOffset + ( 0 + me*15 + 6 + 480 ) ];
+	(*R15).y = bufOutIm[outOffset + ( 0 + me*15 + 7 + 480 ) ];
+	(*R17).y = bufOutIm[outOffset + ( 0 + me*15 + 8 + 480 ) ];
+	(*R19).y = bufOutIm[outOffset + ( 0 + me*15 + 9 + 480 ) ];
+	(*R21).y = bufOutIm[outOffset + ( 0 + me*15 + 10 + 480 ) ];
+	(*R23).y = bufOutIm[outOffset + ( 0 + me*15 + 11 + 480 ) ];
+	(*R25).y = bufOutIm[outOffset + ( 0 + me*15 + 12 + 480 ) ];
+	(*R27).y = bufOutIm[outOffset + ( 0 + me*15 + 13 + 480 ) ];
+	(*R29).y = bufOutIm[outOffset + ( 0 + me*15 + 14 + 480 ) ];
+	}
+
+
+	__syncthreads();
+
+}
+
+template <typename T, StrideBin sb>
+__device__ void
+InvPass4_len960(const T *twiddles, const size_t stride_in, const size_t stride_out, unsigned int rw, unsigned int b, unsigned int me, unsigned int inOffset, unsigned int outOffset, real_type_t<T> *bufInRe, real_type_t<T> *bufInIm, real_type_t<T> *bufOutRe, real_type_t<T> *bufOutIm, T *R0, T *R1, T *R2, T *R3, T *R4, T *R5, T *R6, T *R7, T *R8, T *R9, T *R10, T *R11, T *R12, T *R13, T *R14, T *R15, T *R16, T *R17, T *R18, T *R19, T *R20, T *R21, T *R22, T *R23, T *R24, T *R25, T *R26, T *R27, T *R28, T *R29)
+{
+
+
+
+
+	{
+		T W = twiddles[239 + 1*((15*me + 0)%240) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R1).x; ry = (*R1).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R1).x = TR;
+		(*R1).y = TI;
+	}
+
+	{
+		T W = twiddles[239 + 1*((15*me + 1)%240) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R3).x; ry = (*R3).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R3).x = TR;
+		(*R3).y = TI;
+	}
+
+	{
+		T W = twiddles[239 + 1*((15*me + 2)%240) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R5).x; ry = (*R5).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R5).x = TR;
+		(*R5).y = TI;
+	}
+
+	{
+		T W = twiddles[239 + 1*((15*me + 3)%240) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R7).x; ry = (*R7).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R7).x = TR;
+		(*R7).y = TI;
+	}
+
+	{
+		T W = twiddles[239 + 1*((15*me + 4)%240) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R9).x; ry = (*R9).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R9).x = TR;
+		(*R9).y = TI;
+	}
+
+	{
+		T W = twiddles[239 + 1*((15*me + 5)%240) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R11).x; ry = (*R11).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R11).x = TR;
+		(*R11).y = TI;
+	}
+
+	{
+		T W = twiddles[239 + 1*((15*me + 6)%240) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R13).x; ry = (*R13).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R13).x = TR;
+		(*R13).y = TI;
+	}
+
+	{
+		T W = twiddles[239 + 1*((15*me + 7)%240) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R15).x; ry = (*R15).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R15).x = TR;
+		(*R15).y = TI;
+	}
+
+	{
+		T W = twiddles[239 + 1*((15*me + 8)%240) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R17).x; ry = (*R17).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R17).x = TR;
+		(*R17).y = TI;
+	}
+
+	{
+		T W = twiddles[239 + 1*((15*me + 9)%240) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R19).x; ry = (*R19).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R19).x = TR;
+		(*R19).y = TI;
+	}
+
+	{
+		T W = twiddles[239 + 1*((15*me + 10)%240) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R21).x; ry = (*R21).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R21).x = TR;
+		(*R21).y = TI;
+	}
+
+	{
+		T W = twiddles[239 + 1*((15*me + 11)%240) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R23).x; ry = (*R23).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R23).x = TR;
+		(*R23).y = TI;
+	}
+
+	{
+		T W = twiddles[239 + 1*((15*me + 12)%240) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R25).x; ry = (*R25).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R25).x = TR;
+		(*R25).y = TI;
+	}
+
+	{
+		T W = twiddles[239 + 1*((15*me + 13)%240) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R27).x; ry = (*R27).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R27).x = TR;
+		(*R27).y = TI;
+	}
+
+	{
+		T W = twiddles[239 + 1*((15*me + 14)%240) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R29).x; ry = (*R29).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R29).x = TR;
+		(*R29).y = TI;
+	}
+
+	InvRad2B1(R0, R1);
+	InvRad2B1(R2, R3);
+	InvRad2B1(R4, R5);
+	InvRad2B1(R6, R7);
+	InvRad2B1(R8, R9);
+	InvRad2B1(R10, R11);
+	InvRad2B1(R12, R13);
+	InvRad2B1(R14, R15);
+	InvRad2B1(R16, R17);
+	InvRad2B1(R18, R19);
+	InvRad2B1(R20, R21);
+	InvRad2B1(R22, R23);
+	InvRad2B1(R24, R25);
+	InvRad2B1(R26, R27);
+	InvRad2B1(R28, R29);
+
+
+	if(rw)
+	{
+	bufOutRe[outOffset + ( ((15*me + 0)/240)*480 + (15*me + 0)%240 + 0 ) ] = (*R0).x;
+	bufOutRe[outOffset + ( ((15*me + 0)/240)*480 + (15*me + 0)%240 + 240 ) ] = (*R1).x;
+	bufOutRe[outOffset + ( ((15*me + 1)/240)*480 + (15*me + 1)%240 + 0 ) ] = (*R2).x;
+	bufOutRe[outOffset + ( ((15*me + 1)/240)*480 + (15*me + 1)%240 + 240 ) ] = (*R3).x;
+	bufOutRe[outOffset + ( ((15*me + 2)/240)*480 + (15*me + 2)%240 + 0 ) ] = (*R4).x;
+	bufOutRe[outOffset + ( ((15*me + 2)/240)*480 + (15*me + 2)%240 + 240 ) ] = (*R5).x;
+	bufOutRe[outOffset + ( ((15*me + 3)/240)*480 + (15*me + 3)%240 + 0 ) ] = (*R6).x;
+	bufOutRe[outOffset + ( ((15*me + 3)/240)*480 + (15*me + 3)%240 + 240 ) ] = (*R7).x;
+	bufOutRe[outOffset + ( ((15*me + 4)/240)*480 + (15*me + 4)%240 + 0 ) ] = (*R8).x;
+	bufOutRe[outOffset + ( ((15*me + 4)/240)*480 + (15*me + 4)%240 + 240 ) ] = (*R9).x;
+	bufOutRe[outOffset + ( ((15*me + 5)/240)*480 + (15*me + 5)%240 + 0 ) ] = (*R10).x;
+	bufOutRe[outOffset + ( ((15*me + 5)/240)*480 + (15*me + 5)%240 + 240 ) ] = (*R11).x;
+	bufOutRe[outOffset + ( ((15*me + 6)/240)*480 + (15*me + 6)%240 + 0 ) ] = (*R12).x;
+	bufOutRe[outOffset + ( ((15*me + 6)/240)*480 + (15*me + 6)%240 + 240 ) ] = (*R13).x;
+	bufOutRe[outOffset + ( ((15*me + 7)/240)*480 + (15*me + 7)%240 + 0 ) ] = (*R14).x;
+	bufOutRe[outOffset + ( ((15*me + 7)/240)*480 + (15*me + 7)%240 + 240 ) ] = (*R15).x;
+	bufOutRe[outOffset + ( ((15*me + 8)/240)*480 + (15*me + 8)%240 + 0 ) ] = (*R16).x;
+	bufOutRe[outOffset + ( ((15*me + 8)/240)*480 + (15*me + 8)%240 + 240 ) ] = (*R17).x;
+	bufOutRe[outOffset + ( ((15*me + 9)/240)*480 + (15*me + 9)%240 + 0 ) ] = (*R18).x;
+	bufOutRe[outOffset + ( ((15*me + 9)/240)*480 + (15*me + 9)%240 + 240 ) ] = (*R19).x;
+	bufOutRe[outOffset + ( ((15*me + 10)/240)*480 + (15*me + 10)%240 + 0 ) ] = (*R20).x;
+	bufOutRe[outOffset + ( ((15*me + 10)/240)*480 + (15*me + 10)%240 + 240 ) ] = (*R21).x;
+	bufOutRe[outOffset + ( ((15*me + 11)/240)*480 + (15*me + 11)%240 + 0 ) ] = (*R22).x;
+	bufOutRe[outOffset + ( ((15*me + 11)/240)*480 + (15*me + 11)%240 + 240 ) ] = (*R23).x;
+	bufOutRe[outOffset + ( ((15*me + 12)/240)*480 + (15*me + 12)%240 + 0 ) ] = (*R24).x;
+	bufOutRe[outOffset + ( ((15*me + 12)/240)*480 + (15*me + 12)%240 + 240 ) ] = (*R25).x;
+	bufOutRe[outOffset + ( ((15*me + 13)/240)*480 + (15*me + 13)%240 + 0 ) ] = (*R26).x;
+	bufOutRe[outOffset + ( ((15*me + 13)/240)*480 + (15*me + 13)%240 + 240 ) ] = (*R27).x;
+	bufOutRe[outOffset + ( ((15*me + 14)/240)*480 + (15*me + 14)%240 + 0 ) ] = (*R28).x;
+	bufOutRe[outOffset + ( ((15*me + 14)/240)*480 + (15*me + 14)%240 + 240 ) ] = (*R29).x;
+	}
+
+
+	__syncthreads();
+
+	if(rw)
+	{
+	(*R0).x = bufOutRe[outOffset + ( 0 + me*15 + 0 + 0 ) ];
+	(*R2).x = bufOutRe[outOffset + ( 0 + me*15 + 1 + 0 ) ];
+	(*R4).x = bufOutRe[outOffset + ( 0 + me*15 + 2 + 0 ) ];
+	(*R6).x = bufOutRe[outOffset + ( 0 + me*15 + 3 + 0 ) ];
+	(*R8).x = bufOutRe[outOffset + ( 0 + me*15 + 4 + 0 ) ];
+	(*R10).x = bufOutRe[outOffset + ( 0 + me*15 + 5 + 0 ) ];
+	(*R12).x = bufOutRe[outOffset + ( 0 + me*15 + 6 + 0 ) ];
+	(*R14).x = bufOutRe[outOffset + ( 0 + me*15 + 7 + 0 ) ];
+	(*R16).x = bufOutRe[outOffset + ( 0 + me*15 + 8 + 0 ) ];
+	(*R18).x = bufOutRe[outOffset + ( 0 + me*15 + 9 + 0 ) ];
+	(*R20).x = bufOutRe[outOffset + ( 0 + me*15 + 10 + 0 ) ];
+	(*R22).x = bufOutRe[outOffset + ( 0 + me*15 + 11 + 0 ) ];
+	(*R24).x = bufOutRe[outOffset + ( 0 + me*15 + 12 + 0 ) ];
+	(*R26).x = bufOutRe[outOffset + ( 0 + me*15 + 13 + 0 ) ];
+	(*R28).x = bufOutRe[outOffset + ( 0 + me*15 + 14 + 0 ) ];
+	(*R1).x = bufOutRe[outOffset + ( 0 + me*15 + 0 + 480 ) ];
+	(*R3).x = bufOutRe[outOffset + ( 0 + me*15 + 1 + 480 ) ];
+	(*R5).x = bufOutRe[outOffset + ( 0 + me*15 + 2 + 480 ) ];
+	(*R7).x = bufOutRe[outOffset + ( 0 + me*15 + 3 + 480 ) ];
+	(*R9).x = bufOutRe[outOffset + ( 0 + me*15 + 4 + 480 ) ];
+	(*R11).x = bufOutRe[outOffset + ( 0 + me*15 + 5 + 480 ) ];
+	(*R13).x = bufOutRe[outOffset + ( 0 + me*15 + 6 + 480 ) ];
+	(*R15).x = bufOutRe[outOffset + ( 0 + me*15 + 7 + 480 ) ];
+	(*R17).x = bufOutRe[outOffset + ( 0 + me*15 + 8 + 480 ) ];
+	(*R19).x = bufOutRe[outOffset + ( 0 + me*15 + 9 + 480 ) ];
+	(*R21).x = bufOutRe[outOffset + ( 0 + me*15 + 10 + 480 ) ];
+	(*R23).x = bufOutRe[outOffset + ( 0 + me*15 + 11 + 480 ) ];
+	(*R25).x = bufOutRe[outOffset + ( 0 + me*15 + 12 + 480 ) ];
+	(*R27).x = bufOutRe[outOffset + ( 0 + me*15 + 13 + 480 ) ];
+	(*R29).x = bufOutRe[outOffset + ( 0 + me*15 + 14 + 480 ) ];
+	}
+
+
+	__syncthreads();
+
+	if(rw)
+	{
+	bufOutIm[outOffset + ( ((15*me + 0)/240)*480 + (15*me + 0)%240 + 0 ) ] = (*R0).y;
+	bufOutIm[outOffset + ( ((15*me + 0)/240)*480 + (15*me + 0)%240 + 240 ) ] = (*R1).y;
+	bufOutIm[outOffset + ( ((15*me + 1)/240)*480 + (15*me + 1)%240 + 0 ) ] = (*R2).y;
+	bufOutIm[outOffset + ( ((15*me + 1)/240)*480 + (15*me + 1)%240 + 240 ) ] = (*R3).y;
+	bufOutIm[outOffset + ( ((15*me + 2)/240)*480 + (15*me + 2)%240 + 0 ) ] = (*R4).y;
+	bufOutIm[outOffset + ( ((15*me + 2)/240)*480 + (15*me + 2)%240 + 240 ) ] = (*R5).y;
+	bufOutIm[outOffset + ( ((15*me + 3)/240)*480 + (15*me + 3)%240 + 0 ) ] = (*R6).y;
+	bufOutIm[outOffset + ( ((15*me + 3)/240)*480 + (15*me + 3)%240 + 240 ) ] = (*R7).y;
+	bufOutIm[outOffset + ( ((15*me + 4)/240)*480 + (15*me + 4)%240 + 0 ) ] = (*R8).y;
+	bufOutIm[outOffset + ( ((15*me + 4)/240)*480 + (15*me + 4)%240 + 240 ) ] = (*R9).y;
+	bufOutIm[outOffset + ( ((15*me + 5)/240)*480 + (15*me + 5)%240 + 0 ) ] = (*R10).y;
+	bufOutIm[outOffset + ( ((15*me + 5)/240)*480 + (15*me + 5)%240 + 240 ) ] = (*R11).y;
+	bufOutIm[outOffset + ( ((15*me + 6)/240)*480 + (15*me + 6)%240 + 0 ) ] = (*R12).y;
+	bufOutIm[outOffset + ( ((15*me + 6)/240)*480 + (15*me + 6)%240 + 240 ) ] = (*R13).y;
+	bufOutIm[outOffset + ( ((15*me + 7)/240)*480 + (15*me + 7)%240 + 0 ) ] = (*R14).y;
+	bufOutIm[outOffset + ( ((15*me + 7)/240)*480 + (15*me + 7)%240 + 240 ) ] = (*R15).y;
+	bufOutIm[outOffset + ( ((15*me + 8)/240)*480 + (15*me + 8)%240 + 0 ) ] = (*R16).y;
+	bufOutIm[outOffset + ( ((15*me + 8)/240)*480 + (15*me + 8)%240 + 240 ) ] = (*R17).y;
+	bufOutIm[outOffset + ( ((15*me + 9)/240)*480 + (15*me + 9)%240 + 0 ) ] = (*R18).y;
+	bufOutIm[outOffset + ( ((15*me + 9)/240)*480 + (15*me + 9)%240 + 240 ) ] = (*R19).y;
+	bufOutIm[outOffset + ( ((15*me + 10)/240)*480 + (15*me + 10)%240 + 0 ) ] = (*R20).y;
+	bufOutIm[outOffset + ( ((15*me + 10)/240)*480 + (15*me + 10)%240 + 240 ) ] = (*R21).y;
+	bufOutIm[outOffset + ( ((15*me + 11)/240)*480 + (15*me + 11)%240 + 0 ) ] = (*R22).y;
+	bufOutIm[outOffset + ( ((15*me + 11)/240)*480 + (15*me + 11)%240 + 240 ) ] = (*R23).y;
+	bufOutIm[outOffset + ( ((15*me + 12)/240)*480 + (15*me + 12)%240 + 0 ) ] = (*R24).y;
+	bufOutIm[outOffset + ( ((15*me + 12)/240)*480 + (15*me + 12)%240 + 240 ) ] = (*R25).y;
+	bufOutIm[outOffset + ( ((15*me + 13)/240)*480 + (15*me + 13)%240 + 0 ) ] = (*R26).y;
+	bufOutIm[outOffset + ( ((15*me + 13)/240)*480 + (15*me + 13)%240 + 240 ) ] = (*R27).y;
+	bufOutIm[outOffset + ( ((15*me + 14)/240)*480 + (15*me + 14)%240 + 0 ) ] = (*R28).y;
+	bufOutIm[outOffset + ( ((15*me + 14)/240)*480 + (15*me + 14)%240 + 240 ) ] = (*R29).y;
+	}
+
+
+	__syncthreads();
+
+	if(rw)
+	{
+	(*R0).y = bufOutIm[outOffset + ( 0 + me*15 + 0 + 0 ) ];
+	(*R2).y = bufOutIm[outOffset + ( 0 + me*15 + 1 + 0 ) ];
+	(*R4).y = bufOutIm[outOffset + ( 0 + me*15 + 2 + 0 ) ];
+	(*R6).y = bufOutIm[outOffset + ( 0 + me*15 + 3 + 0 ) ];
+	(*R8).y = bufOutIm[outOffset + ( 0 + me*15 + 4 + 0 ) ];
+	(*R10).y = bufOutIm[outOffset + ( 0 + me*15 + 5 + 0 ) ];
+	(*R12).y = bufOutIm[outOffset + ( 0 + me*15 + 6 + 0 ) ];
+	(*R14).y = bufOutIm[outOffset + ( 0 + me*15 + 7 + 0 ) ];
+	(*R16).y = bufOutIm[outOffset + ( 0 + me*15 + 8 + 0 ) ];
+	(*R18).y = bufOutIm[outOffset + ( 0 + me*15 + 9 + 0 ) ];
+	(*R20).y = bufOutIm[outOffset + ( 0 + me*15 + 10 + 0 ) ];
+	(*R22).y = bufOutIm[outOffset + ( 0 + me*15 + 11 + 0 ) ];
+	(*R24).y = bufOutIm[outOffset + ( 0 + me*15 + 12 + 0 ) ];
+	(*R26).y = bufOutIm[outOffset + ( 0 + me*15 + 13 + 0 ) ];
+	(*R28).y = bufOutIm[outOffset + ( 0 + me*15 + 14 + 0 ) ];
+	(*R1).y = bufOutIm[outOffset + ( 0 + me*15 + 0 + 480 ) ];
+	(*R3).y = bufOutIm[outOffset + ( 0 + me*15 + 1 + 480 ) ];
+	(*R5).y = bufOutIm[outOffset + ( 0 + me*15 + 2 + 480 ) ];
+	(*R7).y = bufOutIm[outOffset + ( 0 + me*15 + 3 + 480 ) ];
+	(*R9).y = bufOutIm[outOffset + ( 0 + me*15 + 4 + 480 ) ];
+	(*R11).y = bufOutIm[outOffset + ( 0 + me*15 + 5 + 480 ) ];
+	(*R13).y = bufOutIm[outOffset + ( 0 + me*15 + 6 + 480 ) ];
+	(*R15).y = bufOutIm[outOffset + ( 0 + me*15 + 7 + 480 ) ];
+	(*R17).y = bufOutIm[outOffset + ( 0 + me*15 + 8 + 480 ) ];
+	(*R19).y = bufOutIm[outOffset + ( 0 + me*15 + 9 + 480 ) ];
+	(*R21).y = bufOutIm[outOffset + ( 0 + me*15 + 10 + 480 ) ];
+	(*R23).y = bufOutIm[outOffset + ( 0 + me*15 + 11 + 480 ) ];
+	(*R25).y = bufOutIm[outOffset + ( 0 + me*15 + 12 + 480 ) ];
+	(*R27).y = bufOutIm[outOffset + ( 0 + me*15 + 13 + 480 ) ];
+	(*R29).y = bufOutIm[outOffset + ( 0 + me*15 + 14 + 480 ) ];
+	}
+
+
+	__syncthreads();
+
+}
+
+template <typename T, StrideBin sb>
+__device__ void
+InvPass5_len960(const T *twiddles, const size_t stride_in, const size_t stride_out, unsigned int rw, unsigned int b, unsigned int me, unsigned int inOffset, unsigned int outOffset, real_type_t<T> *bufInRe, real_type_t<T> *bufInIm, T *bufOut, T *R0, T *R1, T *R2, T *R3, T *R4, T *R5, T *R6, T *R7, T *R8, T *R9, T *R10, T *R11, T *R12, T *R13, T *R14, T *R15, T *R16, T *R17, T *R18, T *R19, T *R20, T *R21, T *R22, T *R23, T *R24, T *R25, T *R26, T *R27, T *R28, T *R29)
+{
+
+
+
+
+	{
+		T W = twiddles[479 + 1*((15*me + 0)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R1).x; ry = (*R1).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R1).x = TR;
+		(*R1).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 1)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R3).x; ry = (*R3).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R3).x = TR;
+		(*R3).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 2)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R5).x; ry = (*R5).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R5).x = TR;
+		(*R5).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 3)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R7).x; ry = (*R7).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R7).x = TR;
+		(*R7).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 4)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R9).x; ry = (*R9).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R9).x = TR;
+		(*R9).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 5)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R11).x; ry = (*R11).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R11).x = TR;
+		(*R11).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 6)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R13).x; ry = (*R13).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R13).x = TR;
+		(*R13).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 7)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R15).x; ry = (*R15).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R15).x = TR;
+		(*R15).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 8)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R17).x; ry = (*R17).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R17).x = TR;
+		(*R17).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 9)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R19).x; ry = (*R19).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R19).x = TR;
+		(*R19).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 10)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R21).x; ry = (*R21).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R21).x = TR;
+		(*R21).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 11)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R23).x; ry = (*R23).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R23).x = TR;
+		(*R23).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 12)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R25).x; ry = (*R25).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R25).x = TR;
+		(*R25).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 13)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R27).x; ry = (*R27).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R27).x = TR;
+		(*R27).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 14)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R29).x; ry = (*R29).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R29).x = TR;
+		(*R29).y = TI;
+	}
+
+	InvRad2B1(R0, R1);
+	InvRad2B1(R2, R3);
+	InvRad2B1(R4, R5);
+	InvRad2B1(R6, R7);
+	InvRad2B1(R8, R9);
+	InvRad2B1(R10, R11);
+	InvRad2B1(R12, R13);
+	InvRad2B1(R14, R15);
+	InvRad2B1(R16, R17);
+	InvRad2B1(R18, R19);
+	InvRad2B1(R20, R21);
+	InvRad2B1(R22, R23);
+	InvRad2B1(R24, R25);
+	InvRad2B1(R26, R27);
+	InvRad2B1(R28, R29);
+
+
+	if(rw)
+	{
+	bufOut[outOffset + ( 15*me + 0 + 0 )*stride_out] = (*R0);
+	bufOut[outOffset + ( 15*me + 1 + 0 )*stride_out] = (*R2);
+	bufOut[outOffset + ( 15*me + 2 + 0 )*stride_out] = (*R4);
+	bufOut[outOffset + ( 15*me + 3 + 0 )*stride_out] = (*R6);
+	bufOut[outOffset + ( 15*me + 4 + 0 )*stride_out] = (*R8);
+	bufOut[outOffset + ( 15*me + 5 + 0 )*stride_out] = (*R10);
+	bufOut[outOffset + ( 15*me + 6 + 0 )*stride_out] = (*R12);
+	bufOut[outOffset + ( 15*me + 7 + 0 )*stride_out] = (*R14);
+	bufOut[outOffset + ( 15*me + 8 + 0 )*stride_out] = (*R16);
+	bufOut[outOffset + ( 15*me + 9 + 0 )*stride_out] = (*R18);
+	bufOut[outOffset + ( 15*me + 10 + 0 )*stride_out] = (*R20);
+	bufOut[outOffset + ( 15*me + 11 + 0 )*stride_out] = (*R22);
+	bufOut[outOffset + ( 15*me + 12 + 0 )*stride_out] = (*R24);
+	bufOut[outOffset + ( 15*me + 13 + 0 )*stride_out] = (*R26);
+	bufOut[outOffset + ( 15*me + 14 + 0 )*stride_out] = (*R28);
+	bufOut[outOffset + ( 15*me + 0 + 480 )*stride_out] = (*R1);
+	bufOut[outOffset + ( 15*me + 1 + 480 )*stride_out] = (*R3);
+	bufOut[outOffset + ( 15*me + 2 + 480 )*stride_out] = (*R5);
+	bufOut[outOffset + ( 15*me + 3 + 480 )*stride_out] = (*R7);
+	bufOut[outOffset + ( 15*me + 4 + 480 )*stride_out] = (*R9);
+	bufOut[outOffset + ( 15*me + 5 + 480 )*stride_out] = (*R11);
+	bufOut[outOffset + ( 15*me + 6 + 480 )*stride_out] = (*R13);
+	bufOut[outOffset + ( 15*me + 7 + 480 )*stride_out] = (*R15);
+	bufOut[outOffset + ( 15*me + 8 + 480 )*stride_out] = (*R17);
+	bufOut[outOffset + ( 15*me + 9 + 480 )*stride_out] = (*R19);
+	bufOut[outOffset + ( 15*me + 10 + 480 )*stride_out] = (*R21);
+	bufOut[outOffset + ( 15*me + 11 + 480 )*stride_out] = (*R23);
+	bufOut[outOffset + ( 15*me + 12 + 480 )*stride_out] = (*R25);
+	bufOut[outOffset + ( 15*me + 13 + 480 )*stride_out] = (*R27);
+	bufOut[outOffset + ( 15*me + 14 + 480 )*stride_out] = (*R29);
+	}
+
+}
+
+template <typename T, StrideBin sb>
+__device__ void
+InvPass5_len960(const T *twiddles, const size_t stride_in, const size_t stride_out, unsigned int rw, unsigned int b, unsigned int me, unsigned int inOffset, unsigned int outOffset, real_type_t<T> *bufInRe, real_type_t<T> *bufInIm, real_type_t<T> *bufOutRe, real_type_t<T> *bufOutIm, T *R0, T *R1, T *R2, T *R3, T *R4, T *R5, T *R6, T *R7, T *R8, T *R9, T *R10, T *R11, T *R12, T *R13, T *R14, T *R15, T *R16, T *R17, T *R18, T *R19, T *R20, T *R21, T *R22, T *R23, T *R24, T *R25, T *R26, T *R27, T *R28, T *R29)
+{
+
+
+
+
+	{
+		T W = twiddles[479 + 1*((15*me + 0)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R1).x; ry = (*R1).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R1).x = TR;
+		(*R1).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 1)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R3).x; ry = (*R3).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R3).x = TR;
+		(*R3).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 2)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R5).x; ry = (*R5).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R5).x = TR;
+		(*R5).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 3)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R7).x; ry = (*R7).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R7).x = TR;
+		(*R7).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 4)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R9).x; ry = (*R9).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R9).x = TR;
+		(*R9).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 5)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R11).x; ry = (*R11).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R11).x = TR;
+		(*R11).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 6)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R13).x; ry = (*R13).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R13).x = TR;
+		(*R13).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 7)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R15).x; ry = (*R15).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R15).x = TR;
+		(*R15).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 8)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R17).x; ry = (*R17).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R17).x = TR;
+		(*R17).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 9)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R19).x; ry = (*R19).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R19).x = TR;
+		(*R19).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 10)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R21).x; ry = (*R21).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R21).x = TR;
+		(*R21).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 11)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R23).x; ry = (*R23).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R23).x = TR;
+		(*R23).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 12)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R25).x; ry = (*R25).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R25).x = TR;
+		(*R25).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 13)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R27).x; ry = (*R27).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R27).x = TR;
+		(*R27).y = TI;
+	}
+
+	{
+		T W = twiddles[479 + 1*((15*me + 14)%480) + 0];
+		real_type_t<T> TR, TI;
+		real_type_t<T>wx, wy, rx, ry;
+		wx = W.x; wy = W.y;
+		rx = (*R29).x; ry = (*R29).y;
+		TR = wx * rx + wy * ry;
+		TI = - wy * rx + wx * ry;
+		(*R29).x = TR;
+		(*R29).y = TI;
+	}
+
+	InvRad2B1(R0, R1);
+	InvRad2B1(R2, R3);
+	InvRad2B1(R4, R5);
+	InvRad2B1(R6, R7);
+	InvRad2B1(R8, R9);
+	InvRad2B1(R10, R11);
+	InvRad2B1(R12, R13);
+	InvRad2B1(R14, R15);
+	InvRad2B1(R16, R17);
+	InvRad2B1(R18, R19);
+	InvRad2B1(R20, R21);
+	InvRad2B1(R22, R23);
+	InvRad2B1(R24, R25);
+	InvRad2B1(R26, R27);
+	InvRad2B1(R28, R29);
+
+
+	if(rw)
+	{
+	bufOutRe[outOffset + ( 15*me + 0 + 0 )*stride_out] = (*R0).x;
+	bufOutIm[outOffset + ( 15*me + 0 + 0 )*stride_out] = (*R0).y;
+	bufOutRe[outOffset + ( 15*me + 1 + 0 )*stride_out] = (*R2).x;
+	bufOutIm[outOffset + ( 15*me + 1 + 0 )*stride_out] = (*R2).y;
+	bufOutRe[outOffset + ( 15*me + 2 + 0 )*stride_out] = (*R4).x;
+	bufOutIm[outOffset + ( 15*me + 2 + 0 )*stride_out] = (*R4).y;
+	bufOutRe[outOffset + ( 15*me + 3 + 0 )*stride_out] = (*R6).x;
+	bufOutIm[outOffset + ( 15*me + 3 + 0 )*stride_out] = (*R6).y;
+	bufOutRe[outOffset + ( 15*me + 4 + 0 )*stride_out] = (*R8).x;
+	bufOutIm[outOffset + ( 15*me + 4 + 0 )*stride_out] = (*R8).y;
+	bufOutRe[outOffset + ( 15*me + 5 + 0 )*stride_out] = (*R10).x;
+	bufOutIm[outOffset + ( 15*me + 5 + 0 )*stride_out] = (*R10).y;
+	bufOutRe[outOffset + ( 15*me + 6 + 0 )*stride_out] = (*R12).x;
+	bufOutIm[outOffset + ( 15*me + 6 + 0 )*stride_out] = (*R12).y;
+	bufOutRe[outOffset + ( 15*me + 7 + 0 )*stride_out] = (*R14).x;
+	bufOutIm[outOffset + ( 15*me + 7 + 0 )*stride_out] = (*R14).y;
+	bufOutRe[outOffset + ( 15*me + 8 + 0 )*stride_out] = (*R16).x;
+	bufOutIm[outOffset + ( 15*me + 8 + 0 )*stride_out] = (*R16).y;
+	bufOutRe[outOffset + ( 15*me + 9 + 0 )*stride_out] = (*R18).x;
+	bufOutIm[outOffset + ( 15*me + 9 + 0 )*stride_out] = (*R18).y;
+	bufOutRe[outOffset + ( 15*me + 10 + 0 )*stride_out] = (*R20).x;
+	bufOutIm[outOffset + ( 15*me + 10 + 0 )*stride_out] = (*R20).y;
+	bufOutRe[outOffset + ( 15*me + 11 + 0 )*stride_out] = (*R22).x;
+	bufOutIm[outOffset + ( 15*me + 11 + 0 )*stride_out] = (*R22).y;
+	bufOutRe[outOffset + ( 15*me + 12 + 0 )*stride_out] = (*R24).x;
+	bufOutIm[outOffset + ( 15*me + 12 + 0 )*stride_out] = (*R24).y;
+	bufOutRe[outOffset + ( 15*me + 13 + 0 )*stride_out] = (*R26).x;
+	bufOutIm[outOffset + ( 15*me + 13 + 0 )*stride_out] = (*R26).y;
+	bufOutRe[outOffset + ( 15*me + 14 + 0 )*stride_out] = (*R28).x;
+	bufOutIm[outOffset + ( 15*me + 14 + 0 )*stride_out] = (*R28).y;
+	bufOutRe[outOffset + ( 15*me + 0 + 480 )*stride_out] = (*R1).x;
+	bufOutIm[outOffset + ( 15*me + 0 + 480 )*stride_out] = (*R1).y;
+	bufOutRe[outOffset + ( 15*me + 1 + 480 )*stride_out] = (*R3).x;
+	bufOutIm[outOffset + ( 15*me + 1 + 480 )*stride_out] = (*R3).y;
+	bufOutRe[outOffset + ( 15*me + 2 + 480 )*stride_out] = (*R5).x;
+	bufOutIm[outOffset + ( 15*me + 2 + 480 )*stride_out] = (*R5).y;
+	bufOutRe[outOffset + ( 15*me + 3 + 480 )*stride_out] = (*R7).x;
+	bufOutIm[outOffset + ( 15*me + 3 + 480 )*stride_out] = (*R7).y;
+	bufOutRe[outOffset + ( 15*me + 4 + 480 )*stride_out] = (*R9).x;
+	bufOutIm[outOffset + ( 15*me + 4 + 480 )*stride_out] = (*R9).y;
+	bufOutRe[outOffset + ( 15*me + 5 + 480 )*stride_out] = (*R11).x;
+	bufOutIm[outOffset + ( 15*me + 5 + 480 )*stride_out] = (*R11).y;
+	bufOutRe[outOffset + ( 15*me + 6 + 480 )*stride_out] = (*R13).x;
+	bufOutIm[outOffset + ( 15*me + 6 + 480 )*stride_out] = (*R13).y;
+	bufOutRe[outOffset + ( 15*me + 7 + 480 )*stride_out] = (*R15).x;
+	bufOutIm[outOffset + ( 15*me + 7 + 480 )*stride_out] = (*R15).y;
+	bufOutRe[outOffset + ( 15*me + 8 + 480 )*stride_out] = (*R17).x;
+	bufOutIm[outOffset + ( 15*me + 8 + 480 )*stride_out] = (*R17).y;
+	bufOutRe[outOffset + ( 15*me + 9 + 480 )*stride_out] = (*R19).x;
+	bufOutIm[outOffset + ( 15*me + 9 + 480 )*stride_out] = (*R19).y;
+	bufOutRe[outOffset + ( 15*me + 10 + 480 )*stride_out] = (*R21).x;
+	bufOutIm[outOffset + ( 15*me + 10 + 480 )*stride_out] = (*R21).y;
+	bufOutRe[outOffset + ( 15*me + 11 + 480 )*stride_out] = (*R23).x;
+	bufOutIm[outOffset + ( 15*me + 11 + 480 )*stride_out] = (*R23).y;
+	bufOutRe[outOffset + ( 15*me + 12 + 480 )*stride_out] = (*R25).x;
+	bufOutIm[outOffset + ( 15*me + 12 + 480 )*stride_out] = (*R25).y;
+	bufOutRe[outOffset + ( 15*me + 13 + 480 )*stride_out] = (*R27).x;
+	bufOutIm[outOffset + ( 15*me + 13 + 480 )*stride_out] = (*R27).y;
+	bufOutRe[outOffset + ( 15*me + 14 + 480 )*stride_out] = (*R29).x;
+	bufOutIm[outOffset + ( 15*me + 14 + 480 )*stride_out] = (*R29).y;
+	}
+
+}
+
+
+////////////////////////////////////////Encapsulated passes kernels
+template <typename T, StrideBin sb>
+__device__ void 
+fwd_len960_device(const T *twiddles, const size_t stride_in, const size_t stride_out, unsigned int rw, unsigned int b, unsigned int me, unsigned int ldsOffset, T *lwbIn, T *lwbOut, real_type_t<T> *lds)
+{
+	T R0, R1, R2, R3, R4, R5, R6, R7, R8, R9, R10, R11, R12, R13, R14, R15, R16, R17, R18, R19, R20, R21, R22, R23, R24, R25, R26, R27, R28, R29;
+	FwdPass0_len960<T, sb>(twiddles, stride_in, stride_out, rw, b, me, 0, ldsOffset,  lwbIn, lds, lds, &R0, &R1, &R2, &R3, &R4, &R5, &R6, &R7, &R8, &R9, &R10, &R11, &R12, &R13, &R14, &R15, &R16, &R17, &R18, &R19, &R20, &R21, &R22, &R23, &R24, &R25, &R26, &R27, &R28, &R29);
+	FwdPass1_len960<T, sb>(twiddles, stride_in, stride_out, rw, b, me, ldsOffset, ldsOffset, lds, lds, lds, lds, &R0, &R1, &R2, &R3, &R4, &R5, &R6, &R7, &R8, &R9, &R10, &R11, &R12, &R13, &R14, &R15, &R16, &R17, &R18, &R19, &R20, &R21, &R22, &R23, &R24, &R25, &R26, &R27, &R28, &R29);
+	FwdPass2_len960<T, sb>(twiddles, stride_in, stride_out, rw, b, me, ldsOffset, ldsOffset, lds, lds, lds, lds, &R0, &R1, &R2, &R3, &R4, &R5, &R6, &R7, &R8, &R9, &R10, &R11, &R12, &R13, &R14, &R15, &R16, &R17, &R18, &R19, &R20, &R21, &R22, &R23, &R24, &R25, &R26, &R27, &R28, &R29);
+	FwdPass3_len960<T, sb>(twiddles, stride_in, stride_out, rw, b, me, ldsOffset, ldsOffset, lds, lds, lds, lds, &R0, &R1, &R2, &R3, &R4, &R5, &R6, &R7, &R8, &R9, &R10, &R11, &R12, &R13, &R14, &R15, &R16, &R17, &R18, &R19, &R20, &R21, &R22, &R23, &R24, &R25, &R26, &R27, &R28, &R29);
+	FwdPass4_len960<T, sb>(twiddles, stride_in, stride_out, rw, b, me, ldsOffset, ldsOffset, lds, lds, lds, lds, &R0, &R1, &R2, &R3, &R4, &R5, &R6, &R7, &R8, &R9, &R10, &R11, &R12, &R13, &R14, &R15, &R16, &R17, &R18, &R19, &R20, &R21, &R22, &R23, &R24, &R25, &R26, &R27, &R28, &R29);
+	FwdPass5_len960<T, sb>(twiddles, stride_in, stride_out, rw, b, me, ldsOffset, 0, lds, lds,  lwbOut, &R0, &R1, &R2, &R3, &R4, &R5, &R6, &R7, &R8, &R9, &R10, &R11, &R12, &R13, &R14, &R15, &R16, &R17, &R18, &R19, &R20, &R21, &R22, &R23, &R24, &R25, &R26, &R27, &R28, &R29);
+}
+
+template <typename T, StrideBin sb>
+__device__ void 
+back_len960_device(const T *twiddles, const size_t stride_in, const size_t stride_out, unsigned int rw, unsigned int b, unsigned int me, unsigned int ldsOffset, T *lwbIn, T *lwbOut, real_type_t<T> *lds)
+{
+	T R0, R1, R2, R3, R4, R5, R6, R7, R8, R9, R10, R11, R12, R13, R14, R15, R16, R17, R18, R19, R20, R21, R22, R23, R24, R25, R26, R27, R28, R29;
+	InvPass0_len960<T, sb>(twiddles, stride_in, stride_out, rw, b, me, 0, ldsOffset,  lwbIn, lds, lds, &R0, &R1, &R2, &R3, &R4, &R5, &R6, &R7, &R8, &R9, &R10, &R11, &R12, &R13, &R14, &R15, &R16, &R17, &R18, &R19, &R20, &R21, &R22, &R23, &R24, &R25, &R26, &R27, &R28, &R29);
+	InvPass1_len960<T, sb>(twiddles, stride_in, stride_out, rw, b, me, ldsOffset, ldsOffset, lds, lds, lds, lds, &R0, &R1, &R2, &R3, &R4, &R5, &R6, &R7, &R8, &R9, &R10, &R11, &R12, &R13, &R14, &R15, &R16, &R17, &R18, &R19, &R20, &R21, &R22, &R23, &R24, &R25, &R26, &R27, &R28, &R29);
+	InvPass2_len960<T, sb>(twiddles, stride_in, stride_out, rw, b, me, ldsOffset, ldsOffset, lds, lds, lds, lds, &R0, &R1, &R2, &R3, &R4, &R5, &R6, &R7, &R8, &R9, &R10, &R11, &R12, &R13, &R14, &R15, &R16, &R17, &R18, &R19, &R20, &R21, &R22, &R23, &R24, &R25, &R26, &R27, &R28, &R29);
+	InvPass3_len960<T, sb>(twiddles, stride_in, stride_out, rw, b, me, ldsOffset, ldsOffset, lds, lds, lds, lds, &R0, &R1, &R2, &R3, &R4, &R5, &R6, &R7, &R8, &R9, &R10, &R11, &R12, &R13, &R14, &R15, &R16, &R17, &R18, &R19, &R20, &R21, &R22, &R23, &R24, &R25, &R26, &R27, &R28, &R29);
+	InvPass4_len960<T, sb>(twiddles, stride_in, stride_out, rw, b, me, ldsOffset, ldsOffset, lds, lds, lds, lds, &R0, &R1, &R2, &R3, &R4, &R5, &R6, &R7, &R8, &R9, &R10, &R11, &R12, &R13, &R14, &R15, &R16, &R17, &R18, &R19, &R20, &R21, &R22, &R23, &R24, &R25, &R26, &R27, &R28, &R29);
+	InvPass5_len960<T, sb>(twiddles, stride_in, stride_out, rw, b, me, ldsOffset, 0, lds, lds,  lwbOut, &R0, &R1, &R2, &R3, &R4, &R5, &R6, &R7, &R8, &R9, &R10, &R11, &R12, &R13, &R14, &R15, &R16, &R17, &R18, &R19, &R20, &R21, &R22, &R23, &R24, &R25, &R26, &R27, &R28, &R29);
+}
+
+template <typename T, StrideBin sb>
+__device__ void 
+fwd_len960_device(const T *twiddles, const size_t stride_in, const size_t stride_out, unsigned int rw, unsigned int b, unsigned int me, unsigned int ldsOffset, T *lwbIn, real_type_t<T> *bufOutRe, real_type_t<T> *bufOutIm, real_type_t<T> *lds)
+{
+	T R0, R1, R2, R3, R4, R5, R6, R7, R8, R9, R10, R11, R12, R13, R14, R15, R16, R17, R18, R19, R20, R21, R22, R23, R24, R25, R26, R27, R28, R29;
+	FwdPass0_len960<T, sb>(twiddles, stride_in, stride_out, rw, b, me, 0, ldsOffset,  lwbIn, lds, lds, &R0, &R1, &R2, &R3, &R4, &R5, &R6, &R7, &R8, &R9, &R10, &R11, &R12, &R13, &R14, &R15, &R16, &R17, &R18, &R19, &R20, &R21, &R22, &R23, &R24, &R25, &R26, &R27, &R28, &R29);
+	FwdPass1_len960<T, sb>(twiddles, stride_in, stride_out, rw, b, me, ldsOffset, ldsOffset, lds, lds, lds, lds, &R0, &R1, &R2, &R3, &R4, &R5, &R6, &R7, &R8, &R9, &R10, &R11, &R12, &R13, &R14, &R15, &R16, &R17, &R18, &R19, &R20, &R21, &R22, &R23, &R24, &R25, &R26, &R27, &R28, &R29);
+	FwdPass2_len960<T, sb>(twiddles, stride_in, stride_out, rw, b, me, ldsOffset, ldsOffset, lds, lds, lds, lds, &R0, &R1, &R2, &R3, &R4, &R5, &R6, &R7, &R8, &R9, &R10, &R11, &R12, &R13, &R14, &R15, &R16, &R17, &R18, &R19, &R20, &R21, &R22, &R23, &R24, &R25, &R26, &R27, &R28, &R29);
+	FwdPass3_len960<T, sb>(twiddles, stride_in, stride_out, rw, b, me, ldsOffset, ldsOffset, lds, lds, lds, lds, &R0, &R1, &R2, &R3, &R4, &R5, &R6, &R7, &R8, &R9, &R10, &R11, &R12, &R13, &R14, &R15, &R16, &R17, &R18, &R19, &R20, &R21, &R22, &R23, &R24, &R25, &R26, &R27, &R28, &R29);
+	FwdPass4_len960<T, sb>(twiddles, stride_in, stride_out, rw, b, me, ldsOffset, ldsOffset, lds, lds, lds, lds, &R0, &R1, &R2, &R3, &R4, &R5, &R6, &R7, &R8, &R9, &R10, &R11, &R12, &R13, &R14, &R15, &R16, &R17, &R18, &R19, &R20, &R21, &R22, &R23, &R24, &R25, &R26, &R27, &R28, &R29);
+	FwdPass5_len960<T, sb>(twiddles, stride_in, stride_out, rw, b, me, ldsOffset, 0, lds, lds, bufOutRe, bufOutIm, &R0, &R1, &R2, &R3, &R4, &R5, &R6, &R7, &R8, &R9, &R10, &R11, &R12, &R13, &R14, &R15, &R16, &R17, &R18, &R19, &R20, &R21, &R22, &R23, &R24, &R25, &R26, &R27, &R28, &R29);
+}
+
+template <typename T, StrideBin sb>
+__device__ void 
+back_len960_device(const T *twiddles, const size_t stride_in, const size_t stride_out, unsigned int rw, unsigned int b, unsigned int me, unsigned int ldsOffset, T *lwbIn, real_type_t<T> *bufOutRe, real_type_t<T> *bufOutIm, real_type_t<T> *lds)
+{
+	T R0, R1, R2, R3, R4, R5, R6, R7, R8, R9, R10, R11, R12, R13, R14, R15, R16, R17, R18, R19, R20, R21, R22, R23, R24, R25, R26, R27, R28, R29;
+	InvPass0_len960<T, sb>(twiddles, stride_in, stride_out, rw, b, me, 0, ldsOffset,  lwbIn, lds, lds, &R0, &R1, &R2, &R3, &R4, &R5, &R6, &R7, &R8, &R9, &R10, &R11, &R12, &R13, &R14, &R15, &R16, &R17, &R18, &R19, &R20, &R21, &R22, &R23, &R24, &R25, &R26, &R27, &R28, &R29);
+	InvPass1_len960<T, sb>(twiddles, stride_in, stride_out, rw, b, me, ldsOffset, ldsOffset, lds, lds, lds, lds, &R0, &R1, &R2, &R3, &R4, &R5, &R6, &R7, &R8, &R9, &R10, &R11, &R12, &R13, &R14, &R15, &R16, &R17, &R18, &R19, &R20, &R21, &R22, &R23, &R24, &R25, &R26, &R27, &R28, &R29);
+	InvPass2_len960<T, sb>(twiddles, stride_in, stride_out, rw, b, me, ldsOffset, ldsOffset, lds, lds, lds, lds, &R0, &R1, &R2, &R3, &R4, &R5, &R6, &R7, &R8, &R9, &R10, &R11, &R12, &R13, &R14, &R15, &R16, &R17, &R18, &R19, &R20, &R21, &R22, &R23, &R24, &R25, &R26, &R27, &R28, &R29);
+	InvPass3_len960<T, sb>(twiddles, stride_in, stride_out, rw, b, me, ldsOffset, ldsOffset, lds, lds, lds, lds, &R0, &R1, &R2, &R3, &R4, &R5, &R6, &R7, &R8, &R9, &R10, &R11, &R12, &R13, &R14, &R15, &R16, &R17, &R18, &R19, &R20, &R21, &R22, &R23, &R24, &R25, &R26, &R27, &R28, &R29);
+	InvPass4_len960<T, sb>(twiddles, stride_in, stride_out, rw, b, me, ldsOffset, ldsOffset, lds, lds, lds, lds, &R0, &R1, &R2, &R3, &R4, &R5, &R6, &R7, &R8, &R9, &R10, &R11, &R12, &R13, &R14, &R15, &R16, &R17, &R18, &R19, &R20, &R21, &R22, &R23, &R24, &R25, &R26, &R27, &R28, &R29);
+	InvPass5_len960<T, sb>(twiddles, stride_in, stride_out, rw, b, me, ldsOffset, 0, lds, lds, bufOutRe, bufOutIm, &R0, &R1, &R2, &R3, &R4, &R5, &R6, &R7, &R8, &R9, &R10, &R11, &R12, &R13, &R14, &R15, &R16, &R17, &R18, &R19, &R20, &R21, &R22, &R23, &R24, &R25, &R26, &R27, &R28, &R29);
+}
+
+template <typename T, StrideBin sb>
+__device__ void 
+fwd_len960_device(const T *twiddles, const size_t stride_in, const size_t stride_out, unsigned int rw, unsigned int b, unsigned int me, unsigned int ldsOffset, real_type_t<T> *bufInRe, real_type_t<T> *bufInIm, T *lwbOut, real_type_t<T> *lds)
+{
+	T R0, R1, R2, R3, R4, R5, R6, R7, R8, R9, R10, R11, R12, R13, R14, R15, R16, R17, R18, R19, R20, R21, R22, R23, R24, R25, R26, R27, R28, R29;
+	FwdPass0_len960<T, sb>(twiddles, stride_in, stride_out, rw, b, me, 0, ldsOffset,  bufInRe, bufInIm, lds, lds, &R0, &R1, &R2, &R3, &R4, &R5, &R6, &R7, &R8, &R9, &R10, &R11, &R12, &R13, &R14, &R15, &R16, &R17, &R18, &R19, &R20, &R21, &R22, &R23, &R24, &R25, &R26, &R27, &R28, &R29);
+	FwdPass1_len960<T, sb>(twiddles, stride_in, stride_out, rw, b, me, ldsOffset, ldsOffset, lds, lds, lds, lds, &R0, &R1, &R2, &R3, &R4, &R5, &R6, &R7, &R8, &R9, &R10, &R11, &R12, &R13, &R14, &R15, &R16, &R17, &R18, &R19, &R20, &R21, &R22, &R23, &R24, &R25, &R26, &R27, &R28, &R29);
+	FwdPass2_len960<T, sb>(twiddles, stride_in, stride_out, rw, b, me, ldsOffset, ldsOffset, lds, lds, lds, lds, &R0, &R1, &R2, &R3, &R4, &R5, &R6, &R7, &R8, &R9, &R10, &R11, &R12, &R13, &R14, &R15, &R16, &R17, &R18, &R19, &R20, &R21, &R22, &R23, &R24, &R25, &R26, &R27, &R28, &R29);
+	FwdPass3_len960<T, sb>(twiddles, stride_in, stride_out, rw, b, me, ldsOffset, ldsOffset, lds, lds, lds, lds, &R0, &R1, &R2, &R3, &R4, &R5, &R6, &R7, &R8, &R9, &R10, &R11, &R12, &R13, &R14, &R15, &R16, &R17, &R18, &R19, &R20, &R21, &R22, &R23, &R24, &R25, &R26, &R27, &R28, &R29);
+	FwdPass4_len960<T, sb>(twiddles, stride_in, stride_out, rw, b, me, ldsOffset, ldsOffset, lds, lds, lds, lds, &R0, &R1, &R2, &R3, &R4, &R5, &R6, &R7, &R8, &R9, &R10, &R11, &R12, &R13, &R14, &R15, &R16, &R17, &R18, &R19, &R20, &R21, &R22, &R23, &R24, &R25, &R26, &R27, &R28, &R29);
+	FwdPass5_len960<T, sb>(twiddles, stride_in, stride_out, rw, b, me, ldsOffset, 0, lds, lds,  lwbOut, &R0, &R1, &R2, &R3, &R4, &R5, &R6, &R7, &R8, &R9, &R10, &R11, &R12, &R13, &R14, &R15, &R16, &R17, &R18, &R19, &R20, &R21, &R22, &R23, &R24, &R25, &R26, &R27, &R28, &R29);
+}
+
+template <typename T, StrideBin sb>
+__device__ void 
+back_len960_device(const T *twiddles, const size_t stride_in, const size_t stride_out, unsigned int rw, unsigned int b, unsigned int me, unsigned int ldsOffset, real_type_t<T> *bufInRe, real_type_t<T> *bufInIm, T *lwbOut, real_type_t<T> *lds)
+{
+	T R0, R1, R2, R3, R4, R5, R6, R7, R8, R9, R10, R11, R12, R13, R14, R15, R16, R17, R18, R19, R20, R21, R22, R23, R24, R25, R26, R27, R28, R29;
+	InvPass0_len960<T, sb>(twiddles, stride_in, stride_out, rw, b, me, 0, ldsOffset,  bufInRe, bufInIm, lds, lds, &R0, &R1, &R2, &R3, &R4, &R5, &R6, &R7, &R8, &R9, &R10, &R11, &R12, &R13, &R14, &R15, &R16, &R17, &R18, &R19, &R20, &R21, &R22, &R23, &R24, &R25, &R26, &R27, &R28, &R29);
+	InvPass1_len960<T, sb>(twiddles, stride_in, stride_out, rw, b, me, ldsOffset, ldsOffset, lds, lds, lds, lds, &R0, &R1, &R2, &R3, &R4, &R5, &R6, &R7, &R8, &R9, &R10, &R11, &R12, &R13, &R14, &R15, &R16, &R17, &R18, &R19, &R20, &R21, &R22, &R23, &R24, &R25, &R26, &R27, &R28, &R29);
+	InvPass2_len960<T, sb>(twiddles, stride_in, stride_out, rw, b, me, ldsOffset, ldsOffset, lds, lds, lds, lds, &R0, &R1, &R2, &R3, &R4, &R5, &R6, &R7, &R8, &R9, &R10, &R11, &R12, &R13, &R14, &R15, &R16, &R17, &R18, &R19, &R20, &R21, &R22, &R23, &R24, &R25, &R26, &R27, &R28, &R29);
+	InvPass3_len960<T, sb>(twiddles, stride_in, stride_out, rw, b, me, ldsOffset, ldsOffset, lds, lds, lds, lds, &R0, &R1, &R2, &R3, &R4, &R5, &R6, &R7, &R8, &R9, &R10, &R11, &R12, &R13, &R14, &R15, &R16, &R17, &R18, &R19, &R20, &R21, &R22, &R23, &R24, &R25, &R26, &R27, &R28, &R29);
+	InvPass4_len960<T, sb>(twiddles, stride_in, stride_out, rw, b, me, ldsOffset, ldsOffset, lds, lds, lds, lds, &R0, &R1, &R2, &R3, &R4, &R5, &R6, &R7, &R8, &R9, &R10, &R11, &R12, &R13, &R14, &R15, &R16, &R17, &R18, &R19, &R20, &R21, &R22, &R23, &R24, &R25, &R26, &R27, &R28, &R29);
+	InvPass5_len960<T, sb>(twiddles, stride_in, stride_out, rw, b, me, ldsOffset, 0, lds, lds,  lwbOut, &R0, &R1, &R2, &R3, &R4, &R5, &R6, &R7, &R8, &R9, &R10, &R11, &R12, &R13, &R14, &R15, &R16, &R17, &R18, &R19, &R20, &R21, &R22, &R23, &R24, &R25, &R26, &R27, &R28, &R29);
+}
+
+template <typename T, StrideBin sb>
+__device__ void 
+fwd_len960_device(const T *twiddles, const size_t stride_in, const size_t stride_out, unsigned int rw, unsigned int b, unsigned int me, unsigned int ldsOffset, real_type_t<T> *bufInRe, real_type_t<T> *bufInIm, real_type_t<T> *bufOutRe, real_type_t<T> *bufOutIm, real_type_t<T> *lds)
+{
+	T R0, R1, R2, R3, R4, R5, R6, R7, R8, R9, R10, R11, R12, R13, R14, R15, R16, R17, R18, R19, R20, R21, R22, R23, R24, R25, R26, R27, R28, R29;
+	FwdPass0_len960<T, sb>(twiddles, stride_in, stride_out, rw, b, me, 0, ldsOffset,  bufInRe, bufInIm, lds, lds, &R0, &R1, &R2, &R3, &R4, &R5, &R6, &R7, &R8, &R9, &R10, &R11, &R12, &R13, &R14, &R15, &R16, &R17, &R18, &R19, &R20, &R21, &R22, &R23, &R24, &R25, &R26, &R27, &R28, &R29);
+	FwdPass1_len960<T, sb>(twiddles, stride_in, stride_out, rw, b, me, ldsOffset, ldsOffset, lds, lds, lds, lds, &R0, &R1, &R2, &R3, &R4, &R5, &R6, &R7, &R8, &R9, &R10, &R11, &R12, &R13, &R14, &R15, &R16, &R17, &R18, &R19, &R20, &R21, &R22, &R23, &R24, &R25, &R26, &R27, &R28, &R29);
+	FwdPass2_len960<T, sb>(twiddles, stride_in, stride_out, rw, b, me, ldsOffset, ldsOffset, lds, lds, lds, lds, &R0, &R1, &R2, &R3, &R4, &R5, &R6, &R7, &R8, &R9, &R10, &R11, &R12, &R13, &R14, &R15, &R16, &R17, &R18, &R19, &R20, &R21, &R22, &R23, &R24, &R25, &R26, &R27, &R28, &R29);
+	FwdPass3_len960<T, sb>(twiddles, stride_in, stride_out, rw, b, me, ldsOffset, ldsOffset, lds, lds, lds, lds, &R0, &R1, &R2, &R3, &R4, &R5, &R6, &R7, &R8, &R9, &R10, &R11, &R12, &R13, &R14, &R15, &R16, &R17, &R18, &R19, &R20, &R21, &R22, &R23, &R24, &R25, &R26, &R27, &R28, &R29);
+	FwdPass4_len960<T, sb>(twiddles, stride_in, stride_out, rw, b, me, ldsOffset, ldsOffset, lds, lds, lds, lds, &R0, &R1, &R2, &R3, &R4, &R5, &R6, &R7, &R8, &R9, &R10, &R11, &R12, &R13, &R14, &R15, &R16, &R17, &R18, &R19, &R20, &R21, &R22, &R23, &R24, &R25, &R26, &R27, &R28, &R29);
+	FwdPass5_len960<T, sb>(twiddles, stride_in, stride_out, rw, b, me, ldsOffset, 0, lds, lds, bufOutRe, bufOutIm, &R0, &R1, &R2, &R3, &R4, &R5, &R6, &R7, &R8, &R9, &R10, &R11, &R12, &R13, &R14, &R15, &R16, &R17, &R18, &R19, &R20, &R21, &R22, &R23, &R24, &R25, &R26, &R27, &R28, &R29);
+}
+
+template <typename T, StrideBin sb>
+__device__ void 
+back_len960_device(const T *twiddles, const size_t stride_in, const size_t stride_out, unsigned int rw, unsigned int b, unsigned int me, unsigned int ldsOffset, real_type_t<T> *bufInRe, real_type_t<T> *bufInIm, real_type_t<T> *bufOutRe, real_type_t<T> *bufOutIm, real_type_t<T> *lds)
+{
+	T R0, R1, R2, R3, R4, R5, R6, R7, R8, R9, R10, R11, R12, R13, R14, R15, R16, R17, R18, R19, R20, R21, R22, R23, R24, R25, R26, R27, R28, R29;
+	InvPass0_len960<T, sb>(twiddles, stride_in, stride_out, rw, b, me, 0, ldsOffset,  bufInRe, bufInIm, lds, lds, &R0, &R1, &R2, &R3, &R4, &R5, &R6, &R7, &R8, &R9, &R10, &R11, &R12, &R13, &R14, &R15, &R16, &R17, &R18, &R19, &R20, &R21, &R22, &R23, &R24, &R25, &R26, &R27, &R28, &R29);
+	InvPass1_len960<T, sb>(twiddles, stride_in, stride_out, rw, b, me, ldsOffset, ldsOffset, lds, lds, lds, lds, &R0, &R1, &R2, &R3, &R4, &R5, &R6, &R7, &R8, &R9, &R10, &R11, &R12, &R13, &R14, &R15, &R16, &R17, &R18, &R19, &R20, &R21, &R22, &R23, &R24, &R25, &R26, &R27, &R28, &R29);
+	InvPass2_len960<T, sb>(twiddles, stride_in, stride_out, rw, b, me, ldsOffset, ldsOffset, lds, lds, lds, lds, &R0, &R1, &R2, &R3, &R4, &R5, &R6, &R7, &R8, &R9, &R10, &R11, &R12, &R13, &R14, &R15, &R16, &R17, &R18, &R19, &R20, &R21, &R22, &R23, &R24, &R25, &R26, &R27, &R28, &R29);
+	InvPass3_len960<T, sb>(twiddles, stride_in, stride_out, rw, b, me, ldsOffset, ldsOffset, lds, lds, lds, lds, &R0, &R1, &R2, &R3, &R4, &R5, &R6, &R7, &R8, &R9, &R10, &R11, &R12, &R13, &R14, &R15, &R16, &R17, &R18, &R19, &R20, &R21, &R22, &R23, &R24, &R25, &R26, &R27, &R28, &R29);
+	InvPass4_len960<T, sb>(twiddles, stride_in, stride_out, rw, b, me, ldsOffset, ldsOffset, lds, lds, lds, lds, &R0, &R1, &R2, &R3, &R4, &R5, &R6, &R7, &R8, &R9, &R10, &R11, &R12, &R13, &R14, &R15, &R16, &R17, &R18, &R19, &R20, &R21, &R22, &R23, &R24, &R25, &R26, &R27, &R28, &R29);
+	InvPass5_len960<T, sb>(twiddles, stride_in, stride_out, rw, b, me, ldsOffset, 0, lds, lds, bufOutRe, bufOutIm, &R0, &R1, &R2, &R3, &R4, &R5, &R6, &R7, &R8, &R9, &R10, &R11, &R12, &R13, &R14, &R15, &R16, &R17, &R18, &R19, &R20, &R21, &R22, &R23, &R24, &R25, &R26, &R27, &R28, &R29);
+}
+
+
+////////////////////////////////////////Global kernels
+//Kernel configuration: number of threads per thread block: 64, maximum transforms: 2, Passes: 6
+template <typename T, StrideBin sb>
+__global__ void
+__launch_bounds__(64)
+fft_fwd_ip_len960( cl::sycl::range<3> blocks, cl::sycl::range<3> threads, cl::sycl::queue rocfftQueue, cl::sycl::buffer<T, 1> twiddles_GB, const size_t dim, cl::sycl::buffer<size_t, 1> *lengths_GB, cl::sycl::buffer<size_t, 1> *stride_in_GB, const size_t batch_count, cl::sycl::buffer<T, 1> gb_GB)
+{
+rocfftQueue.submit([&](cl::sycl::handler &cgh)
+{
+	auto twiddles = twiddles_GB.get_access<cl::sycl::access::mode::read>(cgh);
+	auto lengths = lengths_GB.get_access<cl::sycl::access::mode::read>(cgh);
+	auto stride_in = stride_in_GB.get_access<cl::sycl::access::mode::read>(cgh);
+	auto gb = gb_GB.get_access<cl::sycl::access::mode::read_write>(cgh);
+	cl::sycl::accessor<real_type_t<T>,1,sycl::access::mode::read_write,sycl::access::target::local> lds(cl::sycl::range<1>(1920), cgh);
+	cgh.parallel_for<class kern_fft_fwd_ip_len960>(
+	                   cl::sycl::nd_range<3>(blocks, threads),
+	                   [=](cl::sycl::nd_item<3> wItem)
+{
+//// Print kernel code here (after function prototype)
+	unsigned int me = (unsigned int)wItem.get_local_id(0);
+	unsigned int batch = (unsigned int)wItem.get_group(0);
+
+	unsigned int ioOffset = 0;
+	T *lwb;
+
+	unsigned int upper_count = batch_count;
+	for(int i=1; i<dim; i++){
+		upper_count *= lengths[i];
+	}
+	// do signed math to guard against underflow
+	unsigned int rw = (static_cast<int>(me) < (static_cast<int>(upper_count)  - static_cast<int>(batch)*2)*32) ? 1 : 0;
+
+	//suppress warning
+	#ifdef __NVCC__
+		(void)(rw == rw);
+	#else
+		(void)rw;
+	#endif
+	unsigned int b = 0;
+
+    // generator.kernel.hpp:1581
+	size_t counter_mod = (batch*2 + (me/32));
+	if(dim == 1){
+		ioOffset += counter_mod*stride_in[1];
+	}
+	else if(dim == 2){
+		int counter_1 = counter_mod / lengths[1];
+		int counter_mod_1 = counter_mod % lengths[1];
+		ioOffset += counter_1*stride_in[2] + counter_mod_1*stride_in[1];
+	}
+	else if(dim == 3){
+		int counter_2 = counter_mod / (lengths[1] * lengths[2]);
+		int counter_mod_2 = counter_mod % (lengths[1] * lengths[2]);
+		int counter_1 = counter_mod_2 / lengths[1];
+		int counter_mod_1 = counter_mod_2 % lengths[1];
+		ioOffset += counter_2*stride_in[3] + counter_1*stride_in[2] + counter_mod_1*stride_in[1];
+	}
+	else{
+		for(int i = dim; i>1; i--){
+			int currentLength = 1;
+			for(int j=1; j<i; j++){
+				currentLength *= lengths[j];
+			}
+
+			ioOffset += (counter_mod / currentLength)*stride_in[i];
+			counter_mod = counter_mod % currentLength;
+		}
+		ioOffset+= counter_mod * stride_in[1];
+	}
+	lwb = gb + ioOffset;
+
+	// Perform FFT input: lwb(In) ; output: lwb(Out); working space: lds 
+	// rw, b, me% control read/write; then ldsOffset, lwb, lds
+	fwd_len960_device<T, sb>(twiddles, stride_in[0], stride_in[0],  rw, b, me%32, (me/32)*960, lwb, lwb, lds);
+});
+});
+}
+
+//Kernel configuration: number of threads per thread block: 64, maximum transforms: 2, Passes: 6
+template <typename T, StrideBin sb>
+__global__ void
+__launch_bounds__(64)
+fft_back_ip_len960( cl::sycl::range<3> blocks, cl::sycl::range<3> threads, cl::sycl::queue rocfftQueue, cl::sycl::buffer<T, 1> twiddles_GB, const size_t dim, cl::sycl::buffer<size_t, 1> *lengths_GB, cl::sycl::buffer<size_t, 1> *stride_in_GB, const size_t batch_count, cl::sycl::buffer<T, 1> gb_GB)
+{
+rocfftQueue.submit([&](cl::sycl::handler &cgh)
+{
+	auto twiddles = twiddles_GB.get_access<cl::sycl::access::mode::read>(cgh);
+	auto lengths = lengths_GB.get_access<cl::sycl::access::mode::read>(cgh);
+	auto stride_in = stride_in_GB.get_access<cl::sycl::access::mode::read>(cgh);
+	auto gb = gb_GB.get_access<cl::sycl::access::mode::read_write>(cgh);
+	cl::sycl::accessor<real_type_t<T>,1,sycl::access::mode::read_write,sycl::access::target::local> lds(cl::sycl::range<1>(1920), cgh);
+	cgh.parallel_for<class kern_fft_back_ip_len960>(
+	                   cl::sycl::nd_range<3>(blocks, threads),
+	                   [=](cl::sycl::nd_item<3> wItem)
+{
+//// Print kernel code here (after function prototype)
+	unsigned int me = (unsigned int)wItem.get_local_id(0);
+	unsigned int batch = (unsigned int)wItem.get_group(0);
+
+	unsigned int ioOffset = 0;
+	T *lwb;
+
+	unsigned int upper_count = batch_count;
+	for(int i=1; i<dim; i++){
+		upper_count *= lengths[i];
+	}
+	// do signed math to guard against underflow
+	unsigned int rw = (static_cast<int>(me) < (static_cast<int>(upper_count)  - static_cast<int>(batch)*2)*32) ? 1 : 0;
+
+	//suppress warning
+	#ifdef __NVCC__
+		(void)(rw == rw);
+	#else
+		(void)rw;
+	#endif
+	unsigned int b = 0;
+
+    // generator.kernel.hpp:1581
+	size_t counter_mod = (batch*2 + (me/32));
+	if(dim == 1){
+		ioOffset += counter_mod*stride_in[1];
+	}
+	else if(dim == 2){
+		int counter_1 = counter_mod / lengths[1];
+		int counter_mod_1 = counter_mod % lengths[1];
+		ioOffset += counter_1*stride_in[2] + counter_mod_1*stride_in[1];
+	}
+	else if(dim == 3){
+		int counter_2 = counter_mod / (lengths[1] * lengths[2]);
+		int counter_mod_2 = counter_mod % (lengths[1] * lengths[2]);
+		int counter_1 = counter_mod_2 / lengths[1];
+		int counter_mod_1 = counter_mod_2 % lengths[1];
+		ioOffset += counter_2*stride_in[3] + counter_1*stride_in[2] + counter_mod_1*stride_in[1];
+	}
+	else{
+		for(int i = dim; i>1; i--){
+			int currentLength = 1;
+			for(int j=1; j<i; j++){
+				currentLength *= lengths[j];
+			}
+
+			ioOffset += (counter_mod / currentLength)*stride_in[i];
+			counter_mod = counter_mod % currentLength;
+		}
+		ioOffset+= counter_mod * stride_in[1];
+	}
+	lwb = gb + ioOffset;
+
+	// Perform FFT input: lwb(In) ; output: lwb(Out); working space: lds 
+	// rw, b, me% control read/write; then ldsOffset, lwb, lds
+	back_len960_device<T, sb>(twiddles, stride_in[0], stride_in[0],  rw, b, me%32, (me/32)*960, lwb, lwb, lds);
+});
+});
+}
+
+//Kernel configuration: number of threads per thread block: 64, maximum transforms: 2, Passes: 6
+template <typename T, StrideBin sb>
+__global__ void
+__launch_bounds__(64)
+fft_fwd_ip_len960( cl::sycl::range<3> blocks, cl::sycl::range<3> threads, cl::sycl::queue rocfftQueue, cl::sycl::buffer<T, 1> twiddles_GB, const size_t dim, cl::sycl::buffer<size_t, 1> *lengths_GB, cl::sycl::buffer<size_t, 1> *stride_in_GB, const size_t batch_count, cl::sycl::buffer<real_type_t<T>, 1> gbRe_GB, cl::sycl::buffer<real_type_t<T>, 1> gbIm_GB)
+{
+rocfftQueue.submit([&](cl::sycl::handler &cgh)
+{
+	auto twiddles = twiddles_GB.get_access<cl::sycl::access::mode::read>(cgh);
+	auto lengths = lengths_GB.get_access<cl::sycl::access::mode::read>(cgh);
+	auto stride_in = stride_in_GB.get_access<cl::sycl::access::mode::read>(cgh);
+	auto gbRe = gbRe_GB.get_access<cl::sycl::access::mode::read_write>(cgh);
+	auto gbIm = gbIm_GB.get_access<cl::sycl::access::mode::read_write>(cgh);
+	cl::sycl::accessor<real_type_t<T>,1,sycl::access::mode::read_write,sycl::access::target::local> lds(cl::sycl::range<1>(1920), cgh);
+	cgh.parallel_for<class kern_fft_fwd_ip_len960>(
+	                   cl::sycl::nd_range<3>(blocks, threads),
+	                   [=](cl::sycl::nd_item<3> wItem)
+{
+//// Print kernel code here (after function prototype)
+	unsigned int me = (unsigned int)wItem.get_local_id(0);
+	unsigned int batch = (unsigned int)wItem.get_group(0);
+
+	unsigned int ioOffset = 0;
+	real_type_t<T> *lwbRe;
+	real_type_t<T> *lwbIm;
+
+	unsigned int upper_count = batch_count;
+	for(int i=1; i<dim; i++){
+		upper_count *= lengths[i];
+	}
+	// do signed math to guard against underflow
+	unsigned int rw = (static_cast<int>(me) < (static_cast<int>(upper_count)  - static_cast<int>(batch)*2)*32) ? 1 : 0;
+
+	//suppress warning
+	#ifdef __NVCC__
+		(void)(rw == rw);
+	#else
+		(void)rw;
+	#endif
+	unsigned int b = 0;
+
+    // generator.kernel.hpp:1581
+	size_t counter_mod = (batch*2 + (me/32));
+	if(dim == 1){
+		ioOffset += counter_mod*stride_in[1];
+	}
+	else if(dim == 2){
+		int counter_1 = counter_mod / lengths[1];
+		int counter_mod_1 = counter_mod % lengths[1];
+		ioOffset += counter_1*stride_in[2] + counter_mod_1*stride_in[1];
+	}
+	else if(dim == 3){
+		int counter_2 = counter_mod / (lengths[1] * lengths[2]);
+		int counter_mod_2 = counter_mod % (lengths[1] * lengths[2]);
+		int counter_1 = counter_mod_2 / lengths[1];
+		int counter_mod_1 = counter_mod_2 % lengths[1];
+		ioOffset += counter_2*stride_in[3] + counter_1*stride_in[2] + counter_mod_1*stride_in[1];
+	}
+	else{
+		for(int i = dim; i>1; i--){
+			int currentLength = 1;
+			for(int j=1; j<i; j++){
+				currentLength *= lengths[j];
+			}
+
+			ioOffset += (counter_mod / currentLength)*stride_in[i];
+			counter_mod = counter_mod % currentLength;
+		}
+		ioOffset+= counter_mod * stride_in[1];
+	}
+	lwbRe = gbRe + ioOffset;
+	lwbIm = gbIm + ioOffset;
+
+	// Perform FFT input: lwb(In) ; output: lwb(Out); working space: lds 
+	// rw, b, me% control read/write; then ldsOffset, lwb, lds
+	fwd_len960_device<T, sb>(twiddles, stride_in[0], stride_in[0],  rw, b, me%32, (me/32)*960, lwbRe, lwbIm, lwbRe, lwbIm, lds);
+});
+});
+}
+
+//Kernel configuration: number of threads per thread block: 64, maximum transforms: 2, Passes: 6
+template <typename T, StrideBin sb>
+__global__ void
+__launch_bounds__(64)
+fft_back_ip_len960( cl::sycl::range<3> blocks, cl::sycl::range<3> threads, cl::sycl::queue rocfftQueue, cl::sycl::buffer<T, 1> twiddles_GB, const size_t dim, cl::sycl::buffer<size_t, 1> *lengths_GB, cl::sycl::buffer<size_t, 1> *stride_in_GB, const size_t batch_count, cl::sycl::buffer<real_type_t<T>, 1> gbRe_GB, cl::sycl::buffer<real_type_t<T>, 1> gbIm_GB)
+{
+rocfftQueue.submit([&](cl::sycl::handler &cgh)
+{
+	auto twiddles = twiddles_GB.get_access<cl::sycl::access::mode::read>(cgh);
+	auto lengths = lengths_GB.get_access<cl::sycl::access::mode::read>(cgh);
+	auto stride_in = stride_in_GB.get_access<cl::sycl::access::mode::read>(cgh);
+	auto gbRe = gbRe_GB.get_access<cl::sycl::access::mode::read_write>(cgh);
+	auto gbIm = gbIm_GB.get_access<cl::sycl::access::mode::read_write>(cgh);
+	cl::sycl::accessor<real_type_t<T>,1,sycl::access::mode::read_write,sycl::access::target::local> lds(cl::sycl::range<1>(1920), cgh);
+	cgh.parallel_for<class kern_fft_back_ip_len960>(
+	                   cl::sycl::nd_range<3>(blocks, threads),
+	                   [=](cl::sycl::nd_item<3> wItem)
+{
+//// Print kernel code here (after function prototype)
+	unsigned int me = (unsigned int)wItem.get_local_id(0);
+	unsigned int batch = (unsigned int)wItem.get_group(0);
+
+	unsigned int ioOffset = 0;
+	real_type_t<T> *lwbRe;
+	real_type_t<T> *lwbIm;
+
+	unsigned int upper_count = batch_count;
+	for(int i=1; i<dim; i++){
+		upper_count *= lengths[i];
+	}
+	// do signed math to guard against underflow
+	unsigned int rw = (static_cast<int>(me) < (static_cast<int>(upper_count)  - static_cast<int>(batch)*2)*32) ? 1 : 0;
+
+	//suppress warning
+	#ifdef __NVCC__
+		(void)(rw == rw);
+	#else
+		(void)rw;
+	#endif
+	unsigned int b = 0;
+
+    // generator.kernel.hpp:1581
+	size_t counter_mod = (batch*2 + (me/32));
+	if(dim == 1){
+		ioOffset += counter_mod*stride_in[1];
+	}
+	else if(dim == 2){
+		int counter_1 = counter_mod / lengths[1];
+		int counter_mod_1 = counter_mod % lengths[1];
+		ioOffset += counter_1*stride_in[2] + counter_mod_1*stride_in[1];
+	}
+	else if(dim == 3){
+		int counter_2 = counter_mod / (lengths[1] * lengths[2]);
+		int counter_mod_2 = counter_mod % (lengths[1] * lengths[2]);
+		int counter_1 = counter_mod_2 / lengths[1];
+		int counter_mod_1 = counter_mod_2 % lengths[1];
+		ioOffset += counter_2*stride_in[3] + counter_1*stride_in[2] + counter_mod_1*stride_in[1];
+	}
+	else{
+		for(int i = dim; i>1; i--){
+			int currentLength = 1;
+			for(int j=1; j<i; j++){
+				currentLength *= lengths[j];
+			}
+
+			ioOffset += (counter_mod / currentLength)*stride_in[i];
+			counter_mod = counter_mod % currentLength;
+		}
+		ioOffset+= counter_mod * stride_in[1];
+	}
+	lwbRe = gbRe + ioOffset;
+	lwbIm = gbIm + ioOffset;
+
+	// Perform FFT input: lwb(In) ; output: lwb(Out); working space: lds 
+	// rw, b, me% control read/write; then ldsOffset, lwb, lds
+	back_len960_device<T, sb>(twiddles, stride_in[0], stride_in[0],  rw, b, me%32, (me/32)*960, lwbRe, lwbIm, lwbRe, lwbIm, lds);
+});
+});
+}
+
+//Kernel configuration: number of threads per thread block: 64, maximum transforms: 2, Passes: 6
+template <typename T, StrideBin sb>
+__global__ void
+__launch_bounds__(64)
+fft_fwd_op_len960( cl::sycl::range<3> blocks, cl::sycl::range<3> threads, cl::sycl::queue rocfftQueue, cl::sycl::buffer<T, 1> twiddles_GB, const size_t dim, cl::sycl::buffer<size_t, 1> *lengths_GB, cl::sycl::buffer<size_t, 1> *stride_in_GB, cl::sycl::buffer<size_t, 1> *stride_out_GB, const size_t batch_count, cl::sycl::buffer<T, 1> gbIn_GB, cl::sycl::buffer<T, 1> gbOut_GB)
+{
+rocfftQueue.submit([&](cl::sycl::handler &cgh)
+{
+	auto twiddles = twiddles_GB.get_access<cl::sycl::access::mode::read>(cgh);
+	auto lengths = lengths_GB.get_access<cl::sycl::access::mode::read>(cgh);
+	auto stride_in = stride_in_GB.get_access<cl::sycl::access::mode::read>(cgh);
+	auto stride_out = stride_out_GB.get_access<cl::sycl::access::mode::read>(cgh);
+	auto gbIn = gbIn_GB.get_access<cl::sycl::access::mode::read_write>(cgh);
+	auto gbOut = gbOut_GB.get_access<cl::sycl::access::mode::read_write>(cgh);
+	cl::sycl::accessor<real_type_t<T>,1,sycl::access::mode::read_write,sycl::access::target::local> lds(cl::sycl::range<1>(1920), cgh);
+	cgh.parallel_for<class kern_fft_fwd_op_len960>(
+	                   cl::sycl::nd_range<3>(blocks, threads),
+	                   [=](cl::sycl::nd_item<3> wItem)
+{
+//// Print kernel code here (after function prototype)
+	unsigned int me = (unsigned int)wItem.get_local_id(0);
+	unsigned int batch = (unsigned int)wItem.get_group(0);
+
+	unsigned int iOffset = 0;
+	unsigned int oOffset = 0;
+	T *lwbIn;
+	T *lwbOut;
+
+	unsigned int upper_count = batch_count;
+	for(int i=1; i<dim; i++){
+		upper_count *= lengths[i];
+	}
+	// do signed math to guard against underflow
+	unsigned int rw = (static_cast<int>(me) < (static_cast<int>(upper_count)  - static_cast<int>(batch)*2)*32) ? 1 : 0;
+
+	//suppress warning
+	#ifdef __NVCC__
+		(void)(rw == rw);
+	#else
+		(void)rw;
+	#endif
+	unsigned int b = 0;
+
+    // generator.kernel.hpp:1581
+	size_t counter_mod = (batch*2 + (me/32));
+	if(dim == 1){
+		iOffset += counter_mod*stride_in[1];
+		oOffset += counter_mod*stride_out[1];
+	}
+	else if(dim == 2){
+		int counter_1 = counter_mod / lengths[1];
+		int counter_mod_1 = counter_mod % lengths[1];
+		iOffset += counter_1*stride_in[2] + counter_mod_1*stride_in[1];
+		oOffset += counter_1*stride_out[2] + counter_mod_1*stride_out[1];
+	}
+	else if(dim == 3){
+		int counter_2 = counter_mod / (lengths[1] * lengths[2]);
+		int counter_mod_2 = counter_mod % (lengths[1] * lengths[2]);
+		int counter_1 = counter_mod_2 / lengths[1];
+		int counter_mod_1 = counter_mod_2 % lengths[1];
+		iOffset += counter_2*stride_in[3] + counter_1*stride_in[2] + counter_mod_1*stride_in[1];
+		oOffset += counter_2*stride_out[3] + counter_1*stride_out[2] + counter_mod_1*stride_out[1];
+	}
+	else{
+		for(int i = dim; i>1; i--){
+			int currentLength = 1;
+			for(int j=1; j<i; j++){
+				currentLength *= lengths[j];
+			}
+
+			iOffset += (counter_mod / currentLength)*stride_in[i];
+			oOffset += (counter_mod / currentLength)*stride_out[i];
+			counter_mod = counter_mod % currentLength;
+		}
+		iOffset+= counter_mod * stride_in[1];
+		oOffset+= counter_mod * stride_out[1];
+	}
+	lwbIn = gbIn + iOffset;
+	lwbOut = gbOut + oOffset;
+
+	// Perform FFT input: lwb(In) ; output: lwb(Out); working space: lds 
+	// rw, b, me% control read/write; then ldsOffset, lwb, lds
+	fwd_len960_device<T, sb>(twiddles, stride_in[0], stride_out[0],  rw, b, me%32, (me/32)*960, lwbIn, lwbOut, lds);
+});
+});
+}
+
+//Kernel configuration: number of threads per thread block: 64, maximum transforms: 2, Passes: 6
+template <typename T, StrideBin sb>
+__global__ void
+__launch_bounds__(64)
+fft_back_op_len960( cl::sycl::range<3> blocks, cl::sycl::range<3> threads, cl::sycl::queue rocfftQueue, cl::sycl::buffer<T, 1> twiddles_GB, const size_t dim, cl::sycl::buffer<size_t, 1> *lengths_GB, cl::sycl::buffer<size_t, 1> *stride_in_GB, cl::sycl::buffer<size_t, 1> *stride_out_GB, const size_t batch_count, cl::sycl::buffer<T, 1> gbIn_GB, cl::sycl::buffer<T, 1> gbOut_GB)
+{
+rocfftQueue.submit([&](cl::sycl::handler &cgh)
+{
+	auto twiddles = twiddles_GB.get_access<cl::sycl::access::mode::read>(cgh);
+	auto lengths = lengths_GB.get_access<cl::sycl::access::mode::read>(cgh);
+	auto stride_in = stride_in_GB.get_access<cl::sycl::access::mode::read>(cgh);
+	auto stride_out = stride_out_GB.get_access<cl::sycl::access::mode::read>(cgh);
+	auto gbIn = gbIn_GB.get_access<cl::sycl::access::mode::read_write>(cgh);
+	auto gbOut = gbOut_GB.get_access<cl::sycl::access::mode::read_write>(cgh);
+	cl::sycl::accessor<real_type_t<T>,1,sycl::access::mode::read_write,sycl::access::target::local> lds(cl::sycl::range<1>(1920), cgh);
+	cgh.parallel_for<class kern_fft_back_op_len960>(
+	                   cl::sycl::nd_range<3>(blocks, threads),
+	                   [=](cl::sycl::nd_item<3> wItem)
+{
+//// Print kernel code here (after function prototype)
+	unsigned int me = (unsigned int)wItem.get_local_id(0);
+	unsigned int batch = (unsigned int)wItem.get_group(0);
+
+	unsigned int iOffset = 0;
+	unsigned int oOffset = 0;
+	T *lwbIn;
+	T *lwbOut;
+
+	unsigned int upper_count = batch_count;
+	for(int i=1; i<dim; i++){
+		upper_count *= lengths[i];
+	}
+	// do signed math to guard against underflow
+	unsigned int rw = (static_cast<int>(me) < (static_cast<int>(upper_count)  - static_cast<int>(batch)*2)*32) ? 1 : 0;
+
+	//suppress warning
+	#ifdef __NVCC__
+		(void)(rw == rw);
+	#else
+		(void)rw;
+	#endif
+	unsigned int b = 0;
+
+    // generator.kernel.hpp:1581
+	size_t counter_mod = (batch*2 + (me/32));
+	if(dim == 1){
+		iOffset += counter_mod*stride_in[1];
+		oOffset += counter_mod*stride_out[1];
+	}
+	else if(dim == 2){
+		int counter_1 = counter_mod / lengths[1];
+		int counter_mod_1 = counter_mod % lengths[1];
+		iOffset += counter_1*stride_in[2] + counter_mod_1*stride_in[1];
+		oOffset += counter_1*stride_out[2] + counter_mod_1*stride_out[1];
+	}
+	else if(dim == 3){
+		int counter_2 = counter_mod / (lengths[1] * lengths[2]);
+		int counter_mod_2 = counter_mod % (lengths[1] * lengths[2]);
+		int counter_1 = counter_mod_2 / lengths[1];
+		int counter_mod_1 = counter_mod_2 % lengths[1];
+		iOffset += counter_2*stride_in[3] + counter_1*stride_in[2] + counter_mod_1*stride_in[1];
+		oOffset += counter_2*stride_out[3] + counter_1*stride_out[2] + counter_mod_1*stride_out[1];
+	}
+	else{
+		for(int i = dim; i>1; i--){
+			int currentLength = 1;
+			for(int j=1; j<i; j++){
+				currentLength *= lengths[j];
+			}
+
+			iOffset += (counter_mod / currentLength)*stride_in[i];
+			oOffset += (counter_mod / currentLength)*stride_out[i];
+			counter_mod = counter_mod % currentLength;
+		}
+		iOffset+= counter_mod * stride_in[1];
+		oOffset+= counter_mod * stride_out[1];
+	}
+	lwbIn = gbIn + iOffset;
+	lwbOut = gbOut + oOffset;
+
+	// Perform FFT input: lwb(In) ; output: lwb(Out); working space: lds 
+	// rw, b, me% control read/write; then ldsOffset, lwb, lds
+	back_len960_device<T, sb>(twiddles, stride_in[0], stride_out[0],  rw, b, me%32, (me/32)*960, lwbIn, lwbOut, lds);
+});
+});
+}
+
+//Kernel configuration: number of threads per thread block: 64, maximum transforms: 2, Passes: 6
+template <typename T, StrideBin sb>
+__global__ void
+__launch_bounds__(64)
+fft_fwd_op_len960( cl::sycl::range<3> blocks, cl::sycl::range<3> threads, cl::sycl::queue rocfftQueue, cl::sycl::buffer<T, 1> twiddles_GB, const size_t dim, cl::sycl::buffer<size_t, 1> *lengths_GB, cl::sycl::buffer<size_t, 1> *stride_in_GB, cl::sycl::buffer<size_t, 1> *stride_out_GB, const size_t batch_count, cl::sycl::buffer<T, 1> gbIn_GB, cl::sycl::buffer<real_type_t<T>, 1> gbOutRe_GB, cl::sycl::buffer<real_type_t<T>, 1> gbOutIm_GB)
+{
+rocfftQueue.submit([&](cl::sycl::handler &cgh)
+{
+	auto twiddles = twiddles_GB.get_access<cl::sycl::access::mode::read>(cgh);
+	auto lengths = lengths_GB.get_access<cl::sycl::access::mode::read>(cgh);
+	auto stride_in = stride_in_GB.get_access<cl::sycl::access::mode::read>(cgh);
+	auto stride_out = stride_out_GB.get_access<cl::sycl::access::mode::read>(cgh);
+	auto gbIn = gbIn_GB.get_access<cl::sycl::access::mode::read_write>(cgh);
+	auto gbOutRe = gbOutRe_GB.get_access<cl::sycl::access::mode::read_write>(cgh);
+	auto gbOutIm = gbOutIm_GB.get_access<cl::sycl::access::mode::read_write>(cgh);
+	cl::sycl::accessor<real_type_t<T>,1,sycl::access::mode::read_write,sycl::access::target::local> lds(cl::sycl::range<1>(1920), cgh);
+	cgh.parallel_for<class kern_fft_fwd_op_len960>(
+	                   cl::sycl::nd_range<3>(blocks, threads),
+	                   [=](cl::sycl::nd_item<3> wItem)
+{
+//// Print kernel code here (after function prototype)
+	unsigned int me = (unsigned int)wItem.get_local_id(0);
+	unsigned int batch = (unsigned int)wItem.get_group(0);
+
+	unsigned int iOffset = 0;
+	unsigned int oOffset = 0;
+	T *lwbIn;
+	real_type_t<T> *lwbOutRe;
+	real_type_t<T> *lwbOutIm;
+
+	unsigned int upper_count = batch_count;
+	for(int i=1; i<dim; i++){
+		upper_count *= lengths[i];
+	}
+	// do signed math to guard against underflow
+	unsigned int rw = (static_cast<int>(me) < (static_cast<int>(upper_count)  - static_cast<int>(batch)*2)*32) ? 1 : 0;
+
+	//suppress warning
+	#ifdef __NVCC__
+		(void)(rw == rw);
+	#else
+		(void)rw;
+	#endif
+	unsigned int b = 0;
+
+    // generator.kernel.hpp:1581
+	size_t counter_mod = (batch*2 + (me/32));
+	if(dim == 1){
+		iOffset += counter_mod*stride_in[1];
+		oOffset += counter_mod*stride_out[1];
+	}
+	else if(dim == 2){
+		int counter_1 = counter_mod / lengths[1];
+		int counter_mod_1 = counter_mod % lengths[1];
+		iOffset += counter_1*stride_in[2] + counter_mod_1*stride_in[1];
+		oOffset += counter_1*stride_out[2] + counter_mod_1*stride_out[1];
+	}
+	else if(dim == 3){
+		int counter_2 = counter_mod / (lengths[1] * lengths[2]);
+		int counter_mod_2 = counter_mod % (lengths[1] * lengths[2]);
+		int counter_1 = counter_mod_2 / lengths[1];
+		int counter_mod_1 = counter_mod_2 % lengths[1];
+		iOffset += counter_2*stride_in[3] + counter_1*stride_in[2] + counter_mod_1*stride_in[1];
+		oOffset += counter_2*stride_out[3] + counter_1*stride_out[2] + counter_mod_1*stride_out[1];
+	}
+	else{
+		for(int i = dim; i>1; i--){
+			int currentLength = 1;
+			for(int j=1; j<i; j++){
+				currentLength *= lengths[j];
+			}
+
+			iOffset += (counter_mod / currentLength)*stride_in[i];
+			oOffset += (counter_mod / currentLength)*stride_out[i];
+			counter_mod = counter_mod % currentLength;
+		}
+		iOffset+= counter_mod * stride_in[1];
+		oOffset+= counter_mod * stride_out[1];
+	}
+	lwbIn = gbIn + iOffset;
+	lwbOutRe = gbOutRe + oOffset;
+	lwbOutIm = gbOutIm + oOffset;
+
+	// Perform FFT input: lwb(In) ; output: lwb(Out); working space: lds 
+	// rw, b, me% control read/write; then ldsOffset, lwb, lds
+	fwd_len960_device<T, sb>(twiddles, stride_in[0], stride_out[0],  rw, b, me%32, (me/32)*960, lwbIn, lwbOutRe, lwbOutIm, lds);
+});
+});
+}
+
+//Kernel configuration: number of threads per thread block: 64, maximum transforms: 2, Passes: 6
+template <typename T, StrideBin sb>
+__global__ void
+__launch_bounds__(64)
+fft_back_op_len960( cl::sycl::range<3> blocks, cl::sycl::range<3> threads, cl::sycl::queue rocfftQueue, cl::sycl::buffer<T, 1> twiddles_GB, const size_t dim, cl::sycl::buffer<size_t, 1> *lengths_GB, cl::sycl::buffer<size_t, 1> *stride_in_GB, cl::sycl::buffer<size_t, 1> *stride_out_GB, const size_t batch_count, cl::sycl::buffer<T, 1> gbIn_GB, cl::sycl::buffer<real_type_t<T>, 1> gbOutRe_GB, cl::sycl::buffer<real_type_t<T>, 1> gbOutIm_GB)
+{
+rocfftQueue.submit([&](cl::sycl::handler &cgh)
+{
+	auto twiddles = twiddles_GB.get_access<cl::sycl::access::mode::read>(cgh);
+	auto lengths = lengths_GB.get_access<cl::sycl::access::mode::read>(cgh);
+	auto stride_in = stride_in_GB.get_access<cl::sycl::access::mode::read>(cgh);
+	auto stride_out = stride_out_GB.get_access<cl::sycl::access::mode::read>(cgh);
+	auto gbIn = gbIn_GB.get_access<cl::sycl::access::mode::read_write>(cgh);
+	auto gbOutRe = gbOutRe_GB.get_access<cl::sycl::access::mode::read_write>(cgh);
+	auto gbOutIm = gbOutIm_GB.get_access<cl::sycl::access::mode::read_write>(cgh);
+	cl::sycl::accessor<real_type_t<T>,1,sycl::access::mode::read_write,sycl::access::target::local> lds(cl::sycl::range<1>(1920), cgh);
+	cgh.parallel_for<class kern_fft_back_op_len960>(
+	                   cl::sycl::nd_range<3>(blocks, threads),
+	                   [=](cl::sycl::nd_item<3> wItem)
+{
+//// Print kernel code here (after function prototype)
+	unsigned int me = (unsigned int)wItem.get_local_id(0);
+	unsigned int batch = (unsigned int)wItem.get_group(0);
+
+	unsigned int iOffset = 0;
+	unsigned int oOffset = 0;
+	T *lwbIn;
+	real_type_t<T> *lwbOutRe;
+	real_type_t<T> *lwbOutIm;
+
+	unsigned int upper_count = batch_count;
+	for(int i=1; i<dim; i++){
+		upper_count *= lengths[i];
+	}
+	// do signed math to guard against underflow
+	unsigned int rw = (static_cast<int>(me) < (static_cast<int>(upper_count)  - static_cast<int>(batch)*2)*32) ? 1 : 0;
+
+	//suppress warning
+	#ifdef __NVCC__
+		(void)(rw == rw);
+	#else
+		(void)rw;
+	#endif
+	unsigned int b = 0;
+
+    // generator.kernel.hpp:1581
+	size_t counter_mod = (batch*2 + (me/32));
+	if(dim == 1){
+		iOffset += counter_mod*stride_in[1];
+		oOffset += counter_mod*stride_out[1];
+	}
+	else if(dim == 2){
+		int counter_1 = counter_mod / lengths[1];
+		int counter_mod_1 = counter_mod % lengths[1];
+		iOffset += counter_1*stride_in[2] + counter_mod_1*stride_in[1];
+		oOffset += counter_1*stride_out[2] + counter_mod_1*stride_out[1];
+	}
+	else if(dim == 3){
+		int counter_2 = counter_mod / (lengths[1] * lengths[2]);
+		int counter_mod_2 = counter_mod % (lengths[1] * lengths[2]);
+		int counter_1 = counter_mod_2 / lengths[1];
+		int counter_mod_1 = counter_mod_2 % lengths[1];
+		iOffset += counter_2*stride_in[3] + counter_1*stride_in[2] + counter_mod_1*stride_in[1];
+		oOffset += counter_2*stride_out[3] + counter_1*stride_out[2] + counter_mod_1*stride_out[1];
+	}
+	else{
+		for(int i = dim; i>1; i--){
+			int currentLength = 1;
+			for(int j=1; j<i; j++){
+				currentLength *= lengths[j];
+			}
+
+			iOffset += (counter_mod / currentLength)*stride_in[i];
+			oOffset += (counter_mod / currentLength)*stride_out[i];
+			counter_mod = counter_mod % currentLength;
+		}
+		iOffset+= counter_mod * stride_in[1];
+		oOffset+= counter_mod * stride_out[1];
+	}
+	lwbIn = gbIn + iOffset;
+	lwbOutRe = gbOutRe + oOffset;
+	lwbOutIm = gbOutIm + oOffset;
+
+	// Perform FFT input: lwb(In) ; output: lwb(Out); working space: lds 
+	// rw, b, me% control read/write; then ldsOffset, lwb, lds
+	back_len960_device<T, sb>(twiddles, stride_in[0], stride_out[0],  rw, b, me%32, (me/32)*960, lwbIn, lwbOutRe, lwbOutIm, lds);
+});
+});
+}
+
+//Kernel configuration: number of threads per thread block: 64, maximum transforms: 2, Passes: 6
+template <typename T, StrideBin sb>
+__global__ void
+__launch_bounds__(64)
+fft_fwd_op_len960( cl::sycl::range<3> blocks, cl::sycl::range<3> threads, cl::sycl::queue rocfftQueue, cl::sycl::buffer<T, 1> twiddles_GB, const size_t dim, cl::sycl::buffer<size_t, 1> *lengths_GB, cl::sycl::buffer<size_t, 1> *stride_in_GB, cl::sycl::buffer<size_t, 1> *stride_out_GB, const size_t batch_count, cl::sycl::buffer<real_type_t<T>, 1> gbInRe_GB, cl::sycl::buffer<real_type_t<T>, 1> gbInIm_GB, cl::sycl::buffer<T, 1> gbOut_GB)
+{
+rocfftQueue.submit([&](cl::sycl::handler &cgh)
+{
+	auto twiddles = twiddles_GB.get_access<cl::sycl::access::mode::read>(cgh);
+	auto lengths = lengths_GB.get_access<cl::sycl::access::mode::read>(cgh);
+	auto stride_in = stride_in_GB.get_access<cl::sycl::access::mode::read>(cgh);
+	auto stride_out = stride_out_GB.get_access<cl::sycl::access::mode::read>(cgh);
+	auto gbInRe = gbInRe_GB.get_access<cl::sycl::access::mode::read_write>(cgh);
+	auto gbInIm = gbInIm_GB.get_access<cl::sycl::access::mode::read_write>(cgh);
+	auto gbOut = gbOut_GB.get_access<cl::sycl::access::mode::read_write>(cgh);
+	cl::sycl::accessor<real_type_t<T>,1,sycl::access::mode::read_write,sycl::access::target::local> lds(cl::sycl::range<1>(1920), cgh);
+	cgh.parallel_for<class kern_fft_fwd_op_len960>(
+	                   cl::sycl::nd_range<3>(blocks, threads),
+	                   [=](cl::sycl::nd_item<3> wItem)
+{
+//// Print kernel code here (after function prototype)
+	unsigned int me = (unsigned int)wItem.get_local_id(0);
+	unsigned int batch = (unsigned int)wItem.get_group(0);
+
+	unsigned int iOffset = 0;
+	unsigned int oOffset = 0;
+	real_type_t<T> *lwbInRe;
+	real_type_t<T> *lwbInIm;
+	T *lwbOut;
+
+	unsigned int upper_count = batch_count;
+	for(int i=1; i<dim; i++){
+		upper_count *= lengths[i];
+	}
+	// do signed math to guard against underflow
+	unsigned int rw = (static_cast<int>(me) < (static_cast<int>(upper_count)  - static_cast<int>(batch)*2)*32) ? 1 : 0;
+
+	//suppress warning
+	#ifdef __NVCC__
+		(void)(rw == rw);
+	#else
+		(void)rw;
+	#endif
+	unsigned int b = 0;
+
+    // generator.kernel.hpp:1581
+	size_t counter_mod = (batch*2 + (me/32));
+	if(dim == 1){
+		iOffset += counter_mod*stride_in[1];
+		oOffset += counter_mod*stride_out[1];
+	}
+	else if(dim == 2){
+		int counter_1 = counter_mod / lengths[1];
+		int counter_mod_1 = counter_mod % lengths[1];
+		iOffset += counter_1*stride_in[2] + counter_mod_1*stride_in[1];
+		oOffset += counter_1*stride_out[2] + counter_mod_1*stride_out[1];
+	}
+	else if(dim == 3){
+		int counter_2 = counter_mod / (lengths[1] * lengths[2]);
+		int counter_mod_2 = counter_mod % (lengths[1] * lengths[2]);
+		int counter_1 = counter_mod_2 / lengths[1];
+		int counter_mod_1 = counter_mod_2 % lengths[1];
+		iOffset += counter_2*stride_in[3] + counter_1*stride_in[2] + counter_mod_1*stride_in[1];
+		oOffset += counter_2*stride_out[3] + counter_1*stride_out[2] + counter_mod_1*stride_out[1];
+	}
+	else{
+		for(int i = dim; i>1; i--){
+			int currentLength = 1;
+			for(int j=1; j<i; j++){
+				currentLength *= lengths[j];
+			}
+
+			iOffset += (counter_mod / currentLength)*stride_in[i];
+			oOffset += (counter_mod / currentLength)*stride_out[i];
+			counter_mod = counter_mod % currentLength;
+		}
+		iOffset+= counter_mod * stride_in[1];
+		oOffset+= counter_mod * stride_out[1];
+	}
+	lwbInRe = gbInRe + iOffset;
+	lwbInIm = gbInIm + iOffset;
+	lwbOut = gbOut + oOffset;
+
+	// Perform FFT input: lwb(In) ; output: lwb(Out); working space: lds 
+	// rw, b, me% control read/write; then ldsOffset, lwb, lds
+	fwd_len960_device<T, sb>(twiddles, stride_in[0], stride_out[0],  rw, b, me%32, (me/32)*960, lwbInRe, lwbInIm, lwbOut, lds);
+});
+});
+}
+
+//Kernel configuration: number of threads per thread block: 64, maximum transforms: 2, Passes: 6
+template <typename T, StrideBin sb>
+__global__ void
+__launch_bounds__(64)
+fft_back_op_len960( cl::sycl::range<3> blocks, cl::sycl::range<3> threads, cl::sycl::queue rocfftQueue, cl::sycl::buffer<T, 1> twiddles_GB, const size_t dim, cl::sycl::buffer<size_t, 1> *lengths_GB, cl::sycl::buffer<size_t, 1> *stride_in_GB, cl::sycl::buffer<size_t, 1> *stride_out_GB, const size_t batch_count, cl::sycl::buffer<real_type_t<T>, 1> gbInRe_GB, cl::sycl::buffer<real_type_t<T>, 1> gbInIm_GB, cl::sycl::buffer<T, 1> gbOut_GB)
+{
+rocfftQueue.submit([&](cl::sycl::handler &cgh)
+{
+	auto twiddles = twiddles_GB.get_access<cl::sycl::access::mode::read>(cgh);
+	auto lengths = lengths_GB.get_access<cl::sycl::access::mode::read>(cgh);
+	auto stride_in = stride_in_GB.get_access<cl::sycl::access::mode::read>(cgh);
+	auto stride_out = stride_out_GB.get_access<cl::sycl::access::mode::read>(cgh);
+	auto gbInRe = gbInRe_GB.get_access<cl::sycl::access::mode::read_write>(cgh);
+	auto gbInIm = gbInIm_GB.get_access<cl::sycl::access::mode::read_write>(cgh);
+	auto gbOut = gbOut_GB.get_access<cl::sycl::access::mode::read_write>(cgh);
+	cl::sycl::accessor<real_type_t<T>,1,sycl::access::mode::read_write,sycl::access::target::local> lds(cl::sycl::range<1>(1920), cgh);
+	cgh.parallel_for<class kern_fft_back_op_len960>(
+	                   cl::sycl::nd_range<3>(blocks, threads),
+	                   [=](cl::sycl::nd_item<3> wItem)
+{
+//// Print kernel code here (after function prototype)
+	unsigned int me = (unsigned int)wItem.get_local_id(0);
+	unsigned int batch = (unsigned int)wItem.get_group(0);
+
+	unsigned int iOffset = 0;
+	unsigned int oOffset = 0;
+	real_type_t<T> *lwbInRe;
+	real_type_t<T> *lwbInIm;
+	T *lwbOut;
+
+	unsigned int upper_count = batch_count;
+	for(int i=1; i<dim; i++){
+		upper_count *= lengths[i];
+	}
+	// do signed math to guard against underflow
+	unsigned int rw = (static_cast<int>(me) < (static_cast<int>(upper_count)  - static_cast<int>(batch)*2)*32) ? 1 : 0;
+
+	//suppress warning
+	#ifdef __NVCC__
+		(void)(rw == rw);
+	#else
+		(void)rw;
+	#endif
+	unsigned int b = 0;
+
+    // generator.kernel.hpp:1581
+	size_t counter_mod = (batch*2 + (me/32));
+	if(dim == 1){
+		iOffset += counter_mod*stride_in[1];
+		oOffset += counter_mod*stride_out[1];
+	}
+	else if(dim == 2){
+		int counter_1 = counter_mod / lengths[1];
+		int counter_mod_1 = counter_mod % lengths[1];
+		iOffset += counter_1*stride_in[2] + counter_mod_1*stride_in[1];
+		oOffset += counter_1*stride_out[2] + counter_mod_1*stride_out[1];
+	}
+	else if(dim == 3){
+		int counter_2 = counter_mod / (lengths[1] * lengths[2]);
+		int counter_mod_2 = counter_mod % (lengths[1] * lengths[2]);
+		int counter_1 = counter_mod_2 / lengths[1];
+		int counter_mod_1 = counter_mod_2 % lengths[1];
+		iOffset += counter_2*stride_in[3] + counter_1*stride_in[2] + counter_mod_1*stride_in[1];
+		oOffset += counter_2*stride_out[3] + counter_1*stride_out[2] + counter_mod_1*stride_out[1];
+	}
+	else{
+		for(int i = dim; i>1; i--){
+			int currentLength = 1;
+			for(int j=1; j<i; j++){
+				currentLength *= lengths[j];
+			}
+
+			iOffset += (counter_mod / currentLength)*stride_in[i];
+			oOffset += (counter_mod / currentLength)*stride_out[i];
+			counter_mod = counter_mod % currentLength;
+		}
+		iOffset+= counter_mod * stride_in[1];
+		oOffset+= counter_mod * stride_out[1];
+	}
+	lwbInRe = gbInRe + iOffset;
+	lwbInIm = gbInIm + iOffset;
+	lwbOut = gbOut + oOffset;
+
+	// Perform FFT input: lwb(In) ; output: lwb(Out); working space: lds 
+	// rw, b, me% control read/write; then ldsOffset, lwb, lds
+	back_len960_device<T, sb>(twiddles, stride_in[0], stride_out[0],  rw, b, me%32, (me/32)*960, lwbInRe, lwbInIm, lwbOut, lds);
+});
+});
+}
+
+//Kernel configuration: number of threads per thread block: 64, maximum transforms: 2, Passes: 6
+template <typename T, StrideBin sb>
+__global__ void
+__launch_bounds__(64)
+fft_fwd_op_len960( cl::sycl::range<3> blocks, cl::sycl::range<3> threads, cl::sycl::queue rocfftQueue, cl::sycl::buffer<T, 1> twiddles_GB, const size_t dim, cl::sycl::buffer<size_t, 1> *lengths_GB, cl::sycl::buffer<size_t, 1> *stride_in_GB, cl::sycl::buffer<size_t, 1> *stride_out_GB, const size_t batch_count, cl::sycl::buffer<real_type_t<T>, 1> gbInRe_GB, cl::sycl::buffer<real_type_t<T>, 1> gbInIm_GB, cl::sycl::buffer<real_type_t<T>, 1> gbOutRe_GB, cl::sycl::buffer<real_type_t<T>, 1> gbOutIm_GB)
+{
+rocfftQueue.submit([&](cl::sycl::handler &cgh)
+{
+	auto twiddles = twiddles_GB.get_access<cl::sycl::access::mode::read>(cgh);
+	auto lengths = lengths_GB.get_access<cl::sycl::access::mode::read>(cgh);
+	auto stride_in = stride_in_GB.get_access<cl::sycl::access::mode::read>(cgh);
+	auto stride_out = stride_out_GB.get_access<cl::sycl::access::mode::read>(cgh);
+	auto gbInRe = gbInRe_GB.get_access<cl::sycl::access::mode::read_write>(cgh);
+	auto gbInIm = gbInIm_GB.get_access<cl::sycl::access::mode::read_write>(cgh);
+	auto gbOutRe = gbOutRe_GB.get_access<cl::sycl::access::mode::read_write>(cgh);
+	auto gbOutIm = gbOutIm_GB.get_access<cl::sycl::access::mode::read_write>(cgh);
+	cl::sycl::accessor<real_type_t<T>,1,sycl::access::mode::read_write,sycl::access::target::local> lds(cl::sycl::range<1>(1920), cgh);
+	cgh.parallel_for<class kern_fft_fwd_op_len960>(
+	                   cl::sycl::nd_range<3>(blocks, threads),
+	                   [=](cl::sycl::nd_item<3> wItem)
+{
+//// Print kernel code here (after function prototype)
+	unsigned int me = (unsigned int)wItem.get_local_id(0);
+	unsigned int batch = (unsigned int)wItem.get_group(0);
+
+	unsigned int iOffset = 0;
+	unsigned int oOffset = 0;
+	real_type_t<T> *lwbInRe;
+	real_type_t<T> *lwbInIm;
+	real_type_t<T> *lwbOutRe;
+	real_type_t<T> *lwbOutIm;
+
+	unsigned int upper_count = batch_count;
+	for(int i=1; i<dim; i++){
+		upper_count *= lengths[i];
+	}
+	// do signed math to guard against underflow
+	unsigned int rw = (static_cast<int>(me) < (static_cast<int>(upper_count)  - static_cast<int>(batch)*2)*32) ? 1 : 0;
+
+	//suppress warning
+	#ifdef __NVCC__
+		(void)(rw == rw);
+	#else
+		(void)rw;
+	#endif
+	unsigned int b = 0;
+
+    // generator.kernel.hpp:1581
+	size_t counter_mod = (batch*2 + (me/32));
+	if(dim == 1){
+		iOffset += counter_mod*stride_in[1];
+		oOffset += counter_mod*stride_out[1];
+	}
+	else if(dim == 2){
+		int counter_1 = counter_mod / lengths[1];
+		int counter_mod_1 = counter_mod % lengths[1];
+		iOffset += counter_1*stride_in[2] + counter_mod_1*stride_in[1];
+		oOffset += counter_1*stride_out[2] + counter_mod_1*stride_out[1];
+	}
+	else if(dim == 3){
+		int counter_2 = counter_mod / (lengths[1] * lengths[2]);
+		int counter_mod_2 = counter_mod % (lengths[1] * lengths[2]);
+		int counter_1 = counter_mod_2 / lengths[1];
+		int counter_mod_1 = counter_mod_2 % lengths[1];
+		iOffset += counter_2*stride_in[3] + counter_1*stride_in[2] + counter_mod_1*stride_in[1];
+		oOffset += counter_2*stride_out[3] + counter_1*stride_out[2] + counter_mod_1*stride_out[1];
+	}
+	else{
+		for(int i = dim; i>1; i--){
+			int currentLength = 1;
+			for(int j=1; j<i; j++){
+				currentLength *= lengths[j];
+			}
+
+			iOffset += (counter_mod / currentLength)*stride_in[i];
+			oOffset += (counter_mod / currentLength)*stride_out[i];
+			counter_mod = counter_mod % currentLength;
+		}
+		iOffset+= counter_mod * stride_in[1];
+		oOffset+= counter_mod * stride_out[1];
+	}
+	lwbInRe = gbInRe + iOffset;
+	lwbInIm = gbInIm + iOffset;
+	lwbOutRe = gbOutRe + oOffset;
+	lwbOutIm = gbOutIm + oOffset;
+
+	// Perform FFT input: lwb(In) ; output: lwb(Out); working space: lds 
+	// rw, b, me% control read/write; then ldsOffset, lwb, lds
+	fwd_len960_device<T, sb>(twiddles, stride_in[0], stride_out[0],  rw, b, me%32, (me/32)*960, lwbInRe, lwbInIm, lwbOutRe, lwbOutIm, lds);
+});
+});
+}
+
+//Kernel configuration: number of threads per thread block: 64, maximum transforms: 2, Passes: 6
+template <typename T, StrideBin sb>
+__global__ void
+__launch_bounds__(64)
+fft_back_op_len960( cl::sycl::range<3> blocks, cl::sycl::range<3> threads, cl::sycl::queue rocfftQueue, cl::sycl::buffer<T, 1> twiddles_GB, const size_t dim, cl::sycl::buffer<size_t, 1> *lengths_GB, cl::sycl::buffer<size_t, 1> *stride_in_GB, cl::sycl::buffer<size_t, 1> *stride_out_GB, const size_t batch_count, cl::sycl::buffer<real_type_t<T>, 1> gbInRe_GB, cl::sycl::buffer<real_type_t<T>, 1> gbInIm_GB, cl::sycl::buffer<real_type_t<T>, 1> gbOutRe_GB, cl::sycl::buffer<real_type_t<T>, 1> gbOutIm_GB)
+{
+rocfftQueue.submit([&](cl::sycl::handler &cgh)
+{
+	auto twiddles = twiddles_GB.get_access<cl::sycl::access::mode::read>(cgh);
+	auto lengths = lengths_GB.get_access<cl::sycl::access::mode::read>(cgh);
+	auto stride_in = stride_in_GB.get_access<cl::sycl::access::mode::read>(cgh);
+	auto stride_out = stride_out_GB.get_access<cl::sycl::access::mode::read>(cgh);
+	auto gbInRe = gbInRe_GB.get_access<cl::sycl::access::mode::read_write>(cgh);
+	auto gbInIm = gbInIm_GB.get_access<cl::sycl::access::mode::read_write>(cgh);
+	auto gbOutRe = gbOutRe_GB.get_access<cl::sycl::access::mode::read_write>(cgh);
+	auto gbOutIm = gbOutIm_GB.get_access<cl::sycl::access::mode::read_write>(cgh);
+	cl::sycl::accessor<real_type_t<T>,1,sycl::access::mode::read_write,sycl::access::target::local> lds(cl::sycl::range<1>(1920), cgh);
+	cgh.parallel_for<class kern_fft_back_op_len960>(
+	                   cl::sycl::nd_range<3>(blocks, threads),
+	                   [=](cl::sycl::nd_item<3> wItem)
+{
+//// Print kernel code here (after function prototype)
+	unsigned int me = (unsigned int)wItem.get_local_id(0);
+	unsigned int batch = (unsigned int)wItem.get_group(0);
+
+	unsigned int iOffset = 0;
+	unsigned int oOffset = 0;
+	real_type_t<T> *lwbInRe;
+	real_type_t<T> *lwbInIm;
+	real_type_t<T> *lwbOutRe;
+	real_type_t<T> *lwbOutIm;
+
+	unsigned int upper_count = batch_count;
+	for(int i=1; i<dim; i++){
+		upper_count *= lengths[i];
+	}
+	// do signed math to guard against underflow
+	unsigned int rw = (static_cast<int>(me) < (static_cast<int>(upper_count)  - static_cast<int>(batch)*2)*32) ? 1 : 0;
+
+	//suppress warning
+	#ifdef __NVCC__
+		(void)(rw == rw);
+	#else
+		(void)rw;
+	#endif
+	unsigned int b = 0;
+
+    // generator.kernel.hpp:1581
+	size_t counter_mod = (batch*2 + (me/32));
+	if(dim == 1){
+		iOffset += counter_mod*stride_in[1];
+		oOffset += counter_mod*stride_out[1];
+	}
+	else if(dim == 2){
+		int counter_1 = counter_mod / lengths[1];
+		int counter_mod_1 = counter_mod % lengths[1];
+		iOffset += counter_1*stride_in[2] + counter_mod_1*stride_in[1];
+		oOffset += counter_1*stride_out[2] + counter_mod_1*stride_out[1];
+	}
+	else if(dim == 3){
+		int counter_2 = counter_mod / (lengths[1] * lengths[2]);
+		int counter_mod_2 = counter_mod % (lengths[1] * lengths[2]);
+		int counter_1 = counter_mod_2 / lengths[1];
+		int counter_mod_1 = counter_mod_2 % lengths[1];
+		iOffset += counter_2*stride_in[3] + counter_1*stride_in[2] + counter_mod_1*stride_in[1];
+		oOffset += counter_2*stride_out[3] + counter_1*stride_out[2] + counter_mod_1*stride_out[1];
+	}
+	else{
+		for(int i = dim; i>1; i--){
+			int currentLength = 1;
+			for(int j=1; j<i; j++){
+				currentLength *= lengths[j];
+			}
+
+			iOffset += (counter_mod / currentLength)*stride_in[i];
+			oOffset += (counter_mod / currentLength)*stride_out[i];
+			counter_mod = counter_mod % currentLength;
+		}
+		iOffset+= counter_mod * stride_in[1];
+		oOffset+= counter_mod * stride_out[1];
+	}
+	lwbInRe = gbInRe + iOffset;
+	lwbInIm = gbInIm + iOffset;
+	lwbOutRe = gbOutRe + oOffset;
+	lwbOutIm = gbOutIm + oOffset;
+
+	// Perform FFT input: lwb(In) ; output: lwb(Out); working space: lds 
+	// rw, b, me% control read/write; then ldsOffset, lwb, lds
+	back_len960_device<T, sb>(twiddles, stride_in[0], stride_out[0],  rw, b, me%32, (me/32)*960, lwbInRe, lwbInIm, lwbOutRe, lwbOutIm, lds);
+});
+});
+}
+

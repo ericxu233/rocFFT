@@ -1,0 +1,32 @@
+
+@PACKAGE_INIT@
+    
+set_and_check(rocfft_INCLUDE_DIR @PACKAGE_INCLUDE_INSTALL_DIR@)
+
+set_and_check(rocfft_INCLUDE_DIRS @PACKAGE_INCLUDE_INSTALL_DIR@)
+
+set_and_check(ROCFFT_INCLUDE_DIR @PACKAGE_INCLUDE_INSTALL_DIR@)
+
+set_and_check(ROCFFT_INCLUDE_DIRS @PACKAGE_INCLUDE_INSTALL_DIR@)
+
+set_and_check(rocfft_INCLUDE_DIR @PACKAGE_INCLUDE_INSTALL_DIR@)
+
+set_and_check(rocfft_INCLUDE_DIRS @PACKAGE_INCLUDE_INSTALL_DIR@)
+
+set_and_check(rocfft_TARGET_FILE @PACKAGE_CONFIG_PACKAGE_INSTALL_DIR@/rocfft-targets.cmake)
+
+find_dependency(hip)
+
+include(${rocfft_TARGET_FILE})
+
+set(rocfft_LIBRARIES roc::rocfft)
+
+set(rocfft_LIBRARY roc::rocfft)
+
+set(ROCFFT_LIBRARIES roc::rocfft)
+
+set(ROCFFT_LIBRARY roc::rocfft)
+
+set(rocfft_LIBRARIES roc::rocfft)
+
+set(rocfft_LIBRARY roc::rocfft)
