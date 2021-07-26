@@ -354,6 +354,9 @@ void rocfft_internal_transpose_var2(const void* data_p, void* back_p)
             hipMalloc(&d_in_planar, sizeof(cmplx_float_planar));
             hipMemcpy(d_in_planar, &in_planar, sizeof(cmplx_float_planar), hipMemcpyHostToDevice);
 
+            //sycl::buffer<int, 1> d_in_planar(range<1>(sizeof(cmplx_float_planar))); //line that potentially replaces the previous three lines
+
+
             rocfft_transpose_outofplace_template<cmplx_float,
                                                  cmplx_float_planar,
                                                  cmplx_float,
@@ -394,6 +397,8 @@ void rocfft_internal_transpose_var2(const void* data_p, void* back_p)
             void* d_in_planar;
             hipMalloc(&d_in_planar, sizeof(cmplx_double_planar));
             hipMemcpy(d_in_planar, &in_planar, sizeof(cmplx_double_planar), hipMemcpyHostToDevice);
+
+            //sycl::buffer<int, 1> d_in_planar(range<1>(sizeof(cmplx_double_planar))); //line that potentially replaces the previous three lines
 
             rocfft_transpose_outofplace_template<cmplx_double,
                                                  cmplx_double_planar,
@@ -442,6 +447,8 @@ void rocfft_internal_transpose_var2(const void* data_p, void* back_p)
             hipMalloc(&d_out_planar, sizeof(cmplx_float_planar));
             hipMemcpy(d_out_planar, &out_planar, sizeof(cmplx_float_planar), hipMemcpyHostToDevice);
 
+            //sycl::buffer<int, 1> d_out_planar(range<1>(sizeof(cmplx_float_planar))); //line that potentially replaces the previous three lines
+
             rocfft_transpose_outofplace_template<cmplx_float,
                                                  cmplx_float,
                                                  cmplx_float_planar,
@@ -483,6 +490,8 @@ void rocfft_internal_transpose_var2(const void* data_p, void* back_p)
             hipMalloc(&d_out_planar, sizeof(cmplx_double_planar));
             hipMemcpy(
                 d_out_planar, &out_planar, sizeof(cmplx_double_planar), hipMemcpyHostToDevice);
+
+            //sycl::buffer<int, 1> d_out_planar(range<1>(sizeof(cmplx_double_planar))); //line that potentially replaces the previous three lines
 
             rocfft_transpose_outofplace_template<cmplx_double,
                                                  cmplx_double,
@@ -534,9 +543,13 @@ void rocfft_internal_transpose_var2(const void* data_p, void* back_p)
             hipMalloc(&d_in_planar, sizeof(cmplx_float_planar));
             hipMemcpy(d_in_planar, &in_planar, sizeof(cmplx_float_planar), hipMemcpyHostToDevice);
 
+            //sycl::buffer<int, 1> d_in_planar(range<1>(sizeof(cmplx_float_planar))); //line that potentially replaces the previous three lines
+
             void* d_out_planar;
             hipMalloc(&d_out_planar, sizeof(cmplx_float_planar));
             hipMemcpy(d_out_planar, &out_planar, sizeof(cmplx_float_planar), hipMemcpyHostToDevice);
+
+            //sycl::buffer<int, 1> d_out_planar(range<1>(sizeof(cmplx_float_planar))); //line that potentially replaces the previous three lines
 
             rocfft_transpose_outofplace_template<cmplx_float,
                                                  cmplx_float_planar,
@@ -583,10 +596,14 @@ void rocfft_internal_transpose_var2(const void* data_p, void* back_p)
             hipMalloc(&d_in_planar, sizeof(cmplx_double_planar));
             hipMemcpy(d_in_planar, &in_planar, sizeof(cmplx_double_planar), hipMemcpyHostToDevice);
 
+            //sycl::buffer<int, 1> d_in_planar(range<1>(sizeof(cmplx_double_planar))); //line that potentially replaces the previous three lines
+
             void* d_out_planar;
             hipMalloc(&d_out_planar, sizeof(cmplx_double_planar));
             hipMemcpy(
                 d_out_planar, &out_planar, sizeof(cmplx_double_planar), hipMemcpyHostToDevice);
+            
+            //sycl::buffer<int, 1> d_out_planar(range<1>(sizeof(cmplx_double_planar))); //line that potentially replaces the previous three lines
 
             rocfft_transpose_outofplace_template<cmplx_double,
                                                  cmplx_double_planar,
