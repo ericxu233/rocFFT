@@ -386,7 +386,8 @@ void rocfft_internal_transpose_var2(const void* data_p, void* back_p)
                 data->callbacks.store_cb_fn,
                 data->callbacks.store_cb_data);
 
-            hipFree(d_in_planar);
+            hipFree(d_in_planar); // needs to free this if implementation to sycl is made
+                                  // sycl buffers are not required to be freed since the scoping will automatically destruct it
         }
         else
         {
