@@ -167,7 +167,8 @@ rocfft_status rocfft_transpose_outofplace_template(size_t       m,
         GET_TRANSPOSE_KERNEL2_FUNC();
 
         if(kernel_func)
-            rocFFTLaunchKernelGGL(kernel_func,
+        //where are the template arguments? are they processed by the macros from kernel_func?
+            rocFFTLaunchKernelGGL(kernel_func, 
                                sycl::range<3>(grid),
                                sycl::range<3>(threads),
                                0,
@@ -356,6 +357,7 @@ void rocfft_internal_transpose_var2(const void* data_p, void* back_p)
 
             //sycl::buffer<int, 1> d_in_planar(range<1>(sizeof(cmplx_float_planar))); //line that potentially replaces the previous three lines
 
+            //pinned memory
 
             rocfft_transpose_outofplace_template<cmplx_float,
                                                  cmplx_float_planar,
