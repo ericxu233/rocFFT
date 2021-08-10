@@ -238,8 +238,8 @@ void //__launch_bounds__(DIM_X* DIM_Y) //
     }
     else
     {
-        size_t mm = sycl::fmin(m - tileBlockIdx_y * DIM_X, DIM_X); // the partial case along m
-        size_t nn = sycl::min(n - tileBlockIdx_x * DIM_X, DIM_X); // the partial case along n
+        size_t mm = (m - tileBlockIdx_y * DIM_X) < DIM_X ? (m - tileBlockIdx_y * DIM_X) : DIM_X; //sycl::fmin(m - tileBlockIdx_y * DIM_X, DIM_X); // the partial case along m
+        size_t nn = (n - tileBlockIdx_x * DIM_X) < DIM_X ? (n - tileBlockIdx_x * DIM_X) : DIM_X; //sycl::min(n - tileBlockIdx_x * DIM_X, DIM_X); // the partial case along n
         transpose_tile_device_scheme<T, T_I, T_O, DIM_X, DIM_Y, ALL, UNIT_STRIDE_0>(
             input,
             output,
@@ -260,7 +260,7 @@ void //__launch_bounds__(DIM_X* DIM_Y) //
             shared);
     }
                        });
-    }
+    });
 }
 
 int main() {
@@ -280,7 +280,7 @@ int main() {
     int* a1 = nullptr;
     int* a2 = nullptr;
     int* a3 = nullptr;
-    transpose_kernel2_scheme<int, int, int, 2, 2, flase, false, false>(pp, pp1, 2, queue, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 2, 2, 2, 2, nullptr, nullptr, 3, nullptr, nullptr);
+    transpose_kernel2_scheme<int, int, int, 2, 2, false, false, false>(pp, pp1, 2, queue, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 2, 2, 2, 2, nullptr, nullptr, 3, nullptr, nullptr);
 }
 
 
