@@ -1,4 +1,5 @@
 #include <CL/sycl.hpp>
+#include <cmath>
 
 namespace sycl = cl::sycl;
 
@@ -237,8 +238,8 @@ void //__launch_bounds__(DIM_X* DIM_Y) //
     }
     else
     {
-        size_t mm = min(m - tileBlockIdx_y * DIM_X, DIM_X); // the partial case along m
-        size_t nn = min(n - tileBlockIdx_x * DIM_X, DIM_X); // the partial case along n
+        size_t mm = sycl::fmin(m - tileBlockIdx_y * DIM_X, DIM_X); // the partial case along m
+        size_t nn = sycl::min(n - tileBlockIdx_x * DIM_X, DIM_X); // the partial case along n
         transpose_tile_device_scheme<T, T_I, T_O, DIM_X, DIM_Y, ALL, UNIT_STRIDE_0>(
             input,
             output,
@@ -259,10 +260,8 @@ void //__launch_bounds__(DIM_X* DIM_Y) //
             shared);
     }
                        });
+    }
 }
-
-
-using namespace std;
 
 int main() {
     sycl::device device = sycl::default_selector{}.select_device();
