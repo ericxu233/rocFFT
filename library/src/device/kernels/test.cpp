@@ -8,8 +8,7 @@ template <typename T,
           size_t       DIM_X,
           size_t       DIM_Y,
           bool         ALL,
-          bool         UNIT_STRIDE_0,
-          CallbackType cbtype>
+          bool         UNIT_STRIDE_0>
 void transpose_tile_device_scheme(const T_I*   input,
                                              T_O*         output,
                                              size_t       in_offset,
@@ -160,12 +159,11 @@ template <typename T,
           size_t       DIM_Y,
           bool         ALL,
           bool         UNIT_STRIDE_0,
-          bool         DIAGONAL,
-          CallbackType cbtype>
+          bool         DIAGONAL>
 void //__launch_bounds__(DIM_X* DIM_Y) //
     transpose_kernel2_scheme(
                              sycl::range<3> grid,
-                             sycl::rang<3> threads,
+                             sycl::range<3> threads,
                              size_t shared,           
                              sycl::queue rocfftQueue,
                              const T_I* input,
@@ -190,7 +188,7 @@ void //__launch_bounds__(DIM_X* DIM_Y) //
     sycl::accessor <T, 2, sycl::access::mode::read_write, sycl::access::target::local>
                         shared(sycl::range<2>(DIM_X, DIM_X), cgh);
     cgh.parallel_for<class transpose_kernel2_scheme>(sycl::nd_range<3>(grid, threads),
-	                   [=](sycl::nd_item<3> wItem)) {
+	                   [=](sycl::nd_item<3> wItem) {
     size_t iOffset = 0;
     size_t oOffset = 0;
 
@@ -218,7 +216,7 @@ void //__launch_bounds__(DIM_X* DIM_Y) //
 
     if(ALL)
     {
-        transpose_tile_device_scheme<T, T_I, T_O, DIM_X, DIM_Y, ALL, UNIT_STRIDE_0, cbtype>(
+        transpose_tile_device_scheme<T, T_I, T_O, DIM_X, DIM_Y, ALL, UNIT_STRIDE_0>(
             input,
             output,
             iOffset,
@@ -241,7 +239,7 @@ void //__launch_bounds__(DIM_X* DIM_Y) //
     {
         size_t mm = min(m - tileBlockIdx_y * DIM_X, DIM_X); // the partial case along m
         size_t nn = min(n - tileBlockIdx_x * DIM_X, DIM_X); // the partial case along n
-        transpose_tile_device_scheme<T, T_I, T_O, DIM_X, DIM_Y, ALL, UNIT_STRIDE_0, cbtype>(
+        transpose_tile_device_scheme<T, T_I, T_O, DIM_X, DIM_Y, ALL, UNIT_STRIDE_0>(
             input,
             output,
             iOffset,
@@ -283,7 +281,7 @@ int main() {
     int* a1 = nullptr;
     int* a2 = nullptr;
     int* a3 = nullptr;
-    transpose_kernel2_scheme<int, int, int, 2, 2, flase, false, false, void*>(pp, pp1, 2, queue, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 2, 2, 2, 2, nullptr, nullptr, 3, nullptr, nullptr);
+    transpose_kernel2_scheme<int, int, int, 2, 2, flase, false, false>(pp, pp1, 2, queue, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 2, 2, 2, 2, nullptr, nullptr, 3, nullptr, nullptr);
 }
 
 
