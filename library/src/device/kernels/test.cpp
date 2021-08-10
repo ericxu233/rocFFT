@@ -1,4 +1,4 @@
-#include <CL/sycl.h>
+#include <CL/sycl.hpp>
 
 namespace sycl = cl::sycl;
 
