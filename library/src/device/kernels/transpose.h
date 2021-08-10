@@ -93,7 +93,7 @@ template <typename T,
           bool         ALL,
           bool         UNIT_STRIDE_0,
           CallbackType cbtype>
-__device__ void transpose_tile_device(const T_I*   input,
+void transpose_tile_device(const T_I*   input,
                                       T_O*         output,
                                       size_t       in_offset,
                                       size_t       out_offset,
@@ -110,11 +110,13 @@ __device__ void transpose_tile_device(const T_I*   input,
                                       void* __restrict__ load_cb_data,
                                       uint32_t load_cb_lds_bytes,
                                       void* __restrict__ store_cb_fn,
-                                      void* __restrict__ store_cb_data)
+                                      void* __restrict__ store_cb_data,
+                                      sycl::nd_item<3> wItem,
+                                      sycl::accessor <T, 2, sycl::access::mode::read_write, sycl::access::target::local> shared)
 {
-    __shared__ T shared[DIM_X][DIM_X];
+    //__shared__ T shared[DIM_X][DIM_X];
 
-    size_t tid = hipThreadIdx_x + hipThreadIdx_y * hipBlockDim_x;
+    size_t tid = wItem.get_local_id(0)/*hipThreadIdx_x*/ + wItem.get_local_id(1)/*hipThreadIdx_y*/ * wItem.get_group_range(0)/*hipBlockDim_x*/;
     size_t tx1 = tid % DIM_X;
     size_t ty1 = tid / DIM_X;
 
@@ -140,7 +142,7 @@ __device__ void transpose_tile_device(const T_I*   input,
             shared[tx1][ty1 + i] = tmp; // the transpose taking place here
         }
 
-        __syncthreads();
+        wItem.barrier(sycl::access::fence_space::local_space);// __syncthreads();
 
         // From generated assembly it looks like the compiler has difficulty interleaving
         // long latency instructions in the store loop. The workaround is to load LDS
@@ -210,7 +212,7 @@ __device__ void transpose_tile_device(const T_I*   input,
                 shared[tx1][ty1 + i] = val[j]; // the transpose taking place here
             }
         }
-        __syncthreads();
+        wItem.barrier(sycl::access::fence_space::local_space);// __syncthreads();
 #pragma unroll
         for(size_t i = 0, j = 0; i < DIM_X; i += DIM_Y, j++)
         {
@@ -263,7 +265,12 @@ template <typename T,
           bool         UNIT_STRIDE_0,
           bool         DIAGONAL,
           CallbackType cbtype>
-__global__ void __launch_bounds__(DIM_X* DIM_Y) transpose_kernel2(const T_I* input,
+void /*__launch_bounds__(DIM_X* DIM_Y)*/ transpose_kernel2(
+                                                                  sycl::range<3> grid,
+                                                                  sycl::rang<3> threads,
+                                                                  size_t shared,           
+                                                                  sycl::queue rocfftQueue,
+                                                                  const T_I* input,
                                                                   T_O*       output,
                                                                   T*         twiddles_large,
                                                                   size_t*    lengths,
@@ -274,14 +281,21 @@ __global__ void __launch_bounds__(DIM_X* DIM_Y) transpose_kernel2(const T_I* inp
                                                                   uint32_t load_cb_lds_bytes,
                                                                   void* __restrict__ store_cb_fn,
                                                                   void* __restrict__ store_cb_data)
-{
+{   
+    rocfftQueue.submit([&](cl::sycl::handler &cgh) {
+    //missing accessors
+    sycl::accessor <T, 2, sycl::access::mode::read_write, sycl::access::target::local>
+                        shared(sycl::range<2>(DIM_X, DIM_X), cgh);
+    cgh.parallel_for<class transpose_kernel2_scheme>(sycl::nd_range<3>(grid, threads),
+	                   [=](sycl::nd_item<3> wItem)) {
+
     size_t ld_in  = stride_in[1];
     size_t ld_out = stride_out[1];
 
     size_t iOffset = 0;
     size_t oOffset = 0;
 
-    size_t counter_mod = hipBlockIdx_z;
+    size_t counter_mod = wItem.get_group(2);//hipBlockIdx_z;
 
     iOffset += counter_mod * stride_in[2];
     oOffset += counter_mod * stride_out[2];
@@ -290,9 +304,9 @@ __global__ void __launch_bounds__(DIM_X* DIM_Y) transpose_kernel2(const T_I* inp
     if(DIAGONAL) // diagonal reordering
     {
         //TODO: template and simplify index calc for square case if necessary
-        size_t bid     = hipBlockIdx_x + gridDim.x * hipBlockIdx_y;
-        tileBlockIdx_y = bid % hipGridDim_y;
-        tileBlockIdx_x = ((bid / hipGridDim_y) + tileBlockIdx_y) % hipGridDim_x;
+        size_t bid     = wItem.get_group(0)/*hipBlockIdx_x*/ + wItem.get_group_range(0)/*gridDim.x*/ * wItem.get_group(1)/*hipBlockIdx_y*/;
+        tileBlockIdx_y = bid % wItem.get_group_range(1)/*hipGridDim_y*/;
+        tileBlockIdx_x = ((bid / wItem.get_group_range(1)/*hipGridDim_y*/) + tileBlockIdx_y) % wItem.get_group_range(0)/*gridDim.x*/;
     }
     else
     {
@@ -332,7 +346,8 @@ __global__ void __launch_bounds__(DIM_X* DIM_Y) transpose_kernel2(const T_I* inp
                                       load_cb_data,
                                       load_cb_lds_bytes,
                                       store_cb_fn,
-                                      store_cb_data);
+                                      store_cb_data,
+                                      shared);
     }
     else
     {
@@ -367,8 +382,10 @@ __global__ void __launch_bounds__(DIM_X* DIM_Y) transpose_kernel2(const T_I* inp
                                       load_cb_data,
                                       load_cb_lds_bytes,
                                       store_cb_fn,
-                                      store_cb_data);
+                                      store_cb_data,
+                                      shared);
     }
+                       });
 }
 
 // tiled transpose device function for transpose_scheme
@@ -380,7 +397,7 @@ template <typename T,
           bool         ALL,
           bool         UNIT_STRIDE_0,
           CallbackType cbtype>
-__device__ void transpose_tile_device_scheme(const T_I*   input,
+void transpose_tile_device_scheme(const T_I*   input,
                                              T_O*         output,
                                              size_t       in_offset,
                                              size_t       out_offset,
@@ -394,12 +411,13 @@ __device__ void transpose_tile_device_scheme(const T_I*   input,
                                              void* __restrict__ load_cb_data,
                                              uint32_t load_cb_lds_bytes,
                                              void* __restrict__ store_cb_fn,
-                                             void* __restrict__ store_cb_data
-                                             sycl::nd_item<3> wItem)
+                                             void* __restrict__ store_cb_data,
+                                             sycl::nd_item<3> wItem,
+                                             sycl::accessor <T, 2, sycl::access::mode::read_write, sycl::access::target::local> shared)
 {
-    __shared__ T shared[DIM_X][DIM_X];
+    //__shared__ T shared[DIM_X][DIM_X];
 
-    size_t tid = hipThreadIdx_x + hipThreadIdx_y * hipBlockDim_x;
+    size_t tid = wItem.get_local_id(0)/*hipThreadIdx_x*/ + wItem.get_local_id(1)/*hipThreadIdx_y*/ * wItem.get_group_range(0)/*hipBlockDim_x*/;
     size_t tx1 = tid % DIM_X;
     size_t ty1 = tid / DIM_X;
     // what is program unroll?
@@ -531,11 +549,11 @@ template <typename T,
           bool         UNIT_STRIDE_0,
           bool         DIAGONAL,
           CallbackType cbtype>
-__global__ void __launch_bounds__(DIM_X* DIM_Y) //
+void //__launch_bounds__(DIM_X* DIM_Y) //
     transpose_kernel2_scheme(
                              sycl::range<3> grid,
                              sycl::rang<3> threads,
-                             size_t shared,           // cannot find where does the shared memory appear
+                             size_t shared,           
                              sycl::queue rocfftQueue,
                              const T_I* input,
                              T_O*       output,
@@ -556,7 +574,8 @@ __global__ void __launch_bounds__(DIM_X* DIM_Y) //
     
     rocfftQueue.submit([&](cl::sycl::handler &cgh) {
     //missing accessors
-
+    sycl::accessor <T, 2, sycl::access::mode::read_write, sycl::access::target::local>
+                        shared(sycl::range<2>(DIM_X, DIM_X), cgh);
     cgh.parallel_for<class transpose_kernel2_scheme>(sycl::nd_range<3>(grid, threads),
 	                   [=](sycl::nd_item<3> wItem)) {
     size_t iOffset = 0;
@@ -601,8 +620,9 @@ __global__ void __launch_bounds__(DIM_X* DIM_Y) //
             load_cb_data,
             load_cb_lds_bytes,
             store_cb_fn,
-            store_cb_data
-            wItem);
+            store_cb_data,
+            wItem,
+            shared);
     }
     else
     {
@@ -623,8 +643,9 @@ __global__ void __launch_bounds__(DIM_X* DIM_Y) //
             load_cb_data,
             load_cb_lds_bytes,
             store_cb_fn,
-            store_cb_data
-            wItem);
+            store_cb_data,
+            wItem,
+            shared);
     }
                        });
 }

@@ -42,7 +42,7 @@ struct DeviceCallIn
     void*     bufIn[2];
     void*     bufOut[2];
 
-    hipStream_t     rocfft_stream;
+    sycl::queue     rocfft_stream;
     GridParam       gridParam;
     hipDeviceProp_t deviceProp;
 

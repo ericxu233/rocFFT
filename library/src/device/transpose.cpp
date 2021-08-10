@@ -123,9 +123,9 @@ rocfft_status rocfft_transpose_outofplace_template(size_t       m,
                                                    TB*          B,             //not sure if conversion requires
                                                    sycl::buffer<T, 1> twiddles_large,
                                                    size_t       count,
-                                                   sycl::buffer<size_t, 1>* lengths,
-                                                   sycl::buffer<size_t, 1>* stride_in,
-                                                   sycl::buffer<size_t, 1>* stride_out,
+                                                   size_t*      lengths,
+                                                   size_t*      stride_in,
+                                                   size_t*      stride_out,
                                                    int          twl,
                                                    int          dir,
                                                    int          scheme,
@@ -155,9 +155,9 @@ rocfft_status rocfft_transpose_outofplace_template(size_t       m,
         void (*kernel_func)(const TA*,
                             TB*,
                             sycl::buffer<T, 1>,
-                            sycl::buffer<size_t, 1>*,
-                            sycl::buffer<size_t, 1>*,
-                            sycl::buffer<size_t, 1>*,
+                            size_t*,
+                            size_t*,
+                            size_t*,
                             void* __restrict__,
                             void* __restrict__,
                             uint32_t,
@@ -167,7 +167,7 @@ rocfft_status rocfft_transpose_outofplace_template(size_t       m,
         GET_TRANSPOSE_KERNEL2_FUNC();
 
         if(kernel_func)
-        //where are the template arguments? are they processed by the macros from kernel_func?
+        //where are the template arguments? are they processed by the macros from kernel_func? <<<>>>>
             rocFFTLaunchKernelGGL(kernel_func, 
                                sycl::range<3>(grid),
                                sycl::range<3>(threads),
@@ -352,8 +352,10 @@ void rocfft_internal_transpose_var2(const void* data_p, void* back_p)
             in_planar.I = (real_type_t<float2>*)data->bufIn[1];
 
             void* d_in_planar;
-            hipMalloc(&d_in_planar, sizeof(cmplx_float_planar));
-            hipMemcpy(d_in_planar, &in_planar, sizeof(cmplx_float_planar), hipMemcpyHostToDevice);
+            //hipMalloc(&d_in_planar, sizeof(cmplx_float_planar));
+            //hipMemcpy(d_in_planar, &in_planar, sizeof(cmplx_float_planar), hipMemcpyHostToDevice);
+            d_in_planar = static_cast<void *>(sycl::malloc_device(sizeof(cmplx_float_planar), rocfft_queue));
+            rocfft_queue.memcpy(&in_planar, d_in_planar, sizeof(cmplx_float_planar));
 
             //sycl::buffer<int, 1> d_in_planar(range<1>(sizeof(cmplx_float_planar))); //line that potentially replaces the previous three lines
 
@@ -398,8 +400,10 @@ void rocfft_internal_transpose_var2(const void* data_p, void* back_p)
             in_planar.I = (real_type_t<double2>*)data->bufIn[1];
 
             void* d_in_planar;
-            hipMalloc(&d_in_planar, sizeof(cmplx_double_planar));
-            hipMemcpy(d_in_planar, &in_planar, sizeof(cmplx_double_planar), hipMemcpyHostToDevice);
+            //hipMalloc(&d_in_planar, sizeof(cmplx_double_planar));
+            //hipMemcpy(d_in_planar, &in_planar, sizeof(cmplx_double_planar), hipMemcpyHostToDevice);
+            d_in_planar = static_cast<void *>(sycl::malloc_device(sizeof(cmplx_double_planar), rocfft_queue));
+            rocfft_queue.memcpy(&in_planar, d_in_planar, sizeof(cmplx_double_planar));
 
             //sycl::buffer<int, 1> d_in_planar(range<1>(sizeof(cmplx_double_planar))); //line that potentially replaces the previous three lines
 
@@ -432,7 +436,7 @@ void rocfft_internal_transpose_var2(const void* data_p, void* back_p)
                 data->callbacks.store_cb_fn,
                 data->callbacks.store_cb_data);
 
-            hipFree(d_in_planar);
+            free(d_in_planar, rocfft_queue);
         }
     }
     else if((data->node->inArrayType == rocfft_array_type_complex_interleaved
@@ -447,8 +451,11 @@ void rocfft_internal_transpose_var2(const void* data_p, void* back_p)
             out_planar.I = (real_type_t<float2>*)data->bufOut[1];
 
             void* d_out_planar;
-            hipMalloc(&d_out_planar, sizeof(cmplx_float_planar));
-            hipMemcpy(d_out_planar, &out_planar, sizeof(cmplx_float_planar), hipMemcpyHostToDevice);
+            //hipMalloc(&d_out_planar, sizeof(cmplx_float_planar));
+            //hipMemcpy(d_out_planar, &out_planar, sizeof(cmplx_float_planar), hipMemcpyHostToDevice);
+            d_out_planar = static_cast<void *>(sycl::malloc_device(sizeof(cmplx_float_planar), rocfft_queue));
+            rocfft_queue.memcpy(&out_planar, d_out_planar, sizeof(cmplx_float_planar));
+            
 
             //sycl::buffer<int, 1> d_out_planar(range<1>(sizeof(cmplx_float_planar))); //line that potentially replaces the previous three lines
 
@@ -481,7 +488,7 @@ void rocfft_internal_transpose_var2(const void* data_p, void* back_p)
                 data->callbacks.store_cb_fn,
                 data->callbacks.store_cb_data);
 
-            hipFree(d_out_planar);
+            free(d_out_planar, rocfft_queue);
         }
         else
         {
@@ -490,11 +497,10 @@ void rocfft_internal_transpose_var2(const void* data_p, void* back_p)
             out_planar.I = (real_type_t<double2>*)data->bufOut[1];
 
             void* d_out_planar;
-            hipMalloc(&d_out_planar, sizeof(cmplx_double_planar));
-            hipMemcpy(
-                d_out_planar, &out_planar, sizeof(cmplx_double_planar), hipMemcpyHostToDevice);
-
-            //sycl::buffer<int, 1> d_out_planar(range<1>(sizeof(cmplx_double_planar))); //line that potentially replaces the previous three lines
+            //hipMalloc(&d_out_planar, sizeof(cmplx_double_planar));
+            //hipMemcpy(d_out_planar, &out_planar, sizeof(cmplx_double_planar), hipMemcpyHostToDevice);
+            d_out_planar = static_cast<void *>(sycl::malloc_device(sizeof(cmplx_double_planar), rocfft_queue));
+            rocfft_queue.memcpy(&out_planar, d_out_planar, sizeof(cmplx_double_planar));
 
             rocfft_transpose_outofplace_template<cmplx_double,
                                                  cmplx_double,
@@ -525,7 +531,7 @@ void rocfft_internal_transpose_var2(const void* data_p, void* back_p)
                 data->callbacks.store_cb_fn,
                 data->callbacks.store_cb_data);
 
-            hipFree(d_out_planar);
+            free(d_out_planar, rocfft_queue);
         }
     }
     else if((data->node->inArrayType == rocfft_array_type_complex_planar
@@ -543,14 +549,19 @@ void rocfft_internal_transpose_var2(const void* data_p, void* back_p)
             out_planar.I = (real_type_t<float2>*)data->bufOut[1];
 
             void* d_in_planar;
-            hipMalloc(&d_in_planar, sizeof(cmplx_float_planar));
-            hipMemcpy(d_in_planar, &in_planar, sizeof(cmplx_float_planar), hipMemcpyHostToDevice);
+            //hipMalloc(&d_in_planar, sizeof(cmplx_float_planar));
+            //hipMemcpy(d_in_planar, &in_planar, sizeof(cmplx_float_planar), hipMemcpyHostToDevice);
+            d_in_planar = static_cast<void *>(sycl::malloc_device(sizeof(cmplx_float_planar), rocfft_queue));
+            rocfft_queue.memcpy(&out_planar, d_in_planar, sizeof(cmplx_float_planar));
+
 
             //sycl::buffer<int, 1> d_in_planar(range<1>(sizeof(cmplx_float_planar))); //line that potentially replaces the previous three lines
 
             void* d_out_planar;
-            hipMalloc(&d_out_planar, sizeof(cmplx_float_planar));
-            hipMemcpy(d_out_planar, &out_planar, sizeof(cmplx_float_planar), hipMemcpyHostToDevice);
+            //hipMalloc(&d_out_planar, sizeof(cmplx_float_planar));
+            //hipMemcpy(d_out_planar, &out_planar, sizeof(cmplx_float_planar), hipMemcpyHostToDevice);
+            d_out_planar = static_cast<void *>(sycl::malloc_device(sizeof(cmplx_float_planar), rocfft_queue));
+            rocfft_queue.memcpy(&out_planar, d_out_planar, sizeof(cmplx_float_planar));
 
             //sycl::buffer<int, 1> d_out_planar(range<1>(sizeof(cmplx_float_planar))); //line that potentially replaces the previous three lines
 
@@ -583,8 +594,8 @@ void rocfft_internal_transpose_var2(const void* data_p, void* back_p)
                 data->callbacks.store_cb_fn,
                 data->callbacks.store_cb_data);
 
-            hipFree(d_in_planar);
-            hipFree(d_out_planar);
+            free(d_in_planar, rocfft_queue);
+            free(d_out_planar, rocfft_queue);
         }
         else
         {
@@ -596,16 +607,17 @@ void rocfft_internal_transpose_var2(const void* data_p, void* back_p)
             out_planar.I = (real_type_t<double2>*)data->bufOut[1];
 
             void* d_in_planar;
-            hipMalloc(&d_in_planar, sizeof(cmplx_double_planar));
-            hipMemcpy(d_in_planar, &in_planar, sizeof(cmplx_double_planar), hipMemcpyHostToDevice);
-
+            //hipMalloc(&d_in_planar, sizeof(cmplx_double_planar));
+            //hipMemcpy(d_in_planar, &in_planar, sizeof(cmplx_double_planar), hipMemcpyHostToDevice);
+            d_in_planar = static_cast<void *>(sycl::malloc_device(sizeof(cmplx_double_planar), rocfft_queue));
+            rocfft_queue.memcpy(&out_planar, d_in_planar, sizeof(cmplx_double_planar));
             //sycl::buffer<int, 1> d_in_planar(range<1>(sizeof(cmplx_double_planar))); //line that potentially replaces the previous three lines
 
             void* d_out_planar;
-            hipMalloc(&d_out_planar, sizeof(cmplx_double_planar));
-            hipMemcpy(
-                d_out_planar, &out_planar, sizeof(cmplx_double_planar), hipMemcpyHostToDevice);
-            
+            //hipMalloc(&d_out_planar, sizeof(cmplx_double_planar));
+            //hipMemcpy(d_out_planar, &out_planar, sizeof(cmplx_double_planar), hipMemcpyHostToDevice);
+            d_out_planar = static_cast<void *>(sycl::malloc_device(sizeof(cmplx_double_planar), rocfft_queue));
+            rocfft_queue.memcpy(&out_planar, d_out_planar, sizeof(cmplx_double_planar));
             //sycl::buffer<int, 1> d_out_planar(range<1>(sizeof(cmplx_double_planar))); //line that potentially replaces the previous three lines
 
             rocfft_transpose_outofplace_template<cmplx_double,
@@ -637,8 +649,8 @@ void rocfft_internal_transpose_var2(const void* data_p, void* back_p)
                 data->callbacks.store_cb_fn,
                 data->callbacks.store_cb_data);
 
-            hipFree(d_in_planar);
-            hipFree(d_out_planar);
+            free(d_in_planar, rocfft_queue);
+            free(d_out_planar, rocfft_queue);
         }
     }
     else
