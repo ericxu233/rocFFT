@@ -539,7 +539,7 @@ int main() {
     int* a1 = nullptr;
     int* a2 = nullptr;
     int* a3 = nullptr;
-    mul_device_P_P<int>(pp, pp1, 2, queue, 1, 1, 1, 1, nullptr, nullptr, nullptr, 3, 2);
+    mul_device_P_P<int>(pp, pp1, 2, queue, 1, 1, 1, 1, 1, nullptr, nullptr, nullptr, 3, 2);
 }
 
 
