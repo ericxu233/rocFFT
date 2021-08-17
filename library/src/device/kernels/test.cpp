@@ -5,7 +5,6 @@
 
 static const unsigned int LAUNCH_BOUNDS_BLUESTEIN_KERNEL = 64;
 
-#define real_type_t<T> int
 
 template <typename T>
 void /*__launch_bounds__(LAUNCH_BOUNDS_BLUESTEIN_KERNEL)*/ chirp_device(
@@ -65,7 +64,7 @@ void /*__launch_bounds__(LAUNCH_BOUNDS_BLUESTEIN_KERNEL)*/ chirp_device(
 // are 3 steps in Bluestein algorithm. And In the below, we have
 // 4 similar functions to support interleaved and planar format.
 
-template <typename T, CallbackType cbtype>
+template <typename T/*, CallbackType cbtype*/>
 void /*__launch_bounds__(LAUNCH_BOUNDS_BLUESTEIN_KERNEL)*/
     mul_device_I_I(
                     sycl::range<1>  grid,
@@ -533,14 +532,14 @@ int main() {
        for (auto ex : el) { std::rethrow_exception(ex); }
     });
 
-    sycl::range<3> pp(1, 1, 1);
-    sycl::range<3> pp1(1, 1, 1);
-    sycl::range<3> pp2(1, 1, 1);
+    sycl::range<1> pp(1);
+    sycl::range<1> pp1(1);
+    sycl::range<1> pp2(1);
 
     int* a1 = nullptr;
     int* a2 = nullptr;
     int* a3 = nullptr;
-    mul_device_P_P<int>(pp, pp1, 2, queue, 1, 1, 1, 1, 2, nullptr, nullptr, nullptr, 3, 2);
+    mul_device_P_P<int>(pp, pp1, 2, queue, 1, 1, 1, 1, nullptr, nullptr, nullptr, 3, 2);
 }
 
 
