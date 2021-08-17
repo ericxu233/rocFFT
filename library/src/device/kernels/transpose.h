@@ -116,7 +116,7 @@ void transpose_tile_device(const T_I*   input,
 {
     //__shared__ T shared[DIM_X][DIM_X];
 
-    size_t tid = wItem.get_local_id(0)/*hipThreadIdx_x*/ + wItem.get_local_id(1)/*hipThreadIdx_y*/ * wItem.get_group_range(0)/*hipBlockDim_x*/;
+    size_t tid = wItem.get_local_id(0)/*hipThreadIdx_x*/ + wItem.get_local_id(1)/*hipThreadIdx_y*/ * wItem.get_local_range(0)/*hipBlockDim_x*/;
     size_t tx1 = tid % DIM_X;
     size_t ty1 = tid / DIM_X;
 
@@ -267,7 +267,7 @@ template <typename T,
           CallbackType cbtype>
 void /*__launch_bounds__(DIM_X* DIM_Y)*/ transpose_kernel2(
                                                                   sycl::range<3> grid,
-                                                                  sycl::rang<3> threads,
+                                                                  sycl::range<3> threads,
                                                                   size_t shared,           
                                                                   sycl::queue rocfftQueue,
                                                                   const T_I* input,
@@ -282,6 +282,10 @@ void /*__launch_bounds__(DIM_X* DIM_Y)*/ transpose_kernel2(
                                                                   void* __restrict__ store_cb_fn,
                                                                   void* __restrict__ store_cb_data)
 {   
+    size_t bounds = DIM_X* DIM_Y;
+    if (threads[0] > bounds) threads[0] = bounds;
+    if (threads[1] > bounds) threads[1] = bounds;
+    if (threads[2] > bounds) threads[2] = bounds;
     rocfftQueue.submit([&](cl::sycl::handler &cgh) {
     //missing accessors
     sycl::accessor <T, 2, sycl::access::mode::read_write, sycl::access::target::local>
@@ -679,7 +683,7 @@ void transpose_tile_device_scheme(const T_I*   input,
 {
     //__shared__ T shared[DIM_X][DIM_X];
 
-    size_t tid = wItem.get_local_id(0)/*hipThreadIdx_x*/ + wItem.get_local_id(1)/*hipThreadIdx_y*/ * wItem.get_group_range(0)/*hipBlockDim_x*/;
+    size_t tid = wItem.get_local_id(0)/*hipThreadIdx_x*/ + wItem.get_local_id(1)/*hipThreadIdx_y*/ * wItem.get_local_range(0)/*hipBlockDim_x*/;
     size_t tx1 = tid % DIM_X;
     size_t ty1 = tid / DIM_X;
     // what is program unroll?
@@ -833,7 +837,10 @@ void //__launch_bounds__(DIM_X* DIM_Y) //
                              void* __restrict__ store_cb_fn,
                              void* __restrict__ store_cb_data)
 {
-    
+    size_t bounds = DIM_X* DIM_Y;
+    if (threads[0] > bounds) threads[0] = bounds;
+    if (threads[1] > bounds) threads[1] = bounds;
+    if (threads[2] > bounds) threads[2] = bounds;
     rocfftQueue.submit([&](cl::sycl::handler &cgh) {
     //missing accessors
     sycl::accessor <T, 2, sycl::access::mode::read_write, sycl::access::target::local>

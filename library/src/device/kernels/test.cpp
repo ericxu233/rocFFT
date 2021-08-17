@@ -1,265 +1,525 @@
 #include <CL/sycl.hpp>
 #include <cmath>
 
-namespace sycl = cl::sycl;
+#include <CL/sycl.hpp>
 
-template <typename T,
-          typename T_I,
-          typename T_O,
-          size_t       DIM_X,
-          size_t       DIM_Y,
-          bool         ALL,
-          bool         UNIT_STRIDE_0>
-void transpose_tile_device_scheme(const T_I*   input,
-                                             T_O*         output,
-                                             size_t       in_offset,
-                                             size_t       out_offset,
-                                             const size_t m,
-                                             const size_t n,
-                                             size_t       ld_in,
-                                             size_t       ld_out,
-                                             size_t       stride_0_in,
-                                             size_t       stride_0_out,
-                                             void* __restrict__ load_cb_fn,
-                                             void* __restrict__ load_cb_data,
-                                             uint32_t load_cb_lds_bytes,
-                                             void* __restrict__ store_cb_fn,
-                                             void* __restrict__ store_cb_data,
-                                             sycl::nd_item<3> wItem,
-                                             sycl::accessor <T, 2, sycl::access::mode::read_write, sycl::access::target::local> shared)
+static const unsigned int LAUNCH_BOUNDS_BLUESTEIN_KERNEL = 64;
+
+#define real_type_t<T> int
+
+template <typename T>
+void /*__launch_bounds__(LAUNCH_BOUNDS_BLUESTEIN_KERNEL)*/ chirp_device(
+    sycl::range<1>  grid,
+    sycl::range<1>  threads,
+    size_t          shared,
+    sycl::queue     rocfft_queue,
+    const size_t N, const size_t M, T* output, T* twiddles_large, const int twl, const int dir)
 {
-    //__shared__ T shared[DIM_X][DIM_X];
+    size_t bounds = LAUNCH_BOUNDS_BLUESTEIN_KERNEL;
+    if (threads[0] > bounds) threads[0] = bounds;
 
-    size_t tid = wItem.get_local_id(0)/*hipThreadIdx_x*/ + wItem.get_local_id(1)/*hipThreadIdx_y*/ * wItem.get_group_range(0)/*hipBlockDim_x*/;
-    size_t tx1 = tid % DIM_X;
-    size_t ty1 = tid / DIM_X;
-    // what is program unroll?
-    if(ALL)
-    {
-#pragma unroll
-        for(int i = 0; i < DIM_X; i += DIM_Y)
-        {
-            T tmp;
-            if(UNIT_STRIDE_0)
-            {
-                //tmp = Handler<T_I, cbtype>::read(
-                    //input, in_offset + tx1 + (ty1 + i) * ld_in, load_cb_fn, load_cb_data);
-            }
-            else
-            {
-                // tmp = Handler<T_I, cbtype>::read(input,
-                //                                  in_offset + tx1 * stride_0_in + (ty1 + i) * ld_in,
-                //                                  load_cb_fn,
-                //                                  load_cb_data);
-            }
-            shared[tx1][ty1 + i] = tmp; // the transpose taking place here
-        }
-
-        wItem.barrier(sycl::access::fence_space::local_space);// __syncthreads();
-        T val[DIM_X / DIM_Y];
-#pragma unroll
-        for(int i = 0, j = 0; i < DIM_X; i += DIM_Y, j++)
-        {
-            val[j] = shared[ty1 + i][tx1];
-        }
-#pragma unroll
-        for(int i = 0, j = 0; i < DIM_X; i += DIM_Y, j++)
-        {
-            // reconfigure the threads
-            if(UNIT_STRIDE_0)
-            {
-                // Handler<T_O, cbtype>::write(output,
-                //                             out_offset + tx1 + (i + ty1) * ld_out,
-                //                             val[j],
-                //                             store_cb_fn,
-                //                             store_cb_data);
-            }
-            else
-            {
-                // Handler<T_O, cbtype>::write(output,
-                //                             out_offset + tx1 * stride_0_out + (i + ty1) * ld_out,
-                //                             val[j],
-                //                             store_cb_fn,
-                //                             store_cb_data);
-            }
-        }
-    }
-    else
-    {
-        T val[DIM_X / DIM_Y];
-#pragma unroll
-        for(int i = 0, j = 0; i < DIM_X; i += DIM_Y, j++)
-        {
-            if(tx1 < n && (ty1 + i) < m && i < m)
-            {
-                if(UNIT_STRIDE_0)
-                {
-                    // val[j] = Handler<T_I, cbtype>::read(
-                    //     input, in_offset + tx1 + (ty1 + i) * ld_in, load_cb_fn, load_cb_data);
-                }
-                else
-                {
-                    // val[j] = Handler<T_I, cbtype>::read(input,
-                    //                                     in_offset + tx1 * stride_0_in
-                    //                                         + (ty1 + i) * ld_in,
-                    //                                     load_cb_fn,
-                    //                                     load_cb_data);
-                }
-            }
-        }
-#pragma unroll
-        for(int i = 0, j = 0; i < DIM_X; i += DIM_Y, j++)
-        {
-            if(tx1 < n && (ty1 + i) < m && i < m)
-            {
-                shared[tx1][ty1 + i] = val[j]; // the transpose taking place here
-            }
-        }
-        wItem.barrier(sycl::access::fence_space::local_space);// __syncthreads();
-#pragma unroll
-        for(int i = 0, j = 0; i < DIM_X; i += DIM_Y, j++)
-        {
-            if(tx1 < m && (ty1 + i) < n && i < n)
-            {
-                val[j] = shared[ty1 + i][tx1];
-            }
-        }
-#pragma unroll
-        for(int i = 0, j = 0; i < DIM_X; i += DIM_Y, j++)
-        {
-            // reconfigure the threads
-            if(tx1 < m && (ty1 + i) < n && i < n)
-            {
-                if(UNIT_STRIDE_0)
-                {
-                    // Handler<T_O, cbtype>::write(output,
-                    //                             out_offset + tx1 + (i + ty1) * ld_out,
-                    //                             val[j],
-                    //                             store_cb_fn,
-                    //                             store_cb_data);
-                }
-                else
-                {
-                    // Handler<T_O, cbtype>::write(output,
-                    //                             out_offset + tx1 * stride_0_out
-                    //                                 + (i + ty1) * ld_out,
-                    //                             val[j],
-                    //                             store_cb_fn,
-                    //                             store_cb_data);
-                }
-            }
-        }
-    }
-}
-
-// global function for transpose scheme
-template <typename T,
-          typename T_I,
-          typename T_O,
-          size_t       DIM_X,
-          size_t       DIM_Y,
-          bool         ALL,
-          bool         UNIT_STRIDE_0,
-          bool         DIAGONAL>
-void //__launch_bounds__(DIM_X* DIM_Y) //
-    transpose_kernel2_scheme(
-                             sycl::range<3> grid,
-                             sycl::range<3> threads,
-                             size_t shared,           
-                             sycl::queue rocfftQueue,
-                             const T_I* input,
-                             T_O*       output,
-                             T*         twiddles_large,
-                             size_t*    lengths,
-                             size_t*    stride_in,
-                             size_t*    stride_out,
-                             size_t     ld_in,
-                             size_t     ld_out,
-                             size_t     m,
-                             size_t     n,
-                             void* __restrict__ load_cb_fn,
-                             void* __restrict__ load_cb_data,
-                             uint32_t load_cb_lds_bytes,
-                             void* __restrict__ store_cb_fn,
-                             void* __restrict__ store_cb_data)
-{
-    
     rocfftQueue.submit([&](cl::sycl::handler &cgh) {
     //missing accessors
-    sycl::accessor <T, 2, sycl::access::mode::read_write, sycl::access::target::local>
-                        shared(sycl::range<2>(DIM_X, DIM_X), cgh);
-    cgh.parallel_for<class transpose_kernel2_scheme>(sycl::nd_range<3>(grid, threads),
+    cgh.parallel_for<class chirp_device>(sycl::nd_range<1>(grid, threads),
 	                   [=](sycl::nd_item<3> wItem) {
-    size_t iOffset = 0;
-    size_t oOffset = 0;
 
-    size_t counter_mod =  wItem.get_group(2);//hipBlockIdx_z;
+    //size_t tx = hipThreadIdx_x + hipBlockIdx_x * hipBlockDim_x;
+    size_t tx = wItem.get_local_id(0)/*hipThreadIdx_x*/ + wItem.get_group(0)/*hipBlockIdx_x*/ * wItem.get_local_range(0) /*hipBlockDim_x*/;
 
-    iOffset += counter_mod * stride_in[3];
-    oOffset += counter_mod * stride_out[3];
+    // T val /*= lib_make_vector2<T>(0, 0)*/;
 
-    size_t tileBlockIdx_x, tileBlockIdx_y;
-    if(DIAGONAL) // diagonal reordering
-    {
-        //TODO: template and simplify index calc for square case if necessary
-        size_t bid     = wItem.get_group(0) /*hipBlockIdx_x*/ + wItem.get_group_range(0) /*gridDim.x*/ * wItem.get_group(1)/*hipBlockIdx_y*/;
-        tileBlockIdx_y = bid % wItem.get_group_range(1) /*hipGridDim_y*/;
-        tileBlockIdx_x = ((bid / wItem.get_group_range(1) /*hipGridDim_y*/) + tileBlockIdx_y) % wItem.get_group_range(0) /*hipGridDim_x*/;
-    }
-    else
-    {
-        tileBlockIdx_x = wItem.get_group(0) /*hipBlockIdx_x*/;
-        tileBlockIdx_y = wItem.get_group(1) /*hipBlockIdx_y*/;
-    }
+    // if(twl == 1)
+    //     val = TWLstep1(twiddles_large, (tx * tx) % (2 * N));
+    // else if(twl == 2)
+    //     val = TWLstep2(twiddles_large, (tx * tx) % (2 * N));
+    // else if(twl == 3)
+    //     val = TWLstep3(twiddles_large, (tx * tx) % (2 * N));
+    // else if(twl == 4)
+    //     val = TWLstep4(twiddles_large, (tx * tx) % (2 * N));
 
-    iOffset += tileBlockIdx_x * DIM_X * stride_in[0] + tileBlockIdx_y * DIM_X * ld_in;  //what is DIM_X
-    oOffset += tileBlockIdx_x * DIM_X * ld_out + tileBlockIdx_y * DIM_X * stride_out[0];
+    // val.y *= (real_type_t<T>)(dir);
 
-    if(ALL)
-    {
-        transpose_tile_device_scheme<T, T_I, T_O, DIM_X, DIM_Y, ALL, UNIT_STRIDE_0>(
-            input,
-            output,
-            iOffset,
-            oOffset,
-            DIM_X,
-            DIM_X,
-            ld_in,
-            ld_out,
-            stride_in[0],
-            stride_out[0],
-            load_cb_fn,
-            load_cb_data,
-            load_cb_lds_bytes,
-            store_cb_fn,
-            store_cb_data,
-            wItem,
-            shared);
-    }
-    else
-    {
-        size_t mm = (m - tileBlockIdx_y * DIM_X) < DIM_X ? (m - tileBlockIdx_y * DIM_X) : DIM_X; //sycl::fmin(m - tileBlockIdx_y * DIM_X, DIM_X); // the partial case along m
-        size_t nn = (n - tileBlockIdx_x * DIM_X) < DIM_X ? (n - tileBlockIdx_x * DIM_X) : DIM_X; //sycl::min(n - tileBlockIdx_x * DIM_X, DIM_X); // the partial case along n
-        transpose_tile_device_scheme<T, T_I, T_O, DIM_X, DIM_Y, ALL, UNIT_STRIDE_0>(
-            input,
-            output,
-            iOffset,
-            oOffset,
-            mm,
-            nn,
-            ld_in,
-            ld_out,
-            stride_in[0],
-            stride_out[0],
-            load_cb_fn,
-            load_cb_data,
-            load_cb_lds_bytes,
-            store_cb_fn,
-            store_cb_data,
-            wItem,
-            shared);
-    }
-                       });
+    // if(tx == 0)
+    // {
+    //     output[tx]     = val;
+    //     output[tx + M] = val;
+    // }
+    // else if(tx < N)
+    // {
+    //     output[tx]     = val;
+    //     output[tx + M] = val;
+
+    //     output[M - tx]     = val;
+    //     output[M - tx + M] = val;
+    // }
+    // else if(tx <= (M - N))
+    // {
+    //     output[tx]     = lib_make_vector2<T>(0, 0);
+    //     output[tx + M] = lib_make_vector2<T>(0, 0);
+    // }
+    });
+    });
+}
+
+// mul_device takes care of fft_mul, pad_mul, and res_mul, which
+// are 3 steps in Bluestein algorithm. And In the below, we have
+// 4 similar functions to support interleaved and planar format.
+
+template <typename T, CallbackType cbtype>
+void /*__launch_bounds__(LAUNCH_BOUNDS_BLUESTEIN_KERNEL)*/
+    mul_device_I_I(
+                    sycl::range<1>  grid,
+                    sycl::range<1>  threads,
+                    size_t          shared,
+                    sycl::queue     rocfft_queue,
+                   const size_t  numof,
+                   const size_t  totalWI,
+                   const size_t  N,
+                   const size_t  M,
+                   const T*      input,
+                   T*            output,
+                   const size_t  dim,
+                   const size_t* lengths,
+                   const size_t* stride_in,
+                   const size_t* stride_out,
+                   const int     dir,
+                   const int     scheme,
+                   void* __restrict__ load_cb_fn,
+                   void* __restrict__ load_cb_data,
+                   uint32_t load_cb_lds_bytes,
+                   void* __restrict__ store_cb_fn,
+                   void* __restrict__ store_cb_data)
+{
+    size_t bounds = LAUNCH_BOUNDS_BLUESTEIN_KERNEL;
+    if (threads[0] > bounds) threads[0] = bounds;
+
+    rocfftQueue.submit([&](cl::sycl::handler &cgh) {
+    //missing accessors
+    cgh.parallel_for<class mul_device_I_I>(sycl::nd_range<1>(grid, threads),
+	                   [=](sycl::nd_item<3> wItem) {
+
+    //size_t tx = hipThreadIdx_x + hipBlockIdx_x * hipBlockDim_x;
+    size_t tx = wItem.get_local_id(0)/*hipThreadIdx_x*/ + wItem.get_group(0)/*hipBlockIdx_x*/ * wItem.get_local_range(0) /*hipBlockDim_x*/;
+
+    // if(tx >= totalWI)
+    //     return;
+
+    // size_t iOffset = 0;
+    // size_t oOffset = 0;
+
+    // size_t counter_mod = tx / numof;
+
+    // for(size_t i = dim; i > 1; i--)
+    // {
+    //     size_t currentLength = 1;
+    //     for(size_t j = 1; j < i; j++)
+    //     {
+    //         currentLength *= lengths[j];
+    //     }
+
+    //     iOffset += (counter_mod / currentLength) * stride_in[i];
+    //     oOffset += (counter_mod / currentLength) * stride_out[i];
+    //     counter_mod = counter_mod % currentLength;
+    // }
+    // iOffset += counter_mod * stride_in[1];
+    // oOffset += counter_mod * stride_out[1];
+
+    // tx          = tx % numof;
+    // size_t iIdx = tx * stride_in[0];
+    // size_t oIdx = tx * stride_out[0];
+
+    // auto load_cb  = get_load_cb<T, cbtype>(load_cb_fn);
+    // auto store_cb = get_store_cb<T, cbtype>(store_cb_fn);
+    // if(scheme == 0)
+    // {
+    //     // FFT_MUL is in the middle of bluestein and should never be
+    //     // the first/last kernel to read/write global memory.  So we
+    //     // don't need to run callbacks.
+    //     output += oOffset;
+
+    //     T out          = output[oIdx];
+    //     output[oIdx].x = input[iIdx].x * out.x - input[iIdx].y * out.y;
+    //     output[oIdx].y = input[iIdx].x * out.y + input[iIdx].y * out.x;
+    // }
+    // else if(scheme == 1)
+    // {
+    //     // PAD_MUL is the first non-chirp step of bluestein and
+    //     // should never be the last kernel to write global memory.
+    //     // So we should never need to run a "store" callback.
+
+    //     T* chirp = output;
+
+    //     iIdx += iOffset;
+
+    //     oIdx += M;
+    //     oIdx += oOffset;
+
+    //     if(tx < N)
+    //     {
+    //         // callback might modify input, but otherwise it's const
+    //         T in_elem      = load_cb(const_cast<T*>(input), iIdx, load_cb_data, nullptr);
+    //         output[oIdx].x = in_elem.x * chirp[tx].x + in_elem.y * chirp[tx].y;
+    //         output[oIdx].y = -in_elem.x * chirp[tx].y + in_elem.y * chirp[tx].x;
+    //     }
+    //     else
+    //     {
+    //         output[oIdx] = lib_make_vector2<T>(0, 0);
+    //     }
+    // }
+    // else if(scheme == 2)
+    // {
+    //     // RES_MUL is the last step of bluestein and
+    //     // should never be the first kernel to read global memory.
+    //     // So we should never need to run a "load" callback.
+
+    //     const T* chirp = input;
+
+    //     iIdx += 2 * M;
+    //     iIdx += iOffset;
+
+    //     oIdx += oOffset;
+
+    //     real_type_t<T> MI = 1.0 / (real_type_t<T>)M;
+    //     T              out_elem;
+
+    //     out_elem.x = MI * (input[iIdx].x * chirp[tx].x + input[iIdx].y * chirp[tx].y);
+    //     out_elem.y = MI * (-input[iIdx].x * chirp[tx].y + input[iIdx].y * chirp[tx].x);
+    //     store_cb(output, oIdx, out_elem, store_cb_data, nullptr);
+    // }
+    });
+    });
+}
+
+template <typename T>
+void /*__launch_bounds__(LAUNCH_BOUNDS_BLUESTEIN_KERNEL)*/
+    mul_device_P_I(
+                   sycl::range<1>  grid,
+                   sycl::range<1>  threads,
+                   size_t          shared,
+                   sycl::queue     rocfft_queue,
+                   const size_t          numof,
+                   const size_t          totalWI,
+                   const size_t          N,
+                   const size_t          M,
+                   const real_type_t<T>* inputRe,
+                   const real_type_t<T>* inputIm,
+                   T*                    output,
+                   const size_t          dim,
+                   const size_t*         lengths,
+                   const size_t*         stride_in,
+                   const size_t*         stride_out,
+                   const int             dir,
+                   const int             scheme)
+{   
+    size_t bounds = LAUNCH_BOUNDS_BLUESTEIN_KERNEL;
+    if (threads[0] > bounds) threads[0] = bounds;
+
+    rocfftQueue.submit([&](cl::sycl::handler &cgh) {
+    //missing accessors
+    cgh.parallel_for<class mul_device_P_I>(sycl::nd_range<1>(grid, threads),
+	                   [=](sycl::nd_item<3> wItem) {
+
+    //size_t tx = hipThreadIdx_x + hipBlockIdx_x * hipBlockDim_x;
+    size_t tx = wItem.get_local_id(0)/*hipThreadIdx_x*/ + wItem.get_group(0)/*hipBlockIdx_x*/ * wItem.get_local_range(0) /*hipBlockDim_x*/;
+
+    // if(tx >= totalWI)
+    //     return;
+
+    // size_t iOffset = 0;
+    // size_t oOffset = 0;
+
+    // size_t counter_mod = tx / numof;
+
+    // for(size_t i = dim; i > 1; i--)
+    // {
+    //     size_t currentLength = 1;
+    //     for(size_t j = 1; j < i; j++)
+    //     {
+    //         currentLength *= lengths[j];
+    //     }
+
+    //     iOffset += (counter_mod / currentLength) * stride_in[i];
+    //     oOffset += (counter_mod / currentLength) * stride_out[i];
+    //     counter_mod = counter_mod % currentLength;
+    // }
+    // iOffset += counter_mod * stride_in[1];
+    // oOffset += counter_mod * stride_out[1];
+
+    // tx          = tx % numof;
+    // size_t iIdx = tx * stride_in[0];
+    // size_t oIdx = tx * stride_out[0];
+
+    // if(scheme == 0)
+    // {
+    //     output += oOffset;
+
+    //     T out          = output[oIdx];
+    //     output[oIdx].x = inputRe[iIdx] * out.x - inputIm[iIdx] * out.y;
+    //     output[oIdx].y = inputRe[iIdx] * out.y + inputIm[iIdx] * out.x;
+    // }
+    // else if(scheme == 1)
+    // {
+    //     T* chirp = output;
+
+    //     inputRe += iOffset;
+    //     inputIm += iOffset;
+
+    //     output += M;
+    //     output += oOffset;
+
+    //     if(tx < N)
+    //     {
+    //         output[oIdx].x = inputRe[iIdx] * chirp[tx].x + inputIm[iIdx] * chirp[tx].y;
+    //         output[oIdx].y = -inputRe[iIdx] * chirp[tx].y + inputIm[iIdx] * chirp[tx].x;
+    //     }
+    //     else
+    //     {
+    //         output[oIdx] = lib_make_vector2<T>(0, 0);
+    //     }
+    // }
+    // else if(scheme == 2)
+    // {
+    //     const real_type_t<T>* chirpRe = inputRe;
+    //     const real_type_t<T>* chirpIm = inputIm;
+
+    //     inputRe += 2 * M;
+    //     inputRe += iOffset;
+
+    //     inputIm += 2 * M;
+    //     inputIm += iOffset;
+
+    //     output += oOffset;
+
+    //     real_type_t<T> MI = 1.0 / (real_type_t<T>)M;
+    //     output[oIdx].x    = MI * (inputRe[iIdx] * chirpRe[tx] + inputIm[iIdx] * chirpIm[tx]);
+    //     output[oIdx].y    = MI * (-inputRe[iIdx] * chirpIm[tx] + inputIm[iIdx] * chirpRe[tx]);
+    // }
+    });
+    });
+}
+
+template <typename T>
+void /*__launch_bounds__(LAUNCH_BOUNDS_BLUESTEIN_KERNEL)*/
+    mul_device_I_P(
+                   sycl::range<1>  grid,
+                   sycl::range<1>  threads,
+                   size_t          shared,
+                   sycl::queue     rocfft_queue,
+                   const size_t    numof,
+                   const size_t    totalWI,
+                   const size_t    N,
+                   const size_t    M,
+                   const T*        input,
+                   real_type_t<T>* outputRe,
+                   real_type_t<T>* outputIm,
+                   const size_t    dim,
+                   const size_t*   lengths,
+                   const size_t*   stride_in,
+                   const size_t*   stride_out,
+                   const int       dir,
+                   const int       scheme)
+{
+    size_t bounds = LAUNCH_BOUNDS_BLUESTEIN_KERNEL;
+    if (threads[0] > bounds) threads[0] = bounds;
+
+    rocfftQueue.submit([&](cl::sycl::handler &cgh) {
+    //missing accessors
+    cgh.parallel_for<class mul_device_I_P>(sycl::nd_range<1>(grid, threads),
+	                   [=](sycl::nd_item<3> wItem) {
+
+    size_t tx = wItem.get_local_id(0)/*hipThreadIdx_x*/ + wItem.get_group(0)/*hipBlockIdx_x*/ * wItem.get_local_range(0) /*hipBlockDim_x*/;
+
+    // if(tx >= totalWI)
+    //     return;
+
+    // size_t iOffset = 0;
+    // size_t oOffset = 0;
+
+    // size_t counter_mod = tx / numof;
+
+    // for(size_t i = dim; i > 1; i--)
+    // {
+    //     size_t currentLength = 1;
+    //     for(size_t j = 1; j < i; j++)
+    //     {
+    //         currentLength *= lengths[j];
+    //     }
+
+    //     iOffset += (counter_mod / currentLength) * stride_in[i];
+    //     oOffset += (counter_mod / currentLength) * stride_out[i];
+    //     counter_mod = counter_mod % currentLength;
+    // }
+    // iOffset += counter_mod * stride_in[1];
+    // oOffset += counter_mod * stride_out[1];
+
+    // tx          = tx % numof;
+    // size_t iIdx = tx * stride_in[0];
+    // size_t oIdx = tx * stride_out[0];
+
+    // if(scheme == 0)
+    // {
+    //     outputRe += oOffset;
+    //     outputIm += oOffset;
+
+    //     T out          = lib_make_vector2<T>(outputRe[oIdx], outputIm[oIdx]);
+    //     outputRe[oIdx] = input[iIdx].x * out.x - input[iIdx].y * out.y;
+    //     outputIm[oIdx] = input[iIdx].x * out.y + input[iIdx].y * out.x;
+    // }
+    // else if(scheme == 1)
+    // {
+    //     real_type_t<T>* chirpRe = outputRe;
+    //     real_type_t<T>* chirpIm = outputIm;
+
+    //     input += iOffset;
+
+    //     outputRe += M;
+    //     outputRe += oOffset;
+
+    //     outputIm += M;
+    //     outputIm += oOffset;
+
+    //     if(tx < N)
+    //     {
+    //         outputRe[oIdx] = input[iIdx].x * chirpRe[tx] + input[iIdx].y * chirpIm[tx];
+    //         outputIm[oIdx] = -input[iIdx].x * chirpIm[tx] + input[iIdx].y * chirpRe[tx];
+    //     }
+    //     else
+    //     {
+    //         outputRe[oIdx] = 0;
+    //         outputIm[oIdx] = 0;
+    //     }
+    // }
+    // else if(scheme == 2)
+    // {
+    //     const T* chirp = input;
+
+    //     input += 2 * M;
+    //     input += iOffset;
+
+    //     outputRe += oOffset;
+    //     outputIm += oOffset;
+
+    //     real_type_t<T> MI = 1.0 / (real_type_t<T>)M;
+    //     outputRe[oIdx]    = MI * (input[iIdx].x * chirp[tx].x + input[iIdx].y * chirp[tx].y);
+    //     outputIm[oIdx]    = MI * (-input[iIdx].x * chirp[tx].y + input[iIdx].y * chirp[tx].x);
+    // }
+    });
+    });
+}
+
+template <typename T>
+void /*__launch_bounds__(LAUNCH_BOUNDS_BLUESTEIN_KERNEL)*/
+    mul_device_P_P(
+                   sycl::range<1>  grid,
+                   sycl::range<1>  threads,
+                   size_t          shared,
+                   sycl::queue     rocfft_queue,
+                   const size_t          numof,
+                   const size_t          totalWI,
+                   const size_t          N,
+                   const size_t          M,
+                   const real_type_t<T>* inputRe,
+                   const real_type_t<T>* inputIm,
+                   real_type_t<T>*       outputRe,
+                   real_type_t<T>*       outputIm,
+                   const size_t          dim,
+                   const size_t*         lengths,
+                   const size_t*         stride_in,
+                   const size_t*         stride_out,
+                   const int             dir,
+                   const int             scheme)
+{   
+    size_t bounds = LAUNCH_BOUNDS_BLUESTEIN_KERNEL;
+    if (threads[0] > bounds) threads[0] = bounds;
+
+    rocfftQueue.submit([&](cl::sycl::handler &cgh) {
+    //missing accessors
+    cgh.parallel_for<class mul_device_P_P>(sycl::nd_range<1>(grid, threads),
+	                   [=](sycl::nd_item<3> wItem) {
+    
+    //size_t tx = hipThreadIdx_x + hipBlockIdx_x * hipBlockDim_x;
+    size_t tx = wItem.get_local_id(0)/*hipThreadIdx_x*/ + wItem.get_group(0)/*hipBlockIdx_x*/ * wItem.get_local_range(0) /*hipBlockDim_x*/;
+
+    // if(tx >= totalWI)
+    //     return;
+
+    // size_t iOffset = 0;
+    // size_t oOffset = 0;
+
+    // size_t counter_mod = tx / numof;
+
+    // for(size_t i = dim; i > 1; i--)
+    // {
+    //     size_t currentLength = 1;
+    //     for(size_t j = 1; j < i; j++)
+    //     {
+    //         currentLength *= lengths[j];
+    //     }
+
+    //     iOffset += (counter_mod / currentLength) * stride_in[i];
+    //     oOffset += (counter_mod / currentLength) * stride_out[i];
+    //     counter_mod = counter_mod % currentLength;
+    // }
+    // iOffset += counter_mod * stride_in[1];
+    // oOffset += counter_mod * stride_out[1];
+
+    // tx          = tx % numof;
+    // size_t iIdx = tx * stride_in[0];
+    // size_t oIdx = tx * stride_out[0];
+
+    // if(scheme == 0)
+    // {
+    //     outputRe += oOffset;
+    //     outputIm += oOffset;
+
+    //     T out          = lib_make_vector2<T>(outputRe[oIdx], outputIm[oIdx]);
+    //     outputRe[oIdx] = inputRe[iIdx] * out.x - inputIm[iIdx] * out.y;
+    //     outputIm[oIdx] = inputRe[iIdx] * out.y + inputIm[iIdx] * out.x;
+    // }
+    // else if(scheme == 1)
+    // {
+    //     real_type_t<T>* chirpRe = outputRe;
+    //     real_type_t<T>* chirpIm = outputIm;
+
+    //     inputRe += iOffset;
+    //     inputIm += iOffset;
+
+    //     outputRe += M;
+    //     outputRe += oOffset;
+
+    //     outputIm += M;
+    //     outputIm += oOffset;
+
+    //     if(tx < N)
+    //     {
+    //         outputRe[oIdx] = inputRe[iIdx] * chirpRe[tx] + inputIm[iIdx] * chirpIm[tx];
+    //         outputIm[oIdx] = -inputRe[iIdx] * chirpIm[tx] + inputIm[iIdx] * chirpRe[tx];
+    //     }
+    //     else
+    //     {
+    //         outputRe[tx] = 0;
+    //         outputIm[tx] = 0;
+    //     }
+    // }
+    // else if(scheme == 2)
+    // {
+    //     const real_type_t<T>* chirpRe = inputRe;
+    //     const real_type_t<T>* chirpIm = inputIm;
+
+    //     inputRe += 2 * M;
+    //     inputRe += iOffset;
+
+    //     inputIm += 2 * M;
+    //     inputIm += iOffset;
+
+    //     outputRe += oOffset;
+    //     outputIm += oOffset;
+
+    //     real_type_t<T> MI = 1.0 / (real_type_t<T>)M;
+    //     outputRe[oIdx]    = MI * (inputRe[iIdx] * chirpRe[tx] + inputIm[iIdx] * chirpIm[tx]);
+    //     outputIm[oIdx]    = MI * (-inputRe[iIdx] * chirpIm[tx] + inputIm[iIdx] * chirpRe[tx]);
+    // }
+    });
     });
 }
 
@@ -280,7 +540,7 @@ int main() {
     int* a1 = nullptr;
     int* a2 = nullptr;
     int* a3 = nullptr;
-    transpose_kernel2_scheme<int, int, int, 2, 2, false, false, false>(pp, pp1, 2, queue, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 2, 2, 2, 2, nullptr, nullptr, 3, nullptr, nullptr);
+    mul_device_P_P<int>(pp, pp1, 2, queue, 1, 1, 1, 1, nullptr, nullptr, nullptr, nullptr, 2, nullptr, nullptr, nullptr, 3, 2);
 }
 
 

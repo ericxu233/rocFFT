@@ -26,14 +26,28 @@
 #include "callback.h"
 #include "common.h"
 #include "rocfft_hip.h"
+#include <CL/sycl.hpp>
 
 static const unsigned int LAUNCH_BOUNDS_BLUESTEIN_KERNEL = 64;
 
 template <typename T>
-__global__ void __launch_bounds__(LAUNCH_BOUNDS_BLUESTEIN_KERNEL) chirp_device(
+void /*__launch_bounds__(LAUNCH_BOUNDS_BLUESTEIN_KERNEL)*/ chirp_device(
+    sycl::range<1>  grid,
+    sycl::range<1>  threads,
+    size_t          shared,
+    sycl::queue     rocfft_queue,
     const size_t N, const size_t M, T* output, T* twiddles_large, const int twl, const int dir)
 {
-    size_t tx = hipThreadIdx_x + hipBlockIdx_x * hipBlockDim_x;
+    size_t bounds = LAUNCH_BOUNDS_BLUESTEIN_KERNEL;
+    if (threads[0] > bounds) threads[0] = bounds;
+
+    rocfftQueue.submit([&](cl::sycl::handler &cgh) {
+    //missing accessors
+    cgh.parallel_for<class chirp_device>(sycl::nd_range<1>(grid, threads),
+	                   [=](sycl::nd_item<3> wItem) {
+
+    //size_t tx = hipThreadIdx_x + hipBlockIdx_x * hipBlockDim_x;
+    size_t tx = wItem.get_local_id(0)/*hipThreadIdx_x*/ + wItem.get_group(0)/*hipBlockIdx_x*/ * wItem.get_local_range(0) /*hipBlockDim_x*/;
 
     T val = lib_make_vector2<T>(0, 0);
 
@@ -66,6 +80,8 @@ __global__ void __launch_bounds__(LAUNCH_BOUNDS_BLUESTEIN_KERNEL) chirp_device(
         output[tx]     = lib_make_vector2<T>(0, 0);
         output[tx + M] = lib_make_vector2<T>(0, 0);
     }
+    });
+    });
 }
 
 // mul_device takes care of fft_mul, pad_mul, and res_mul, which
@@ -73,8 +89,13 @@ __global__ void __launch_bounds__(LAUNCH_BOUNDS_BLUESTEIN_KERNEL) chirp_device(
 // 4 similar functions to support interleaved and planar format.
 
 template <typename T, CallbackType cbtype>
-__global__ void __launch_bounds__(LAUNCH_BOUNDS_BLUESTEIN_KERNEL)
-    mul_device_I_I(const size_t  numof,
+void /*__launch_bounds__(LAUNCH_BOUNDS_BLUESTEIN_KERNEL)*/
+    mul_device_I_I(
+                    sycl::range<1>  grid,
+                    sycl::range<1>  threads,
+                    size_t          shared,
+                    sycl::queue     rocfft_queue,
+                   const size_t  numof,
                    const size_t  totalWI,
                    const size_t  N,
                    const size_t  M,
@@ -92,7 +113,16 @@ __global__ void __launch_bounds__(LAUNCH_BOUNDS_BLUESTEIN_KERNEL)
                    void* __restrict__ store_cb_fn,
                    void* __restrict__ store_cb_data)
 {
-    size_t tx = hipThreadIdx_x + hipBlockIdx_x * hipBlockDim_x;
+    size_t bounds = LAUNCH_BOUNDS_BLUESTEIN_KERNEL;
+    if (threads[0] > bounds) threads[0] = bounds;
+
+    rocfftQueue.submit([&](cl::sycl::handler &cgh) {
+    //missing accessors
+    cgh.parallel_for<class mul_device_I_I>(sycl::nd_range<1>(grid, threads),
+	                   [=](sycl::nd_item<3> wItem) {
+
+    //size_t tx = hipThreadIdx_x + hipBlockIdx_x * hipBlockDim_x;
+    size_t tx = wItem.get_local_id(0)/*hipThreadIdx_x*/ + wItem.get_group(0)/*hipBlockIdx_x*/ * wItem.get_local_range(0) /*hipBlockDim_x*/;
 
     if(tx >= totalWI)
         return;
@@ -179,11 +209,18 @@ __global__ void __launch_bounds__(LAUNCH_BOUNDS_BLUESTEIN_KERNEL)
         out_elem.y = MI * (-input[iIdx].x * chirp[tx].y + input[iIdx].y * chirp[tx].x);
         store_cb(output, oIdx, out_elem, store_cb_data, nullptr);
     }
+    });
+    });
 }
 
 template <typename T>
-__global__ void __launch_bounds__(LAUNCH_BOUNDS_BLUESTEIN_KERNEL)
-    mul_device_P_I(const size_t          numof,
+void /*__launch_bounds__(LAUNCH_BOUNDS_BLUESTEIN_KERNEL)*/
+    mul_device_P_I(
+                   sycl::range<1>  grid,
+                   sycl::range<1>  threads,
+                   size_t          shared,
+                   sycl::queue     rocfft_queue,
+                   const size_t          numof,
                    const size_t          totalWI,
                    const size_t          N,
                    const size_t          M,
@@ -196,8 +233,17 @@ __global__ void __launch_bounds__(LAUNCH_BOUNDS_BLUESTEIN_KERNEL)
                    const size_t*         stride_out,
                    const int             dir,
                    const int             scheme)
-{
-    size_t tx = hipThreadIdx_x + hipBlockIdx_x * hipBlockDim_x;
+{   
+    size_t bounds = LAUNCH_BOUNDS_BLUESTEIN_KERNEL;
+    if (threads[0] > bounds) threads[0] = bounds;
+
+    rocfftQueue.submit([&](cl::sycl::handler &cgh) {
+    //missing accessors
+    cgh.parallel_for<class mul_device_P_I>(sycl::nd_range<1>(grid, threads),
+	                   [=](sycl::nd_item<3> wItem) {
+
+    //size_t tx = hipThreadIdx_x + hipBlockIdx_x * hipBlockDim_x;
+    size_t tx = wItem.get_local_id(0)/*hipThreadIdx_x*/ + wItem.get_group(0)/*hipBlockIdx_x*/ * wItem.get_local_range(0) /*hipBlockDim_x*/;
 
     if(tx >= totalWI)
         return;
@@ -271,11 +317,18 @@ __global__ void __launch_bounds__(LAUNCH_BOUNDS_BLUESTEIN_KERNEL)
         output[oIdx].x    = MI * (inputRe[iIdx] * chirpRe[tx] + inputIm[iIdx] * chirpIm[tx]);
         output[oIdx].y    = MI * (-inputRe[iIdx] * chirpIm[tx] + inputIm[iIdx] * chirpRe[tx]);
     }
+    });
+    });
 }
 
 template <typename T>
-__global__ void __launch_bounds__(LAUNCH_BOUNDS_BLUESTEIN_KERNEL)
-    mul_device_I_P(const size_t    numof,
+void /*__launch_bounds__(LAUNCH_BOUNDS_BLUESTEIN_KERNEL)*/
+    mul_device_I_P(
+                   sycl::range<1>  grid,
+                   sycl::range<1>  threads,
+                   size_t          shared,
+                   sycl::queue     rocfft_queue,
+                   const size_t    numof,
                    const size_t    totalWI,
                    const size_t    N,
                    const size_t    M,
@@ -289,7 +342,15 @@ __global__ void __launch_bounds__(LAUNCH_BOUNDS_BLUESTEIN_KERNEL)
                    const int       dir,
                    const int       scheme)
 {
-    size_t tx = hipThreadIdx_x + hipBlockIdx_x * hipBlockDim_x;
+    size_t bounds = LAUNCH_BOUNDS_BLUESTEIN_KERNEL;
+    if (threads[0] > bounds) threads[0] = bounds;
+
+    rocfftQueue.submit([&](cl::sycl::handler &cgh) {
+    //missing accessors
+    cgh.parallel_for<class mul_device_I_P>(sycl::nd_range<1>(grid, threads),
+	                   [=](sycl::nd_item<3> wItem) {
+
+    size_t tx = wItem.get_local_id(0)/*hipThreadIdx_x*/ + wItem.get_group(0)/*hipBlockIdx_x*/ * wItem.get_local_range(0) /*hipBlockDim_x*/;
 
     if(tx >= totalWI)
         return;
@@ -365,11 +426,18 @@ __global__ void __launch_bounds__(LAUNCH_BOUNDS_BLUESTEIN_KERNEL)
         outputRe[oIdx]    = MI * (input[iIdx].x * chirp[tx].x + input[iIdx].y * chirp[tx].y);
         outputIm[oIdx]    = MI * (-input[iIdx].x * chirp[tx].y + input[iIdx].y * chirp[tx].x);
     }
+    });
+    });
 }
 
 template <typename T>
-__global__ void __launch_bounds__(LAUNCH_BOUNDS_BLUESTEIN_KERNEL)
-    mul_device_P_P(const size_t          numof,
+void /*__launch_bounds__(LAUNCH_BOUNDS_BLUESTEIN_KERNEL)*/
+    mul_device_P_P(
+                   sycl::range<1>  grid,
+                   sycl::range<1>  threads,
+                   size_t          shared,
+                   sycl::queue     rocfft_queue,
+                   const size_t          numof,
                    const size_t          totalWI,
                    const size_t          N,
                    const size_t          M,
@@ -383,8 +451,17 @@ __global__ void __launch_bounds__(LAUNCH_BOUNDS_BLUESTEIN_KERNEL)
                    const size_t*         stride_out,
                    const int             dir,
                    const int             scheme)
-{
-    size_t tx = hipThreadIdx_x + hipBlockIdx_x * hipBlockDim_x;
+{   
+    size_t bounds = LAUNCH_BOUNDS_BLUESTEIN_KERNEL;
+    if (threads[0] > bounds) threads[0] = bounds;
+
+    rocfftQueue.submit([&](cl::sycl::handler &cgh) {
+    //missing accessors
+    cgh.parallel_for<class mul_device_P_P>(sycl::nd_range<1>(grid, threads),
+	                   [=](sycl::nd_item<3> wItem) {
+    
+    //size_t tx = hipThreadIdx_x + hipBlockIdx_x * hipBlockDim_x;
+    size_t tx = wItem.get_local_id(0)/*hipThreadIdx_x*/ + wItem.get_group(0)/*hipBlockIdx_x*/ * wItem.get_local_range(0) /*hipBlockDim_x*/;
 
     if(tx >= totalWI)
         return;
@@ -465,6 +542,8 @@ __global__ void __launch_bounds__(LAUNCH_BOUNDS_BLUESTEIN_KERNEL)
         outputRe[oIdx]    = MI * (inputRe[iIdx] * chirpRe[tx] + inputIm[iIdx] * chirpIm[tx]);
         outputIm[oIdx]    = MI * (-inputRe[iIdx] * chirpIm[tx] + inputIm[iIdx] * chirpRe[tx]);
     }
+    });
+    });
 }
 
 #endif // BLUESTEIN_H
