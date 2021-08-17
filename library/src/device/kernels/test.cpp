@@ -18,7 +18,7 @@ void /*__launch_bounds__(LAUNCH_BOUNDS_BLUESTEIN_KERNEL)*/ chirp_device(
     size_t bounds = LAUNCH_BOUNDS_BLUESTEIN_KERNEL;
     if (threads[0] > bounds) threads[0] = bounds;
 
-    rocfftQueue.submit([&](cl::sycl::handler &cgh) {
+    rocfft_queue.submit([&](cl::sycl::handler &cgh) {
     //missing accessors
     cgh.parallel_for<class chirp_device>(sycl::nd_range<1>(grid, threads),
 	                   [=](sycl::nd_item<3> wItem) {
@@ -93,7 +93,7 @@ void /*__launch_bounds__(LAUNCH_BOUNDS_BLUESTEIN_KERNEL)*/
     size_t bounds = LAUNCH_BOUNDS_BLUESTEIN_KERNEL;
     if (threads[0] > bounds) threads[0] = bounds;
 
-    rocfftQueue.submit([&](cl::sycl::handler &cgh) {
+    rocfft_queue.submit([&](cl::sycl::handler &cgh) {
     //missing accessors
     cgh.parallel_for<class mul_device_I_I>(sycl::nd_range<1>(grid, threads),
 	                   [=](sycl::nd_item<3> wItem) {
@@ -201,8 +201,8 @@ void /*__launch_bounds__(LAUNCH_BOUNDS_BLUESTEIN_KERNEL)*/
                    const size_t          totalWI,
                    const size_t          N,
                    const size_t          M,
-                   const real_type_t<T>* inputRe,
-                   const real_type_t<T>* inputIm,
+                   //const real_type_t<T>* inputRe,
+                   //const real_type_t<T>* inputIm,
                    T*                    output,
                    const size_t          dim,
                    const size_t*         lengths,
@@ -214,7 +214,7 @@ void /*__launch_bounds__(LAUNCH_BOUNDS_BLUESTEIN_KERNEL)*/
     size_t bounds = LAUNCH_BOUNDS_BLUESTEIN_KERNEL;
     if (threads[0] > bounds) threads[0] = bounds;
 
-    rocfftQueue.submit([&](cl::sycl::handler &cgh) {
+    rocfft_queue.submit([&](cl::sycl::handler &cgh) {
     //missing accessors
     cgh.parallel_for<class mul_device_P_I>(sycl::nd_range<1>(grid, threads),
 	                   [=](sycl::nd_item<3> wItem) {
@@ -310,8 +310,8 @@ void /*__launch_bounds__(LAUNCH_BOUNDS_BLUESTEIN_KERNEL)*/
                    const size_t    N,
                    const size_t    M,
                    const T*        input,
-                   real_type_t<T>* outputRe,
-                   real_type_t<T>* outputIm,
+                   //real_type_t<T>* outputRe,
+                   //real_type_t<T>* outputIm,
                    const size_t    dim,
                    const size_t*   lengths,
                    const size_t*   stride_in,
@@ -322,7 +322,7 @@ void /*__launch_bounds__(LAUNCH_BOUNDS_BLUESTEIN_KERNEL)*/
     size_t bounds = LAUNCH_BOUNDS_BLUESTEIN_KERNEL;
     if (threads[0] > bounds) threads[0] = bounds;
 
-    rocfftQueue.submit([&](cl::sycl::handler &cgh) {
+    rocfft_queue.submit([&](cl::sycl::handler &cgh) {
     //missing accessors
     cgh.parallel_for<class mul_device_I_P>(sycl::nd_range<1>(grid, threads),
 	                   [=](sycl::nd_item<3> wItem) {
@@ -418,10 +418,10 @@ void /*__launch_bounds__(LAUNCH_BOUNDS_BLUESTEIN_KERNEL)*/
                    const size_t          totalWI,
                    const size_t          N,
                    const size_t          M,
-                   const real_type_t<T>* inputRe,
-                   const real_type_t<T>* inputIm,
-                   real_type_t<T>*       outputRe,
-                   real_type_t<T>*       outputIm,
+                   //const real_type_t<T>* inputRe,
+                   //const real_type_t<T>* inputIm,
+                   //real_type_t<T>*       outputRe,
+                   //real_type_t<T>*       outputIm,
                    const size_t          dim,
                    const size_t*         lengths,
                    const size_t*         stride_in,
@@ -432,7 +432,7 @@ void /*__launch_bounds__(LAUNCH_BOUNDS_BLUESTEIN_KERNEL)*/
     size_t bounds = LAUNCH_BOUNDS_BLUESTEIN_KERNEL;
     if (threads[0] > bounds) threads[0] = bounds;
 
-    rocfftQueue.submit([&](cl::sycl::handler &cgh) {
+    rocfft_queue.submit([&](cl::sycl::handler &cgh) {
     //missing accessors
     cgh.parallel_for<class mul_device_P_P>(sycl::nd_range<1>(grid, threads),
 	                   [=](sycl::nd_item<3> wItem) {
@@ -540,7 +540,7 @@ int main() {
     int* a1 = nullptr;
     int* a2 = nullptr;
     int* a3 = nullptr;
-    mul_device_P_P<int>(pp, pp1, 2, queue, 1, 1, 1, 1, nullptr, nullptr, nullptr, nullptr, 2, nullptr, nullptr, nullptr, 3, 2);
+    mul_device_P_P<int>(pp, pp1, 2, queue, 1, 1, 1, 1, 2, nullptr, nullptr, nullptr, 3, 2);
 }
 
 
