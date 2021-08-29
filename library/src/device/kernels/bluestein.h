@@ -41,10 +41,10 @@ void /*__launch_bounds__(LAUNCH_BOUNDS_BLUESTEIN_KERNEL)*/ chirp_device(
     size_t bounds = LAUNCH_BOUNDS_BLUESTEIN_KERNEL;
     if (threads[0] > bounds) threads[0] = bounds;
 
-    rocfftQueue.submit([&](cl::sycl::handler &cgh) {
+    rocfft_queue.submit([&](cl::sycl::handler &cgh) {
     //missing accessors
     cgh.parallel_for<class chirp_device>(sycl::nd_range<1>(grid, threads),
-	                   [=](sycl::nd_item<3> wItem) {
+	                   [=](sycl::nd_item<1> wItem) {
 
     //size_t tx = hipThreadIdx_x + hipBlockIdx_x * hipBlockDim_x;
     size_t tx = wItem.get_local_id(0)/*hipThreadIdx_x*/ + wItem.get_group(0)/*hipBlockIdx_x*/ * wItem.get_local_range(0) /*hipBlockDim_x*/;
@@ -116,10 +116,10 @@ void /*__launch_bounds__(LAUNCH_BOUNDS_BLUESTEIN_KERNEL)*/
     size_t bounds = LAUNCH_BOUNDS_BLUESTEIN_KERNEL;
     if (threads[0] > bounds) threads[0] = bounds;
 
-    rocfftQueue.submit([&](cl::sycl::handler &cgh) {
+    rocfft_queue.submit([&](cl::sycl::handler &cgh) {
     //missing accessors
     cgh.parallel_for<class mul_device_I_I>(sycl::nd_range<1>(grid, threads),
-	                   [=](sycl::nd_item<3> wItem) {
+	                   [=](sycl::nd_item<1> wItem) {
 
     //size_t tx = hipThreadIdx_x + hipBlockIdx_x * hipBlockDim_x;
     size_t tx = wItem.get_local_id(0)/*hipThreadIdx_x*/ + wItem.get_group(0)/*hipBlockIdx_x*/ * wItem.get_local_range(0) /*hipBlockDim_x*/;
@@ -211,6 +211,11 @@ void /*__launch_bounds__(LAUNCH_BOUNDS_BLUESTEIN_KERNEL)*/
     }
     });
     });
+    /*
+    #ifndef(NDEBUG)
+    queue.wait()   
+    #endif
+    */
 }
 
 template <typename T>
@@ -237,10 +242,10 @@ void /*__launch_bounds__(LAUNCH_BOUNDS_BLUESTEIN_KERNEL)*/
     size_t bounds = LAUNCH_BOUNDS_BLUESTEIN_KERNEL;
     if (threads[0] > bounds) threads[0] = bounds;
 
-    rocfftQueue.submit([&](cl::sycl::handler &cgh) {
+    rocfft_queue.submit([&](cl::sycl::handler &cgh) {
     //missing accessors
     cgh.parallel_for<class mul_device_P_I>(sycl::nd_range<1>(grid, threads),
-	                   [=](sycl::nd_item<3> wItem) {
+	                   [=](sycl::nd_item<1> wItem) {
 
     //size_t tx = hipThreadIdx_x + hipBlockIdx_x * hipBlockDim_x;
     size_t tx = wItem.get_local_id(0)/*hipThreadIdx_x*/ + wItem.get_group(0)/*hipBlockIdx_x*/ * wItem.get_local_range(0) /*hipBlockDim_x*/;
@@ -345,10 +350,10 @@ void /*__launch_bounds__(LAUNCH_BOUNDS_BLUESTEIN_KERNEL)*/
     size_t bounds = LAUNCH_BOUNDS_BLUESTEIN_KERNEL;
     if (threads[0] > bounds) threads[0] = bounds;
 
-    rocfftQueue.submit([&](cl::sycl::handler &cgh) {
+    rocfft_queue.submit([&](cl::sycl::handler &cgh) {
     //missing accessors
     cgh.parallel_for<class mul_device_I_P>(sycl::nd_range<1>(grid, threads),
-	                   [=](sycl::nd_item<3> wItem) {
+	                   [=](sycl::nd_item<1> wItem) {
 
     size_t tx = wItem.get_local_id(0)/*hipThreadIdx_x*/ + wItem.get_group(0)/*hipBlockIdx_x*/ * wItem.get_local_range(0) /*hipBlockDim_x*/;
 
@@ -455,10 +460,10 @@ void /*__launch_bounds__(LAUNCH_BOUNDS_BLUESTEIN_KERNEL)*/
     size_t bounds = LAUNCH_BOUNDS_BLUESTEIN_KERNEL;
     if (threads[0] > bounds) threads[0] = bounds;
 
-    rocfftQueue.submit([&](cl::sycl::handler &cgh) {
+    rocfft_queue.submit([&](cl::sycl::handler &cgh) {
     //missing accessors
     cgh.parallel_for<class mul_device_P_P>(sycl::nd_range<1>(grid, threads),
-	                   [=](sycl::nd_item<3> wItem) {
+	                   [=](sycl::nd_item<1> wItem) {
     
     //size_t tx = hipThreadIdx_x + hipBlockIdx_x * hipBlockDim_x;
     size_t tx = wItem.get_local_id(0)/*hipThreadIdx_x*/ + wItem.get_group(0)/*hipBlockIdx_x*/ * wItem.get_local_range(0) /*hipBlockDim_x*/;

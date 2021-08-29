@@ -35,6 +35,8 @@
 #include "twiddles.h"
 #include <hip/hip_runtime_api.h>
 
+using namespace sycl = cl::sycl;
+
 enum OperatingBuffer
 {
     OB_UNINIT,
@@ -156,7 +158,7 @@ struct NodeMetaData
     size_t                  iDist = 0, oDist = 0;
     size_t                  iOffset = 0, oOffset = 0;
     int                     direction    = -1;
-    rocfft_result_placement placement    = rocfft_placement_inplace;
+    rocfft_result_placement placement    = rocfft_placement_inplace; //Eric: what would this mean?
     rocfft_precision        precision    = rocfft_precision_single;
     rocfft_array_type       inArrayType  = rocfft_array_type_unset;
     rocfft_array_type       outArrayType = rocfft_array_type_unset;
@@ -244,7 +246,7 @@ public:
     size_t lengthBlue = 0;
 
     // Device pointers:
-    gpubuf           twiddles;
+    gpubuf           twiddles;          //Eric: how to handle device pointers
     gpubuf           twiddles_large;
     gpubuf_t<size_t> devKernArg;
 
@@ -320,7 +322,7 @@ public:
                                         size_t&                 chirpSize);
 
     // Output plan information for debug purposes:
-    void Print(rocfft_ostream& os = rocfft_cout, int indent = 0) const;
+    void Print(sycl::stream& os = rocfft_cout, int indent = 0) const; //Eric_change
 
     // logic B - using in-place transposes, todo
     //void RecursiveBuildTreeLogicB();
@@ -396,7 +398,7 @@ protected:
 
     void           BuildTree_internal() final {} // nothing to do in leaf node
     void           AssignBuffers_internal(TraverseState&   state,
-                                          OperatingBuffer& flipIn,
+                                          OperatingBuffer& flipIn,  //Eric: what are operating buffers
                                           OperatingBuffer& flipOut,
                                           OperatingBuffer& obOutBuf) override;
     void           AssignParams_internal() final {} // nothing to do in leaf node
@@ -433,7 +435,7 @@ protected:
 struct ExecPlan
 {
     // shared pointer allows for ExecPlans to be copyable
-    std::shared_ptr<TreeNode> rootPlan;
+    std::shared_ptr<TreeNode> rootPlan;         //Eric: would shared pointers need to be changed
 
     // non-owning pointers to the leaf-node children of rootPlan, which
     // are the nodes that do actual work
@@ -442,7 +444,7 @@ struct ExecPlan
     std::vector<DevFnCall> devFnCall;
     std::vector<GridParam> gridParam;
 
-    hipDeviceProp_t deviceProp;
+    sycl::device deviceProp; //Eric_change
 
     // these sizes count in complex elements
     size_t workBufSize      = 0;
@@ -460,6 +462,6 @@ struct ExecPlan
 };
 
 void ProcessNode(ExecPlan& execPlan);
-void PrintNode(rocfft_ostream& os, const ExecPlan& execPlan);
+void PrintNode(sycl::stream& os, const ExecPlan& execPlan); //Eric_change
 
 #endif // TREE_NODE_H

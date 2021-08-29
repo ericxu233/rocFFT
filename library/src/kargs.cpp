@@ -23,16 +23,18 @@
 #include "kargs.h"
 #include "rocfft_hip.h"
 
+
 // malloc device buffer; copy host buffer to device buffer
 gpubuf_t<size_t> kargs_create(std::vector<size_t> length,
                               std::vector<size_t> inStride,
                               std::vector<size_t> outStride,
                               size_t              iDist,
-                              size_t              oDist)
+                              size_t              oDist,
+                              sycl::device        dvc)
 {
-    gpubuf_t<size_t> devk;
-    if(devk.alloc(3 * KERN_ARGS_ARRAY_WIDTH * sizeof(size_t)) != hipSuccess)
-        return devk;
+    gpubuf_t<size_t> devk(dvc);
+
+    devk.alloc(3 * KERN_ARGS_ARRAY_WIDTH * sizeof(size_t));
 
     size_t devkHost[3 * KERN_ARGS_ARRAY_WIDTH];
 
@@ -55,9 +57,14 @@ gpubuf_t<size_t> kargs_create(std::vector<size_t> length,
     devkHost[i + 1 * KERN_ARGS_ARRAY_WIDTH] = iDist;
     devkHost[i + 2 * KERN_ARGS_ARRAY_WIDTH] = oDist;
 
+    sycl::queue* q = devk.queue();
+    q->memcpy(devk.data(), devkHost, 3 * KERN_ARGS_ARRAY_WIDTH * sizeof(size_t));
+
+/*
     if(hipMemcpy(
            devk.data(), devkHost, 3 * KERN_ARGS_ARRAY_WIDTH * sizeof(size_t), hipMemcpyHostToDevice)
        != hipSuccess)
         devk.free();
+*/
     return devk;
 }

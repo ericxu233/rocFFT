@@ -23,6 +23,9 @@
 
 #include <cstdlib>
 #include <hip/hip_runtime_api.h>
+#include <CL/sycl.hpp>
+
+using namespace sycl = cl::sycl;
 
 // Simple RAII class for GPU buffers.  T is the type of pointer that
 // data() returns
@@ -33,7 +36,15 @@ public:
     gpubuf_t()
         : buf(nullptr)
     {
+        rocfft_queue = sycl::queue(sycl::default_selector{});
     }
+
+    gpubuf_t(sycl::device& dvc)
+        : buf(nullptr)
+    {
+        rocfft_queue = sycl::queue(dvc);
+    }
+
     // buffers are movable but not copyable
     gpubuf_t(gpubuf_t&& other)
     {
@@ -57,27 +68,27 @@ public:
         return std::getenv("ROCFFT_MALLOC_MANAGED");
     }
 
-    hipError_t alloc(const size_t size)
+    void alloc(const size_t size)
     {
-        static bool alloc_managed = use_alloc_managed();
         free();
-        auto ret = alloc_managed ? hipMallocManaged(&buf, size) : hipMalloc(&buf, size);
-        if(ret != hipSuccess)
-            buf = nullptr;
-        return ret;
+        buf = sycl::malloc_device(size*sizeof(T), rocfft_queue);
     }
 
     void free()
     {
         if(buf != nullptr)
         {
-            hipFree(buf);
+            sycl::free(buf, dvc);
             buf = nullptr;
         }
     }
 
+    sycl::queue* queue() {
+        return &rocfft_queue;
+    }
+
     T* data() const
-    {
+    {   
         return static_cast<T*>(buf);
     }
 
@@ -98,6 +109,7 @@ public:
 private:
     // The GPU buffer
     void* buf;
+    sycl::queue rocfft_queue;
 };
 
 // default gpubuf that gives out void* pointers

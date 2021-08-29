@@ -27,6 +27,9 @@
 #include "../../../shared/gpubuf.h"
 #include <cstddef>
 #include <vector>
+#include <CL/sycl.hpp>
+
+using namespace sycl = cl::sycl;
 
 #define KERN_ARGS_ARRAY_WIDTH 16
 
@@ -34,6 +37,7 @@ gpubuf_t<size_t> kargs_create(std::vector<size_t> length,
                               std::vector<size_t> inStride,
                               std::vector<size_t> outStride,
                               size_t              iDist,
-                              size_t              oDist);
+                              size_t              oDist,
+                              sycl::device        dvc);
 
 #endif // defined( KARGS_H )

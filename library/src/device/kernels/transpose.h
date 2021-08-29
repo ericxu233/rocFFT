@@ -24,7 +24,7 @@
 #include "array_format.h"
 #include "common.h"
 #include "rocfft_hip.h"
-#include <CL/sycl.h>
+#include <CL/sycl.hpp>
 
 namespace sycl = cl::sycl;
 

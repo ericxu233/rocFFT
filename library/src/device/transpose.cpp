@@ -390,7 +390,7 @@ void rocfft_internal_transpose_var2(const void* data_p, void* back_p)
                 data->callbacks.store_cb_fn,
                 data->callbacks.store_cb_data);
 
-            free(d_in_planar, rocfft_queue); // needs to free this if implementation to sycl is made
+            sycl::free(d_in_planar, rocfft_queue); // needs to free this if implementation to sycl is made
                                   // sycl buffers are not required to be freed since the scoping will automatically destruct it
         }
         else
@@ -436,7 +436,7 @@ void rocfft_internal_transpose_var2(const void* data_p, void* back_p)
                 data->callbacks.store_cb_fn,
                 data->callbacks.store_cb_data);
 
-            free(d_in_planar, rocfft_queue);
+            sycl::free(d_in_planar, rocfft_queue);
         }
     }
     else if((data->node->inArrayType == rocfft_array_type_complex_interleaved
@@ -488,7 +488,7 @@ void rocfft_internal_transpose_var2(const void* data_p, void* back_p)
                 data->callbacks.store_cb_fn,
                 data->callbacks.store_cb_data);
 
-            free(d_out_planar, rocfft_queue);
+            sycl::free(d_out_planar, rocfft_queue);
         }
         else
         {
@@ -531,7 +531,7 @@ void rocfft_internal_transpose_var2(const void* data_p, void* back_p)
                 data->callbacks.store_cb_fn,
                 data->callbacks.store_cb_data);
 
-            free(d_out_planar, rocfft_queue);
+            sycl::free(d_out_planar, rocfft_queue);
         }
     }
     else if((data->node->inArrayType == rocfft_array_type_complex_planar
@@ -594,8 +594,8 @@ void rocfft_internal_transpose_var2(const void* data_p, void* back_p)
                 data->callbacks.store_cb_fn,
                 data->callbacks.store_cb_data);
 
-            free(d_in_planar, rocfft_queue);
-            free(d_out_planar, rocfft_queue);
+            sycl::free(d_in_planar, rocfft_queue);
+            sycl::free(d_out_planar, rocfft_queue);
         }
         else
         {
@@ -649,8 +649,8 @@ void rocfft_internal_transpose_var2(const void* data_p, void* back_p)
                 data->callbacks.store_cb_fn,
                 data->callbacks.store_cb_data);
 
-            free(d_in_planar, rocfft_queue);
-            free(d_out_planar, rocfft_queue);
+            sycl::free(d_in_planar, rocfft_queue);
+            sycl::free(d_out_planar, rocfft_queue);
         }
     }
     else
