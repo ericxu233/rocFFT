@@ -13,13 +13,19 @@
 struct double2 {
     double x;
     double y;
-    double2(double x, double y): x(x), y(x) {}
+    //double2(double x, double y): x(x), y(x) {}
+    double2 operator()(double x, double y) {
+        return {x, y};
+    }
 }
 
 struct float2 {
     float x;
     float y;
-    float2(float x, float y): x(x), y(x) {}
+    //float2(float x, float y): x(x), y(x) {}
+    float2 operator()(float x, float y) {
+        return {x, y};
+    }
 }
 
 struct double4 {
@@ -27,7 +33,10 @@ struct double4 {
     double y;
     double z;
     double w;
-    double4(double x, double y, double z, double w):  x(x), y(x), z(z), w(w) {} 
+    //double4(double x, double y, double z, double w):  x(x), y(x), z(z), w(w) {} 
+    double4 operator()(double x, double y, double z, double w) {
+        return {x, y, z, w};
+    }
 }
 
 struct float4 {
@@ -35,7 +44,10 @@ struct float4 {
     float y;
     float z;
     float w;
-    float4(float x, float y, float z, float w):  x(x), y(x), z(z), w(w) {} 
+    //float4(float x, float y, float z, float w):  x(x), y(x), z(z), w(w) {} 
+    float4 operator()(float x, float y, float z, float w) {
+        return {x, y, z, w};
+    }
 }
 
 

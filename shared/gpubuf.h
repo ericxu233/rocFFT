@@ -70,6 +70,14 @@ public:
 
     void alloc(const size_t size)
     {
+        /*
+        static bool alloc_managed = use_alloc_managed();
+        free();
+        auto ret = alloc_managed ? hipMallocManaged(&buf, size) : hipMalloc(&buf, size);
+        if(ret != hipSuccess)
+            buf = nullptr;
+        return ret;
+        */
         free();
         buf = sycl::malloc_device(size*sizeof(T), rocfft_queue);
     }

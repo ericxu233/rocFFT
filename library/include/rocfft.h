@@ -43,11 +43,16 @@ extern "C" {
 
 #define rocFFTLaunchKernelGGLInternal(kernelName, numBlocks, numThreads, memPerBlock, streamId, ...)  \
     do {                                                                                              \
-        kernelName<<<(numBlocks), (numThreads), (memPerBlock), (streamId)>>>(__VA_ARGS__);            \
+        kernelName(__VA_ARGS__);                                                                      \
     } while (0)
 
 #define rocFFTLaunchKernelGGL(kernelName, ...)  rocFFTLaunchKernelGGLInternal((kernelName), __VA_ARGS__)
 
+/*
+    do {                                                                                              \
+        kernelName<<<(numBlocks), (numThreads), (memPerBlock), (streamId)>>>(__VA_ARGS__);            \
+    } while (0)
+*/
 
 /*! @brief Pointer type to plan structure
  *  @details This type is used to declare a plan handle that can be initialized

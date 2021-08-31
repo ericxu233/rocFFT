@@ -44,7 +44,7 @@ struct DeviceCallIn
 
     sycl::queue     rocfft_stream;
     GridParam       gridParam;
-    hipDeviceProp_t deviceProp;
+    sycl::device deviceProp;
 
     UserCallbacks callbacks;
 

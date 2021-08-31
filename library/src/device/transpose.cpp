@@ -282,7 +282,7 @@ void rocfft_internal_transpose_var2(const void* data_p, void* back_p)
     // NB:
     //    Need better arch comparison other than strings.
     //    Need to check it for Navi and other oncoming new Archs.
-    std::string arch(data->deviceProp.gcnArchName);
+    std::string arch(data->deviceProp.gcnArchName); //Eric_critical: what should i do about this?
     if(arch.compare(0, 6, "gfx908") == 0 || arch.compare(0, 6, "gfx90a") == 0)
     {
         diagonal = (m % 256) == 0 && (data->node->outStride[1] % 256 == 0)

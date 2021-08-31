@@ -48,7 +48,7 @@ rocfft_status Repo::CreatePlan(rocfft_plan plan)
 
     // see if the repo has already stored the plan or not
     int deviceId = 0;
-    if(hipGetDevice(&deviceId) != hipSuccess)
+    if(hipGetDevice(&deviceId) != hipSuccess) //Eric_critical: how is device or queue instanced
         return rocfft_status_failure;
     plan_unique_key_t uniqueKey{*plan, deviceId};
     exec_lookup_key_t lookupKey{plan, deviceId};
