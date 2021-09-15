@@ -201,7 +201,8 @@ gpubuf twiddles_create(size_t              N,
                        size_t              largeTwdBase,
                        bool                no_radices,
                        bool                attach_2N,
-                       std::vector<size_t> radices = {});
-gpubuf twiddles_create_2D(size_t N1, size_t N2, rocfft_precision precision);
+                       std::vector<size_t> radices = {}
+                       sycl::device dvc);
+gpubuf twiddles_create_2D(size_t N1, size_t N2, rocfft_precision precision, sycl::device dvc);
 
 #endif // defined( TWIDDLES_H )

@@ -56,7 +56,7 @@ bool LeafNode::CreateLargeTwdTable()
 {
     if(large1D != 0)
     {
-        twiddles_large = twiddles_create(large1D, precision, true, largeTwdBase, false, false);
+        twiddles_large = twiddles_create(large1D, precision, true, largeTwdBase, false, false, dvc);
         if(twiddles_large == nullptr)
             return false;
     }
@@ -97,7 +97,7 @@ void LeafNode::SanityCheck()
 
 bool LeafNode::CreateDevKernelArgs()
 {
-    devKernArg = kargs_create(length, inStride, outStride, iDist, oDist);
+    devKernArg = kargs_create(length, inStride, outStride, iDist, oDist, dvc);
     return (devKernArg != nullptr);
 }
 
@@ -113,7 +113,8 @@ bool LeafNode::CreateTwiddleTableResource()
                                    LTWD_BASE_DEFAULT,
                                    twd_no_radices,
                                    twd_attach_2N,
-                                   kernelFactors);
+                                   kernelFactors,
+                                   dvc);
         if(twiddles == nullptr)
             return false;
     }

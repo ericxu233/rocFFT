@@ -256,6 +256,7 @@ public:
     // comments inserted by optimization passes to explain changes done
     // to the node
     std::vector<std::string> comments;
+    sycl::device dvc;
 
 public:
     // Disallow copy constructor:

@@ -246,7 +246,7 @@ void RC2DNode::AssignBuffers_internal(TraverseState&   state,
 bool Single2DNode::CreateTwiddleTableResource()
 {
     // create one set of twiddles for each dimension
-    twiddles = twiddles_create_2D(length[0], length[1], precision);
+    twiddles = twiddles_create_2D(length[0], length[1], precision, dvc);
 
     return CreateLargeTwdTable();
 }

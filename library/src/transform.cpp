@@ -131,7 +131,7 @@ rocfft_status rocfft_execute(const rocfft_plan     plan,
     if(user_info)
         info = *user_info;
 
-    gpubuf autoAllocWorkBuf;
+    gpubuf autoAllocWorkBuf(execPlan->deviceProp);
 
     if(execPlan->workBufSize > 0)
     {

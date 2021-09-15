@@ -33,9 +33,10 @@ gpubuf twiddles_create_pr(size_t              N,
                           size_t              largeTwdBase,
                           bool                no_radices,
                           bool                attach_2N,
-                          std::vector<size_t> radices)
+                          std::vector<size_t> radices
+                          sycl::device dvc)
 {
-    gpubuf twts; // device side
+    gpubuf twts(dvc); // device side
     void*  twtc; // host side
     size_t ns = 0; // table size
 
@@ -60,10 +61,13 @@ gpubuf twiddles_create_pr(size_t              N,
             twTable.Attach2NTable((T*)twtc, twts);
         }
         else
-        {
+        {   
+            twts.alloc(N * sizeof(T));
+            /*
             if(twts.alloc(N * sizeof(T)) != hipSuccess
                || hipMemcpy(twts.data(), twtc, N * sizeof(T), hipMemcpyHostToDevice) != hipSuccess)
                 twts.free();
+            */
         }
     }
     else
@@ -74,18 +78,23 @@ gpubuf twiddles_create_pr(size_t              N,
         {
             TwiddleTable<T> twTable(N);
             twtc = twTable.GenerateTwiddleTable();
+            twts.alloc(N * sizeof(T));
+            /*
             if(twts.alloc(N * sizeof(T)) != hipSuccess
                || hipMemcpy(twts.data(), twtc, N * sizeof(T), hipMemcpyHostToDevice) != hipSuccess)
                 twts.free();
+            */                                                       
         }
         else
         {
             TwiddleTableLarge<T> twTable(N, largeTwdBase); // does not generate radices
             std::tie(ns, twtc) = twTable.GenerateTwiddleTable(); // calculate twiddles on host side
-
+            twts.alloc(ns * sizeof(T));
+            /*
             if(twts.alloc(ns * sizeof(T)) != hipSuccess
                || hipMemcpy(twts.data(), twtc, ns * sizeof(T), hipMemcpyHostToDevice) != hipSuccess)
                 twts.free();
+            */
         }
     }
 
@@ -98,7 +107,8 @@ gpubuf twiddles_create(size_t              N,
                        size_t              largeTwdBase,
                        bool                no_radices,
                        bool                attach_2N,
-                       std::vector<size_t> radices)
+                       std::vector<size_t> radices
+                       sycl::device dvc)
 {
     if(large)
         assert(largeTwdBase > 0);
@@ -127,7 +137,7 @@ gpubuf twiddles_create(size_t              N,
 }
 
 template <typename T>
-gpubuf twiddles_create_2D_pr(size_t N1, size_t N2)
+gpubuf twiddles_create_2D_pr(size_t N1, size_t N2, sycl::device dvc)
 {
     auto kernel = function_pool::get_kernel(fpkey(N1, N2, rocfft_precision_single));
     // when old generator goes away, have_factors will always be true
@@ -180,22 +190,26 @@ gpubuf twiddles_create_2D_pr(size_t N1, size_t N2)
 
     // glue those two twiddle tables together in one malloc that we
     // give to the kernel
-    gpubuf twts;
+    gpubuf twts(dvc);
     if(twts.alloc((N1 + N2) * sizeof(T)) != hipSuccess)
         return twts;
     auto twts_ptr = static_cast<T*>(twts.data());
+    sycl::queue q = twts.queue();
+    q->memcpy(twts_ptr, twtc1, N1 * sizeof(T));
+    /*
     if(hipMemcpy(twts_ptr, twtc1, N1 * sizeof(T), hipMemcpyHostToDevice) != hipSuccess
        || hipMemcpy(twts_ptr + N1, twtc2, N2 * sizeof(T), hipMemcpyHostToDevice) != hipSuccess)
         twts.free();
+    */
     return twts;
 }
 
-gpubuf twiddles_create_2D(size_t N1, size_t N2, rocfft_precision precision)
+gpubuf twiddles_create_2D(size_t N1, size_t N2, rocfft_precision precision, sycl::device dvc)
 {
     if(precision == rocfft_precision_single)
-        return twiddles_create_2D_pr<float2>(N1, N2);
+        return twiddles_create_2D_pr<float2>(N1, N2, dvc);
     else if(precision == rocfft_precision_double)
-        return twiddles_create_2D_pr<double2>(N1, N2);
+        return twiddles_create_2D_pr<double2>(N1, N2, dvc);
     else
     {
         assert(false);
